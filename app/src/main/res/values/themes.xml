@@ -1,9 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.DTTHouses" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:color">@style/Colors</item>
+        <item name="titleTextStyle">@style/GothamBookTitle01</item>
+        <item name="textAppearanceBody1">@style/GothamBookBody</item>
+        <item name="textAppearanceBody2">@style/GothamBookBody</item>
+        <item name="textInputStyle">@style/GothamLightInput</item>
+        <item name="hintTextAppearance">@style/GothamBookHint</item>
+        <item name="subtitleTextStyle">@style/GothamLightInput</item>
+    </style>
+
+    <style name="Colors">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryVariant">@color/dark_gray</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -11,6 +21,62 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Default text properties for title 01-->
+    <style name="GothamBookTitle01">
+        <item name="android:textColor">@color/strong</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_bold</item>
+    </style>
+
+    <!-- Default text properties for title 02-->
+    <style name="GothamBookTitle02">
+        <item name="android:textColor">@color/strong</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_bold</item>
+    </style>
+
+    <!-- Default text properties for title 03-->
+    <style name="GothamBookTitle03">
+        <item name="android:textColor">@color/medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_medium</item>
+    </style>
+
+    <!-- Default text properties for body-->
+    <style name="GothamBookBody">
+        <item name="android:textColor">@color/medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_book</item>
+    </style>
+
+    <!-- Default text properties for Input-->
+    <style name="GothamLightInput">
+        <item name="android:textColor">@color/light</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_light</item>
+    </style>
+
+    <!-- Default text properties for hint-->
+    <style name="GothamBookHint">
+        <item name="android:textColor">@color/medium</item>
+        <item name="android:color">@color/black</item>
+        <item name="android:textSize">120sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_book</item>
+    </style>
+
+    <!-- Default text properties for subtitle-->
+    <style name="GothamBookSubtitle">
+        <item name="android:textColor">@color/medium</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_book</item>
+    </style>
+
+    <!-- Default text properties for detail-->
+    <style name="GothamBookDetail">
+        <item name="android:textColor">@color/medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/gotham_ssm_book</item>
     </style>
 </resources>

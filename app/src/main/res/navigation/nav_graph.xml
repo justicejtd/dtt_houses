@@ -8,8 +8,7 @@
     <fragment
         android:id="@+id/navHouseOverviewFragment"
         android:name="com.example.dtthouses.ui.houseOverview.HouseFragment"
-        android:label="HouseFragment">
-    </fragment>
+        android:label="HouseFragment" />
 
     <fragment
         android:id="@+id/navAboutFragment"

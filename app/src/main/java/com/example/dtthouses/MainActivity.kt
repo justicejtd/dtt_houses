@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize views
         val host: NavHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fragmentContainerViewHost) as NavHostFragment
+            supportFragmentManager.findFragmentById(R.id.fcvHost) as NavHostFragment
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         // Setup navigation graph controller to bottom navigation

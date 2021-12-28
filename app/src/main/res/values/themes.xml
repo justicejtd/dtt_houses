@@ -48,8 +48,7 @@
     <!-- Default text properties for hint-->
     <style name="GothamBookHint">
         <item name="android:textColor">@color/medium</item>
-        <item name="android:color">@color/black</item>
-        <item name="android:textSize">120sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">@font/gotham_ssm_book</item>
     </style>
 

@@ -17,4 +17,5 @@
     <string name="house_content">House content</string>
     <string name="bed_icon">Bed icon</string>
     <string name="no_search_found">No results found! \n Perhaps try another search?</string>
+    <string name="search_not_found_image">Search not found image</string>
 </resources>

@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dtthouses.R
 import com.example.dtthouses.data.model.House
+import com.example.dtthouses.R
+
 
 class HouseAdapter(var houses: ArrayList<House>) :
     RecyclerView.Adapter<HouseAdapter.ViewHolder>() {
@@ -28,7 +29,8 @@ class HouseAdapter(var houses: ArrayList<House>) :
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()
             tvNrOfLayers.text = house.size.toString()
-            tvLocationDistance.text = house.locationDistance.toString()
+            tvLocationDistance.text = house.locationDistance.toString().plus(" km")
+
             ivHouse.setImageBitmap(house.getBitmap())
         }
     }

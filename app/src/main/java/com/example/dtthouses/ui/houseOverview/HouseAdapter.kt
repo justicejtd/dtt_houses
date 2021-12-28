@@ -1,5 +1,6 @@
 package com.example.dtthouses.ui.houseOverview
 
+import android.content.Context
 import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +12,10 @@ import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
 
 
-class HouseAdapter(var houses: ArrayList<House>) :
+class HouseAdapter(var houses: List<House>, val context: Context) :
     RecyclerView.Adapter<HouseAdapter.ViewHolder>() {
 
-     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val tvPrice: TextView = view.findViewById(R.id.tvPrice)
         private val tvAddress: TextView = view.findViewById(R.id.tvAddress)
         private val tvNrOfBeds: TextView = view.findViewById(R.id.tvNrOfBedrooms)
@@ -24,12 +25,17 @@ class HouseAdapter(var houses: ArrayList<House>) :
         private val ivHouse: ImageView = view.findViewById(R.id.ivHouse)
 
         fun setViews(house: House) {
-            tvPrice.text = house.price.toString()
-            tvAddress.text = house.zip
+            // Remove any space in the zip code
+            val zip = house.zip.replace("\\s".toRegex(), "")
+
+            tvPrice.text =
+                context.getString(R.string.dolor_sign).plus(" ").plus(house.price.toString())
+            tvAddress.text = zip.plus(" ").plus(house.city)
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()
             tvNrOfLayers.text = house.size.toString()
-            tvLocationDistance.text = house.locationDistance.toString().plus(" km")
+            tvLocationDistance.text =
+                house.locationDistance.toString().plus(" ").plus(context.getString(R.string.km))
 
             ivHouse.setImageBitmap(house.getBitmap())
         }
@@ -48,7 +54,7 @@ class HouseAdapter(var houses: ArrayList<House>) :
     override fun getItemCount() = houses.size
 
     fun addHouses(houses: ArrayList<House>) {
-        this.houses.addAll(houses)
+        this.houses = houses
         notifyDataSetChanged()
     }
 

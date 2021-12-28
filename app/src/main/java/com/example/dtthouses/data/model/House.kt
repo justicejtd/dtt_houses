@@ -15,6 +15,7 @@ data class House(
     val latitude: Int,
     val longitude: Int,
     val createdDate: String,
+    var locationDistance: Int = 0,
     private var bitmap: Bitmap
 ) {
     fun setBitmap(bitmap: Bitmap) {

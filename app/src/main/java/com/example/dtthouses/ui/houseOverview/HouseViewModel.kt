@@ -21,8 +21,7 @@ class HouseViewModel(private val repository: MainRepository) : ViewModel() {
             if (houses.size == 0) {
                 // If something goes wrong notify view with an error message
                 housesLiveData.postValue(Resource.error("No houses found!", null))
-            }
-            else {
+            } else {
                 // Sort houses by price (cheapest to expensive)
                 houses.sortBy { house -> house.price }
 

@@ -2,7 +2,6 @@ package com.example.dtthouses.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.dtthouses.data.api.ApiServiceImpl
 import com.example.dtthouses.data.api.MainRepository
 import com.example.dtthouses.ui.houseOverview.HouseViewModel
 import java.lang.IllegalArgumentException

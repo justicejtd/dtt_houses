@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
+apply plugin: 'com.android.application'
+
 android {
     compileSdk 31
 
@@ -51,4 +53,7 @@ dependencies {
 
     // Gson library for converting json to objects and vice versa
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    // Google play service location library for getting user location
+    implementation 'com.google.android.gms:play-services-location:19.0.0'
 }

@@ -10,9 +10,11 @@
     <string name="address">Address</string>
     <string name="dtt_real_estate">DTT REAL ESTATE</string>
     <string name="km">km</string>
+    <string name="dolor_sign">$</string>
     <string name="layers_icon">Layers icon</string>
     <string name="location_icon">Location icon</string>
     <string name="bath_icon">Bath icon</string>
     <string name="house_content">House content</string>
     <string name="bed_icon">Bed icon</string>
+    <string name="no_search_found">No results found! \n Perhaps try another search?</string>
 </resources>

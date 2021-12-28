@@ -5,9 +5,9 @@
     android:id="@+id/materialCardViewHouseItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="32dp"
-    android:layout_marginEnd="32dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginStart="@dimen/house_horizontal_margin"
+    android:layout_marginEnd="@dimen/house_horizontal_margin"
+    android:layout_marginBottom="@dimen/house_vertical_margin"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,9 +17,10 @@
 
         <ImageView
             android:id="@+id/ivLayers"
+            android:contentDescription="@string/layers_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ivBath"
             app:layout_constraintStart_toEndOf="@+id/tvNrOfBathrooms"
             app:layout_constraintTop_toTopOf="@+id/ivBath"
@@ -27,9 +28,10 @@
 
         <ImageView
             android:id="@+id/ivLocation"
+            android:contentDescription="@string/location_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ivLayers"
             app:layout_constraintStart_toEndOf="@+id/tvNrOfSize"
             app:layout_constraintTop_toTopOf="@+id/ivLayers"
@@ -51,17 +53,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/_nr_placeholder"
             android:theme="@style/GothamBookDetail"
             app:layout_constraintBottom_toBottomOf="@+id/ivLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/ivLocation"
             app:layout_constraintTop_toTopOf="@+id/ivLocation" />
 
         <ImageView
             android:id="@+id/ivBath"
+            android:contentDescription="@string/bath_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/ivBed"
             app:layout_constraintStart_toEndOf="@+id/tvNrOfBedrooms"
             app:layout_constraintTop_toTopOf="@+id/ivBed"
@@ -92,6 +98,7 @@
 
             <ImageView
                 android:id="@+id/ivHouse"
+                android:contentDescription="@string/house_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
@@ -124,6 +131,7 @@
 
         <ImageView
             android:id="@+id/ivBed"
+            android:contentDescription="@string/bed_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/cardviewHouseImage"

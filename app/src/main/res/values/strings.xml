@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">DTT Houses</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
     <string name="title_home">Home</string>
@@ -10,4 +9,10 @@
     <string name="price">Price</string>
     <string name="address">Address</string>
     <string name="dtt_real_estate">DTT REAL ESTATE</string>
+    <string name="km">km</string>
+    <string name="layers_icon">Layers icon</string>
+    <string name="location_icon">Location icon</string>
+    <string name="bath_icon">Bath icon</string>
+    <string name="house_content">House content</string>
+    <string name="bed_icon">Bed icon</string>
 </resources>

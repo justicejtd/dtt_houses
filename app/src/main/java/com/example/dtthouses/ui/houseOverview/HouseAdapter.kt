@@ -1,5 +1,6 @@
 package com.example.dtthouses.ui.houseOverview
 
+import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,7 @@ class HouseAdapter(var houses: ArrayList<House>) :
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()
             tvNrOfLayers.text = house.size.toString()
-            tvLocationDistance.text = house.bedrooms.toString()
+            tvLocationDistance.text = house.locationDistance.toString()
             ivHouse.setImageBitmap(house.getBitmap())
         }
     }
@@ -46,6 +47,28 @@ class HouseAdapter(var houses: ArrayList<House>) :
 
     fun addHouses(houses: ArrayList<House>) {
         this.houses.addAll(houses)
+        notifyDataSetChanged()
+    }
+
+    fun updateHousesLocation(latitude: Double, longitude: Double) {
+        // Update all houses their location distance
+        houses.forEach {
+            // Set user location
+            val startPoint = Location("UserLocation")
+            startPoint.latitude = it.latitude.toDouble()
+            startPoint.longitude = it.longitude.toDouble()
+
+            // Set house location
+            val endPoint = Location("HouseLocation")
+            endPoint.latitude = latitude
+            endPoint.longitude = longitude
+
+            // Calculate distance in km
+            val distance = startPoint.distanceTo(endPoint) / 1000
+
+            // Set new distance
+            it.locationDistance = distance.toInt()
+        }
         notifyDataSetChanged()
     }
 }

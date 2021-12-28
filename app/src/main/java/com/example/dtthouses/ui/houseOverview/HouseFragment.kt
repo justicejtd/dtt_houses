@@ -16,6 +16,7 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -32,9 +33,11 @@ import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import java.util.concurrent.TimeUnit
 
 class HouseFragment : Fragment() {
-    private val houseAdapter = HouseAdapter(arrayListOf())
+    private lateinit var houseAdapter: HouseAdapter
     private val requestCode = 100
     private lateinit var houseViewModel: HouseViewModel
+    private lateinit var rvHouses: RecyclerView
+    private lateinit var viewSearchNotFound: View
 
     // FusedLocationProviderClient - Main class for receiving location updates.
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -79,7 +82,13 @@ class HouseFragment : Fragment() {
         // Set location call back
         setLocationCallBack()
 
-        // Setup observer
+        // Setup observers
+        setObservers()
+
+        return view
+    }
+
+    private fun setObservers() {
         houseViewModel.getHouses().observe(this as LifecycleOwner, {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -98,13 +107,37 @@ class HouseFragment : Fragment() {
             }
         })
 
-        return view
+        houseViewModel.getIsSearchNotFound().observe(this as LifecycleOwner, {
+            if (it) {
+                rvHouses.visibility = View.GONE
+                viewSearchNotFound.visibility = View.VISIBLE
+            } else {
+                rvHouses.visibility = View.VISIBLE
+                viewSearchNotFound.visibility = View.GONE
+            }
+        })
     }
 
     private fun setupUI(view: View) {
-        val rvHouses = view.findViewById<RecyclerView>(R.id.rvHouses)
+        houseAdapter = HouseAdapter(arrayListOf(), requireContext())
+        viewSearchNotFound = view.findViewById(R.id.viewSearchNotFound)
+        rvHouses = view.findViewById(R.id.rvHouses)
         rvHouses.layoutManager = LinearLayoutManager(context)
         rvHouses.adapter = houseAdapter
+
+        val svHouses = view.findViewById<SearchView>(R.id.svHouses)
+        // Set query listener to filter houses on search
+        svHouses.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(input: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(input: String?): Boolean {
+                houseViewModel.filterCourseListBySearch(input.toString())
+                return false
+            }
+        })
     }
 
     @SuppressLint("MissingPermission")

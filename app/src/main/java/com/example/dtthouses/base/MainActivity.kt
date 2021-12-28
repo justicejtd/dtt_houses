@@ -1,4 +1,4 @@
-package com.example.dtthouses
+package com.example.dtthouses.base
 
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.example.dtthouses.R
 import com.example.dtthouses.ui.houseOverview.HouseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

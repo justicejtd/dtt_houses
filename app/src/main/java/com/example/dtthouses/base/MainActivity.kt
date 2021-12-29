@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
                 val houseFragment = hostFragment.childFragmentManager.primaryNavigationFragment
                 if (houseFragment is HouseFragment) {
                     // If permission is granted started getting user location
-                   houseFragment.getCurrentLocation()
+                    houseFragment.getCurrentLocation()
                 }
             }
         }

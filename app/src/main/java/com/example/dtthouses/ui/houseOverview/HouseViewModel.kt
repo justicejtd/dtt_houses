@@ -44,16 +44,11 @@ class HouseViewModel(private val repository: MainRepository) : ViewModel() {
             if (!isFound) {
                 // Make a search pattern with combination of zip code and/or city
                 isFound = isFoundQueryFound(input.toString(), house.zip, house.city)
-
-                // If search is not found then show search not found image
-                if (!isFound) {
-                    isSearchNotFound.value = true
-                }
-            } else {
-                isSearchNotFound.value = false
             }
             isFound
         }
+        // If search is not found then show search not found image
+        isSearchNotFound.value = filteredHouses.isEmpty()
         housesLiveData.postValue(Resource.success(ArrayList(filteredHouses)))
     }
 

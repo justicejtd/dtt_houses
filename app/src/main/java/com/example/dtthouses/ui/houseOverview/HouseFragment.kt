@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.view.*
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -36,6 +37,7 @@ class HouseFragment : Fragment() {
     private lateinit var houseViewModel: HouseViewModel
     private lateinit var rvHouses: RecyclerView
     private lateinit var viewSearchNotFound: View
+    private lateinit var pbLoading: ProgressBar
 
     // FusedLocationProviderClient - Main class for receiving location updates.
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -91,6 +93,9 @@ class HouseFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
+                        // Hide/gone progress bar
+                        pbLoading.visibility = View.GONE
+
                         // Get houses
                         houseAdapter.addHouses(houses)
 
@@ -99,7 +104,8 @@ class HouseFragment : Fragment() {
                     }
                 }
                 Status.LOADING -> {
-                    // TODO show splash screen
+                    // Show progress bar
+                    pbLoading.visibility = View.VISIBLE
                 }
                 else -> {}
             }
@@ -118,6 +124,7 @@ class HouseFragment : Fragment() {
 
     private fun setupUI(view: View) {
         houseAdapter = HouseAdapter(arrayListOf(), requireContext())
+        pbLoading = view.findViewById(R.id.pbLoading)
         viewSearchNotFound = view.findViewById(R.id.viewSearchNotFound)
         rvHouses = view.findViewById(R.id.rvHouses)
         rvHouses.layoutManager = LinearLayoutManager(context)

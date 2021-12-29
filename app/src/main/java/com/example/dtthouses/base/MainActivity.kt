@@ -8,10 +8,14 @@ import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.dtthouses.R
+import com.example.dtthouses.ui.about.AboutFragmentCallback
 import com.example.dtthouses.ui.houseOverview.HouseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.content.Intent
+import android.net.Uri
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), AboutFragmentCallback {
     private val requestCode = 100
     private lateinit var hostFragment: NavHostFragment
 
@@ -57,4 +61,11 @@ class MainActivity : AppCompatActivity() {
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
         super.onResume()
     }
+
+    override fun showBrowser() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.d-tt.nl/"))
+        startActivity(intent)
+    }
+
+
 }

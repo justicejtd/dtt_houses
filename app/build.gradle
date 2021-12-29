@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 apply plugin: 'com.android.application'
@@ -14,8 +15,6 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -56,4 +55,7 @@ dependencies {
 
     // Google play service location library for getting user location
     implementation 'com.google.android.gms:play-services-location:19.0.0'
+
+    // Added maps library
+    implementation 'com.google.android.gms:play-services-maps:18.0.1'
 }

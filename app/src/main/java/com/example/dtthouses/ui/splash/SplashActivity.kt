@@ -18,8 +18,8 @@ class SplashActivity : AppCompatActivity() {
         // Initialize image logo view
         val ivLogo = findViewById<ImageView>(R.id.ivLogo)
 
-        // Show splash screen for 1.5 seconds
-        ivLogo.animate().setDuration(1500).alpha(1f).withEndAction {
+        // Show splash screen for 1 seconds
+        ivLogo.animate().setDuration(1).alpha(1f).withEndAction {
             // Show Splash screen until main screen is ready
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

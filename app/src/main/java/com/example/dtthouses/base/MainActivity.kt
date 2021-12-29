@@ -47,10 +47,8 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
                 val houseFragment = hostFragment.childFragmentManager.primaryNavigationFragment
                 if (houseFragment is HouseFragment) {
                     // If permission is granted started getting user location
-                   houseFragment.getCurrentLocation()
+                    houseFragment.getCurrentLocation()
                 }
-            } else {
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_LONG).show()
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

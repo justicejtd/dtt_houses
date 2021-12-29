@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
             if (grantResults.isNotEmpty()
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
+                // Notify user that permission has been granted
                 Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show()
 
                 val houseFragment = hostFragment.childFragmentManager.primaryNavigationFragment
@@ -49,8 +50,6 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
                     // If permission is granted started getting user location
                    houseFragment.getCurrentLocation()
                 }
-            } else {
-                Toast.makeText(this, "Permission Denied", Toast.LENGTH_LONG).show()
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

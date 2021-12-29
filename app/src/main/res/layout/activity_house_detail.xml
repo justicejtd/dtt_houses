@@ -1,0 +1,194 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clHouseDetails"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarHouseDetails"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="24dp"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/ToolbarTheme" />
+
+    <ImageView
+        android:id="@+id/ivHouseDetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/house_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/house_placeholder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".30"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clOverlayHouseDetails"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/shape_house_details_overlay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent=".75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <TextView
+            android:id="@+id/tvTitleLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/location"
+            android:theme="@style/GothamBookTitle01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescriptionDetail" />
+
+        <ImageView
+            android:id="@+id/ivBathDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/bath_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBedDetail"
+            app:layout_constraintEnd_toStartOf="@+id/tvNrOfBathroomsDetail"
+            app:layout_constraintTop_toTopOf="@+id/ivBedDetail"
+            app:srcCompat="@drawable/ic_bath" />
+
+        <TextView
+            android:id="@+id/tvNrOfBathroomsDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_nr_placeholder"
+            android:theme="@style/GothamBookDetail"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBathDetail"
+            app:layout_constraintEnd_toStartOf="@+id/ivLayersDetail"
+            app:layout_constraintTop_toTopOf="@+id/ivBathDetail" />
+
+        <TextView
+            android:id="@+id/tvNrOfBedroomsDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_nr_placeholder"
+            android:theme="@style/GothamBookDetail"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBedDetail"
+            app:layout_constraintEnd_toStartOf="@+id/ivBathDetail"
+            app:layout_constraintTop_toTopOf="@+id/ivBedDetail" />
+
+        <ImageView
+            android:id="@+id/ivBedDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/bed_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPriceDetail"
+            app:layout_constraintEnd_toStartOf="@+id/tvNrOfBedroomsDetail"
+            app:layout_constraintTop_toTopOf="@+id/tvPriceDetail"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_bed" />
+
+        <TextView
+            android:id="@+id/tvLocationDistanceDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="@string/_nr_placeholder"
+            android:theme="@style/GothamBookDetail"
+            app:layout_constraintBottom_toBottomOf="@+id/ivLocationDetail"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivLocationDetail" />
+
+        <TextView
+            android:id="@+id/tvNrOfSizeDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/_nr_placeholder"
+            android:theme="@style/GothamBookDetail"
+            app:layout_constraintBottom_toBottomOf="@+id/ivLayersDetail"
+            app:layout_constraintEnd_toStartOf="@+id/ivLocationDetail"
+            app:layout_constraintTop_toTopOf="@+id/ivLayersDetail" />
+
+        <ImageView
+            android:id="@+id/ivLocationDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/location_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/ivLayersDetail"
+            app:layout_constraintEnd_toStartOf="@+id/tvLocationDistanceDetail"
+            app:layout_constraintTop_toTopOf="@+id/ivLayersDetail"
+            app:srcCompat="@drawable/ic_location" />
+
+        <ImageView
+            android:id="@+id/ivLayersDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/layers_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBathDetail"
+            app:layout_constraintEnd_toStartOf="@+id/tvNrOfSizeDetail"
+            app:layout_constraintTop_toTopOf="@+id/ivBathDetail"
+            app:srcCompat="@drawable/ic_layers" />
+
+        <TextView
+            android:id="@+id/tvPriceDetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/price"
+            android:theme="@style/GothamBookTitle01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvTitleDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/description"
+            android:theme="@style/GothamBookTitle01"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvPriceDetail" />
+
+        <TextView
+            android:id="@+id/tvDescriptionDetail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/mockup_text"
+            android:theme="@style/GothamBookBody"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleDescription" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleLocation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

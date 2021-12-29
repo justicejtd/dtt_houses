@@ -12,8 +12,8 @@ data class House(
     val description: String,
     val zip: String,
     val city: String,
-    val latitude: Int,
-    val longitude: Int,
+    val latitude: Double,
+    val longitude: Double,
     val createdDate: String,
     var locationDistance: Int = 0,
     private var bitmap: Bitmap

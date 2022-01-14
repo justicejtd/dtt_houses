@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 data class House(
     val id: Int,
     val image: String,
-    val price: Int,
+    val price: Double,
     val bedrooms: Int,
     val bathrooms: Int,
     val size: Int,

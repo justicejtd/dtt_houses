@@ -52,7 +52,8 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             // Remove any space in the zip code
             val zip = house.zip.replace("\\s".toRegex(), "")
 
-            tvPrice.text = context.getString(R.string.dolor_sign).plus(house.price.toString())
+            tvPrice.text =
+                context.getString(R.string.dolor_sign).plus("%,d".format(house.price.toInt()))
             tvAddress.text = zip.plus(" ").plus(house.city)
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()

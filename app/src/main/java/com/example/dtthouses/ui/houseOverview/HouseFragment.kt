@@ -168,7 +168,7 @@ class HouseFragment : Fragment() {
                 }
             }
         } else {
-            // when location service is not enabled and permission is denied then open location settings
+            // When location service is not enabled and permission is not denied then open location settings
             if (ActivityCompat.checkSelfPermission(
                     requireContext(),
                     ACCESS_COARSE_LOCATION

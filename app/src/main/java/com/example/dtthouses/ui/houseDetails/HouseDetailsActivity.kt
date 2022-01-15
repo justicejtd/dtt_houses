@@ -16,12 +16,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
 import android.graphics.Color
+import android.location.Location
 import android.net.Uri
 import android.view.WindowManager
 
 import android.view.Window
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 
 
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -67,25 +67,35 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val location = LatLng(house.latitude, house.longitude)
+        val latLng = LatLng(house.latitude, house.longitude)
         googleMap.addMarker(
             MarkerOptions()
-                .position(location)
-                .title("Marker in house location")
+                .position(latLng)
         )
 
         // Zoom map to the marker
-        moveToCurrentLocation(location, googleMap)
+        moveToCurrentLocation(latLng, googleMap)
 
         // Show google maps and show direction
         googleMap.setOnMapClickListener {
-            val gmmIntentUri: Uri = Uri.parse(
-                "google.navigation:q=".plus(location.latitude).plus(",").plus(location.longitude)
-            )
-            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            mapIntent.setPackage("com.google.android.apps.maps")
-            startActivity(mapIntent)
+            // Show google maps from device
+            showGoogleMap(latLng)
         }
+
+        googleMap.setOnMarkerClickListener {
+            // Show google maps from device
+            showGoogleMap(latLng)
+            true
+        }
+    }
+
+    private fun showGoogleMap(latLng: LatLng) {
+        val gmmIntentUri: Uri = Uri.parse(
+            "google.navigation:q=".plus(latLng.latitude).plus(",").plus(latLng.longitude)
+        )
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
     }
 
     private fun moveToCurrentLocation(currentLocation: LatLng, googleMap: GoogleMap) {

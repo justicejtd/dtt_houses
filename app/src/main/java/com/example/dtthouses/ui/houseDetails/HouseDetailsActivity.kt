@@ -19,9 +19,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.WindowManager
 
-import android.os.Build
 import android.view.Window
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 
 
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -29,14 +29,14 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_house_detail)
+        setContentView(R.layout.activity_house_details)
 
         // Initialize views
         val tvPriceDetail = findViewById<TextView>(R.id.tvPriceDetail)
-        val tvNrOfBedroomsDetail = findViewById<TextView>(R.id.tvNrOfBedroomsDetail)
-        val tvNrOfBathroomsDetail = findViewById<TextView>(R.id.tvNrOfBathroomsDetail)
-        val tvNrOfSizeDetail = findViewById<TextView>(R.id.tvNrOfSizeDetail)
-        val tvLocationDistanceDetail = findViewById<TextView>(R.id.tvLocationDistanceDetail)
+        val tvNrOfBedroomsDetail = findViewById<TextView>(R.id.tvNrOfBedrooms)
+        val tvNrOfBathroomsDetail = findViewById<TextView>(R.id.tvNrOfBathrooms)
+        val tvNrOfSizeDetail = findViewById<TextView>(R.id.tvNrOfSize)
+        val tvLocationDistanceDetail = findViewById<TextView>(R.id.tvLocationDistance)
         val tvDescriptionDetail = findViewById<TextView>(R.id.tvDescriptionDetail)
         val ivHouseDetail = findViewById<ImageView>(R.id.ivHouseDetail)
 
@@ -50,7 +50,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         house = Gson().fromJson(json, House::class.java)
 
         // Set house values to views
-        tvPriceDetail.text = getString(R.string.dolor_sign).plus(house.price.toString())
+        tvPriceDetail.text =
+            getString(R.string.dolor_sign).plus(getString(R.string.price_format).format(house.price.toInt()))
         tvNrOfBedroomsDetail.text = house.bedrooms.toString()
         tvNrOfBathroomsDetail.text = house.bathrooms.toString()
         tvNrOfSizeDetail.text = house.size.toString()

@@ -15,75 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivLayers"
-            android:contentDescription="@string/layers_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBath"
-            app:layout_constraintStart_toEndOf="@+id/tvNrOfBathrooms"
-            app:layout_constraintTop_toTopOf="@+id/ivBath"
-            app:srcCompat="@drawable/ic_layers" />
-
-        <ImageView
-            android:id="@+id/ivLocation"
-            android:contentDescription="@string/location_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivLayers"
-            app:layout_constraintStart_toEndOf="@+id/tvNrOfSize"
-            app:layout_constraintTop_toTopOf="@+id/ivLayers"
-            app:srcCompat="@drawable/ic_location" />
-
-        <TextView
-            android:id="@+id/tvNrOfSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@string/_nr_placeholder"
-            android:theme="@style/GothamBookDetail"
-            app:layout_constraintBottom_toBottomOf="@+id/ivLayers"
-            app:layout_constraintStart_toEndOf="@+id/ivLayers"
-            app:layout_constraintTop_toTopOf="@+id/ivLayers" />
-
-        <TextView
-            android:id="@+id/tvLocationDistance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/_nr_placeholder"
-            android:theme="@style/GothamBookDetail"
-            app:layout_constraintBottom_toBottomOf="@+id/ivLocation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/ivLocation"
-            app:layout_constraintTop_toTopOf="@+id/ivLocation" />
-
-        <ImageView
-            android:id="@+id/ivBath"
-            android:contentDescription="@string/bath_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBed"
-            app:layout_constraintStart_toEndOf="@+id/tvNrOfBedrooms"
-            app:layout_constraintTop_toTopOf="@+id/ivBed"
-            app:srcCompat="@drawable/ic_bath" />
-
-        <TextView
-            android:id="@+id/tvNrOfBathrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@string/_nr_placeholder"
-            android:theme="@style/GothamBookDetail"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBath"
-            app:layout_constraintStart_toEndOf="@+id/ivBath"
-            app:layout_constraintTop_toTopOf="@+id/ivBath" />
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardviewHouseImage"
             android:layout_width="100dp"
@@ -129,27 +60,16 @@
             app:layout_constraintStart_toStartOf="@+id/tvPrice"
             app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
 
-        <ImageView
-            android:id="@+id/ivBed"
-            android:contentDescription="@string/bed_icon"
-            android:layout_width="wrap_content"
+        <include
+            layout="@layout/view_house_details"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/cardviewHouseImage"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tvAddress"
             app:layout_constraintTop_toBottomOf="@+id/tvAddress"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_bed" />
-
-        <TextView
-            android:id="@+id/tvNrOfBedrooms"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@string/_nr_placeholder"
-            android:theme="@style/GothamBookDetail"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBed"
-            app:layout_constraintStart_toEndOf="@+id/ivBed"
-            app:layout_constraintTop_toTopOf="@+id/ivBed" />
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

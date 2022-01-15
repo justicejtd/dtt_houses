@@ -53,7 +53,7 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             val zip = house.zip.replace("\\s".toRegex(), "")
 
             tvPrice.text =
-                context.getString(R.string.dolor_sign).plus("%,d".format(house.price.toInt()))
+                context.getString(R.string.dolor_sign).plus(context.getString(R.string.price_format).format(house.price.toInt()))
             tvAddress.text = zip.plus(" ").plus(house.city)
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()

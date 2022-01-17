@@ -37,7 +37,7 @@
                 android:layout_marginTop="24dp"
                 android:elevation="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.2"
+                app:layout_constraintHeight_percent="0.15"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:theme="@style/ToolbarTheme" />

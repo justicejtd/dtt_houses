@@ -12,6 +12,7 @@ import com.example.dtthouses.ui.about.AboutFragmentCallback
 import com.example.dtthouses.ui.houseOverview.HouseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 
 
@@ -29,6 +30,9 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
 
         // Setup navigation graph controller to bottom navigation
         bottomNav?.setupWithNavController(hostFragment.navController)
+
+        // Set status bar color to gray
+        this.window.statusBarColor = Color.GRAY
     }
 
     override fun onRequestPermissionsResult(

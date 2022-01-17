@@ -109,16 +109,14 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setToolbarAndStatusBar() {
         val toolbar = findViewById<Toolbar>(R.id.toolbarHouseDetails)
 
-        // Toolbar :: Transparent
+        // Set toolbar color to transparent
         toolbar.setBackgroundColor(Color.TRANSPARENT)
 
         setSupportActionBar(toolbar)
         supportActionBar!!.title = ""
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // Status bar :: Transparent
-        val window: Window = this.window
-
+        // Set status bar color to transparent
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = Color.TRANSPARENT

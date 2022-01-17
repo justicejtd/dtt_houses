@@ -47,7 +47,7 @@ class HouseFragment : Fragment() {
     private lateinit var locationRequest: LocationRequest
 
     // LocationCallback - Called when FusedLocationProviderClient
-    // has a new Location
+    // when there is a new Location
     private lateinit var locationCallback: LocationCallback
 
     // This will store current location info
@@ -168,7 +168,8 @@ class HouseFragment : Fragment() {
                 }
             }
         } else {
-            // When location service is not enabled and permission is not denied then open location settings
+            // When location service is not enabled and permission is not denied
+            // then open location settings
             if (ActivityCompat.checkSelfPermission(
                     requireContext(),
                     ACCESS_COARSE_LOCATION

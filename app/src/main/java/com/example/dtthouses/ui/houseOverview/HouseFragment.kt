@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -30,9 +31,10 @@ import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import java.util.concurrent.TimeUnit
 import android.widget.EditText
-import android.view.MotionEvent
-import android.widget.SearchView
-
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.widget.doOnTextChanged
+import com.example.dtthouses.utils.makeClearableEditText
 
 class HouseFragment : Fragment() {
     private lateinit var houseAdapter: HouseAdapter
@@ -130,35 +132,42 @@ class HouseFragment : Fragment() {
         rvHouses.layoutManager = LinearLayoutManager(context)
         rvHouses.adapter = houseAdapter
 
-//        val etSearch = view.findViewById<EditText>(R.id.etSearch)
-//
-//        etSearch.setOnTouchListener { view, motionEvent ->
-//            if (motionEvent.action == MotionEvent.ACTION_UP) {
-//                view as EditText
-//                val end =
-//                    if (view.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL)
-//                        view.left else view.right
-//                if (motionEvent.rawX >= (end - view.compoundPaddingEnd)) {
-//                    return@setOnTouchListener true
-//                }
-//            }
-//            return@setOnTouchListener false
-//        }
+        val etSearch = view.findViewById<EditText>(R.id.etSearchHome)
 
-        val svHouses = view.findViewById<SearchView>(R.id.svHouses)
+        // Set cancel button to search edit text view
+        addRightCancelDrawable(etSearch)
 
-        // Set query listener to filter houses on search
-        svHouses.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        // Handle cancel search
+        etSearch.makeClearableEditText(null, null)
 
-            override fun onQueryTextSubmit(input: String?): Boolean {
-                return false
+        etSearch.doOnTextChanged { value, _, _, _ ->
+            // Update list on search
+            houseViewModel.filterCourseListBySearch(value.toString())
+        }
+
+        // Hide keyboard and clear search focus after search has been performed
+        etSearch.setOnKeyListener { _, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                hideSoftKeyboard()
+                etSearch.isFocusable = false
+                etSearch.isFocusableInTouchMode = true
+                true
+            } else {
+                false
             }
+        }
+    }
 
-            override fun onQueryTextChange(input: String?): Boolean {
-                houseViewModel.filterCourseListBySearch(input.toString())
-                return false
-            }
-        })
+    private fun addRightCancelDrawable(editText: EditText) {
+        val cancel = ContextCompat.getDrawable(requireContext(), R.drawable.ic_close)
+        cancel?.setBounds(0, 0, cancel.intrinsicWidth, cancel.intrinsicHeight)
+        editText.setCompoundDrawables(null, null, cancel, null)
+    }
+
+    private fun hideSoftKeyboard() {
+        // extension function to hide soft keyboard programmatically
+        val imm = view?.let { getSystemService(it.context, InputMethodManager::class.java) }
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     @SuppressLint("MissingPermission")

@@ -8,25 +8,24 @@
 
     <ImageView
         android:id="@+id/ivSearchNotFound"
-        android:contentDescription="@string/search_not_found_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center|center_horizontal|center_vertical"
+        android:layout_weight="3"
+        android:contentDescription="@string/search_not_found_image"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/search_state_empty" />
 
     <TextView
         android:id="@+id/txSearchNotFound"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="24dp"
+        android:layout_weight="1"
+        android:maxLines="2"
         android:text="@string/no_search_found"
         android:textAlignment="center"
-        android:theme="@style/GothamBookHint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivSearchNotFound" />
+        android:theme="@style/GothamBookHint" />
+
 </LinearLayout>

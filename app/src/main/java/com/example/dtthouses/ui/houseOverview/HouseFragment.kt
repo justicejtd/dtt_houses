@@ -15,7 +15,6 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.*
 import android.widget.ProgressBar
-import android.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -30,6 +29,10 @@ import com.example.dtthouses.utils.Status
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import java.util.concurrent.TimeUnit
+import android.widget.EditText
+import android.view.MotionEvent
+import android.widget.SearchView
+
 
 class HouseFragment : Fragment() {
     private lateinit var houseAdapter: HouseAdapter
@@ -95,7 +98,8 @@ class HouseFragment : Fragment() {
                         // Get houses
                         houseAdapter.addHouses(houses)
 
-                        // Check for gps permission and request location updates if permission is granted
+                        // If permission is granted
+                        // check for gps permission and request location updates
                         checkForLocationPermission()
                     }
                 }
@@ -126,7 +130,23 @@ class HouseFragment : Fragment() {
         rvHouses.layoutManager = LinearLayoutManager(context)
         rvHouses.adapter = houseAdapter
 
+//        val etSearch = view.findViewById<EditText>(R.id.etSearch)
+//
+//        etSearch.setOnTouchListener { view, motionEvent ->
+//            if (motionEvent.action == MotionEvent.ACTION_UP) {
+//                view as EditText
+//                val end =
+//                    if (view.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL)
+//                        view.left else view.right
+//                if (motionEvent.rawX >= (end - view.compoundPaddingEnd)) {
+//                    return@setOnTouchListener true
+//                }
+//            }
+//            return@setOnTouchListener false
+//        }
+
         val svHouses = view.findViewById<SearchView>(R.id.svHouses)
+
         // Set query listener to filter houses on search
         svHouses.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 

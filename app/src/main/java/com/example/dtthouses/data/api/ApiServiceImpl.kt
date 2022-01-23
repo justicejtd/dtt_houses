@@ -2,6 +2,7 @@ package com.example.dtthouses.data.api
 
 import android.graphics.BitmapFactory
 import android.util.Log
+import com.bumptech.glide.Glide
 import com.example.dtthouses.data.model.House
 import com.google.gson.Gson
 import java.io.IOException
@@ -47,7 +48,10 @@ class ApiServiceImpl : ApiService {
             for (i in 0 until houses.size) {
                 val imageInputStream = URL(baseUrl.plus(houses[i].image)).openStream()
                 val bitmap = BitmapFactory.decodeStream(imageInputStream)
-                houses[i].setBitmap(bitmap)
+
+                if (bitmap != null) {
+                    houses[i].setBitmap(bitmap)
+                }
             }
         } catch (ex: IOException) {
             ex.printStackTrace()

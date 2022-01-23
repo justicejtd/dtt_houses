@@ -59,12 +59,6 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    override fun onResume() {
-        // Enables keyboard to go over the bottom navigation
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-        super.onResume()
-    }
-
     override fun showBrowser() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.d-tt.nl/"))
         startActivity(intent)

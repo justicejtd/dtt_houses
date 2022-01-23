@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clHousesOverview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,44 +29,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svHouses"
+        app:layout_constraintTop_toBottomOf="@+id/etSearchHome"
         app:layout_constraintVertical_bias="0.0" />
 
-    <SearchView
-        android:id="@+id/svHouses"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/house_horizontal_margin"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="@dimen/house_horizontal_margin"
-        android:background="@drawable/bg_rounded"
-        android:focusable="false"
-        android:iconifiedByDefault="true"
-        android:queryHint="Search for a home"
-        android:layoutDirection="rtl"
-        android:queryBackground="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txOverviewTitle" />
-
-    <!--    <SearchView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:queryHint="testtest"/>-->
-<!--    -->
-<!--        <androidx.appcompat.widget.SearchView-->
-<!--            android:id="@+id/svHouses"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/house_horizontal_margin"-->
-<!--            android:layout_marginTop="24dp"-->
-<!--            android:layout_marginEnd="@dimen/house_horizontal_margin"-->
-<!--            android:background="@drawable/bg_rounded"-->
-<!--            android:layoutDirection="rtl"-->
-<!--            app:queryHint="Search for a home"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/txOverviewTitle" />-->
+        <EditText
+            android:id="@+id/etSearchHome"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:autofillHints="@null"
+            android:hint="@string/search_for_a_home"
+            android:background="@drawable/bg_rounded"
+            android:drawableEnd="@drawable/ic_search"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:theme="@style/GothamBookHint"
+            app:endIconDrawable="@drawable/ic_close"
+            app:textInputLayoutFocusedRectEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txOverviewTitle"/>
 
     <ProgressBar
         android:id="@+id/pbLoading"
@@ -80,7 +64,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svHouses" />
+        app:layout_constraintTop_toBottomOf="@+id/etSearchHome" />
 
     <include
         android:id="@+id/viewSearchNotFound"
@@ -92,6 +76,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/svHouses" />
+        app:layout_constraintTop_toBottomOf="@+id/etSearchHome" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

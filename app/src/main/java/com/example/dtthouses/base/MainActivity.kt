@@ -3,7 +3,6 @@ package com.example.dtthouses.base
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -63,6 +62,4 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.d-tt.nl/"))
         startActivity(intent)
     }
-
-
 }

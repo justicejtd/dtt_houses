@@ -28,4 +28,5 @@
     <string name="d_tt_nl">d-tt.nl</string>
     <string name="dtt_banner">DTT banner</string>
     <string name="price_format">%,d</string>
+    <string name="search_for_a_home">Search for a home</string>
 </resources>

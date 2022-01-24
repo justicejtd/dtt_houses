@@ -42,16 +42,20 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
         // Check if its the location request
         if (requestCode == this.requestCode) {
 
-            if (grantResults.isNotEmpty()
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            ) {
-                // Notify user that permission has been granted
-                Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show()
+            val houseFragment = hostFragment.childFragmentManager.primaryNavigationFragment
+            if (houseFragment is HouseFragment) {
+                if (grantResults.isNotEmpty()
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Notify user that permission has been granted
+                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show()
 
-                val houseFragment = hostFragment.childFragmentManager.primaryNavigationFragment
-                if (houseFragment is HouseFragment) {
                     // If permission is granted started getting user location
                     houseFragment.getCurrentLocation()
+
+                } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    // Hide location views
+                    houseFragment.handlePermissionDenied()
                 }
             }
         }

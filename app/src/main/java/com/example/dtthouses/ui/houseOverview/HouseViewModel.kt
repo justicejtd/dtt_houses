@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 class HouseViewModel(private val repository: MainRepository) : ViewModel() {
     private val housesLiveData = MutableLiveData<Resource<ArrayList<House>>>()
     private lateinit var houses: ArrayList<House>
-    private val isSearchNotFound = MutableLiveData<Boolean>(false)
+    private val isSearchNotFound = MutableLiveData(false)
 
     init {
         // Get houses from repository

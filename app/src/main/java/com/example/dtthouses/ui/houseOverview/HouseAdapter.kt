@@ -18,6 +18,7 @@ import com.google.gson.Gson
 
 class HouseAdapter(var houses: List<House>, val context: Context) :
     RecyclerView.Adapter<HouseAdapter.ViewHolder>() {
+    private var isLocationPermissionDenied = false
 
     companion object DetailsIntents {
         const val DETAILS_INTENT_KEY = "com.example.dtthouses.ui.houseOverview.detailKey"
@@ -30,6 +31,7 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
         private val tvNrOfBaths: TextView = view.findViewById(R.id.tvNrOfBathrooms)
         private val tvNrOfLayers: TextView = view.findViewById(R.id.tvNrOfSize)
         private val tvLocationDistance: TextView = view.findViewById(R.id.tvLocationDistance)
+        private val ivLocation : ImageView = view.findViewById(R.id.ivLocation)
         private val ivHouse: ImageView = view.findViewById(R.id.ivHouse)
 
         init {
@@ -58,9 +60,21 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()
             tvNrOfLayers.text = house.size.toString()
-            tvLocationDistance.text =
-                house.locationDistance.toString().plus(" ").plus(context.getString(R.string.km))
             ivHouse.setImageBitmap(house.getBitmap())
+
+            // Set location views visibility to GONE if location permission id denied
+            setLocationViews(house)
+        }
+
+        private fun setLocationViews(house: House) {
+            if (isLocationPermissionDenied) {
+                tvLocationDistance.visibility = View.GONE
+                ivLocation.visibility = View.GONE
+            } else {
+                tvLocationDistance.text =
+                    house.locationDistance.toString().plus(" ").plus(context.getString(R.string.km))
+            }
+
         }
     }
 
@@ -100,6 +114,15 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             // Set new distance
             it.locationDistance = distance.toInt()
         }
+        notifyDataSetChanged()
+    }
+
+    /**
+     * Keep track if location permission has been denied
+     * If permission is denied then location text view and icon will be hidden
+     */
+    fun disableLocationViews() {
+        isLocationPermissionDenied = true
         notifyDataSetChanged()
     }
 }

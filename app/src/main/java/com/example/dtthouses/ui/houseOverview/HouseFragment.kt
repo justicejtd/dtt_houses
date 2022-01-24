@@ -215,6 +215,10 @@ class HouseFragment : Fragment() {
         }
     }
 
+    fun handlePermissionDenied() {
+        // Disable location icon and distance
+        houseAdapter.disableLocationViews()
+    }
     private fun checkForLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),

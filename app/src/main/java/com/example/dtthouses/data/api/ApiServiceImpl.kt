@@ -14,18 +14,19 @@ class ApiServiceImpl : ApiService {
     private val baseUrl = "https://intern.docker-dev.d-tt.nl"
 
     override fun getHouses(): ArrayList<House> {
-        var houses = ArrayList<House>()
+        val houses = ArrayList<House>()
         val endpoint = URL(baseUrl.plus("/api/house"))
-        val httpsURLConnection = endpoint.openConnection()
-
-        httpsURLConnection.setRequestProperty("Accept", "application/json")
-        httpsURLConnection.setRequestProperty(
-            "Access-Key",
-            "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
-        )
-        httpsURLConnection.connect()
 
         try {
+            val httpsURLConnection = endpoint.openConnection()
+
+            httpsURLConnection.setRequestProperty("Accept", "application/json")
+            httpsURLConnection.setRequestProperty(
+                "Access-Key",
+                "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
+            )
+            httpsURLConnection.connect()
+
             val inputStream = httpsURLConnection.getInputStream()
             val scanner = Scanner(inputStream)
             val jsonString = scanner.useDelimiter("\\Z").next()

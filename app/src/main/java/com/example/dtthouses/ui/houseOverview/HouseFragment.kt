@@ -109,7 +109,16 @@ class HouseFragment : Fragment() {
                     // Show progress bar
                     pbLoading.visibility = View.VISIBLE
                 }
-                else -> {}
+                Status.ERROR -> {
+                    // Hide/gone progress bar
+                    pbLoading.visibility = View.GONE
+
+                    // Hide house overview list
+                    rvHouses.visibility = View.GONE
+
+                    // Show SearchNot found
+                    viewSearchNotFound.visibility = View.VISIBLE
+                }
             }
         })
 
@@ -219,6 +228,7 @@ class HouseFragment : Fragment() {
         // Disable location icon and distance
         houseAdapter.disableLocationViews()
     }
+
     private fun checkForLocationPermission() {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),

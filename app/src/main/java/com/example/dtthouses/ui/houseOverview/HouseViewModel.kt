@@ -3,21 +3,26 @@ package com.example.dtthouses.ui.houseOverview
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.NO_HOUSES_FOUND_ERROR
 import com.example.dtthouses.utils.Resource
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlin.collections.ArrayList
 
 /**
  * Handles any business logic for HouseFragment.
  */
 class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
+    private val errorMessage = MutableLiveData<String>()
     private val housesLiveData = MutableLiveData<Resource<ArrayList<House>>>()
     private lateinit var houses: ArrayList<House>
     private val isSearchNotFound = MutableLiveData(false)
+    private var job: Job? = null
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+        onError("Exception handled: ${throwable.localizedMessage}")
+    }
 
     /**
      * Constants values of HouseViewModel.
@@ -30,21 +35,38 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
     }
 
     init {
-        // Get houses from repository
-        viewModelScope.launch {
-            housesLiveData.postValue(Resource.loading(null))
-            houses = repository.getHouses()
-            if (houses.size == 0) {
-                // If something goes wrong notify view with an error message
-                housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
-            } else {
-                // Sort houses by price (cheapest to expensive)
-                houses.sortBy { house -> house.price }
+        housesLiveData.postValue(Resource.loading(null))
+        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+            val response = repository.getHouses()
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    val body = response.body()
 
-                // Notify view when houses are fetched successfully
-                housesLiveData.postValue(Resource.success(houses))
+                    if (body != null) {
+                        houses = body
+                        // Sort houses by price (cheapest to expensive)
+                        houses.sortBy { house -> house.price }
+                    }
+
+                    // Notify view when houses are fetched successfully
+                    housesLiveData.postValue(Resource.success(houses))
+                } else {
+                    // If something goes wrong notify view with an error message
+                    housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
+
+                    onError("Error : ${response.message()} ")
+                }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job?.cancel()
+    }
+
+    private fun onError(message: String) {
+        errorMessage.value = message
     }
 
     /**
@@ -92,5 +114,12 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
      */
     fun getIsSearchNotFound(): LiveData<Boolean> {
         return isSearchNotFound
+    }
+
+    /**
+     * Return error message when something goes wrong during network call
+     */
+    fun getErrorMessage(): LiveData<String> {
+        return errorMessage
     }
 }

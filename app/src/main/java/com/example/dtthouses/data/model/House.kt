@@ -1,7 +1,5 @@
 package com.example.dtthouses.data.model
 
-import android.graphics.Bitmap
-
 /**
  * House model data class.
  */
@@ -23,13 +21,5 @@ data class House(
      * The default value is 0.
      */
     var locationDistance: Int = 0,
-    private var bitmap: Bitmap
-) {
-    fun setBitmap(bitmap: Bitmap) {
-        this.bitmap = bitmap
-    }
+)
 
-    fun getBitmap(): Bitmap {
-        return this.bitmap
-    }
-}

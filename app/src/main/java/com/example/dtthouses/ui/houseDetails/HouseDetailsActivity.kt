@@ -20,10 +20,13 @@ import android.net.Uri
 import android.view.WindowManager
 
 import androidx.appcompat.widget.Toolbar
+import com.example.dtthouses.data.api.ApiService
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
+import com.example.dtthouses.ui.houseOverview.HouseAdapter
+import com.example.dtthouses.utils.ImageHandler
 
 /**
  * Activity for show all details of a house.
@@ -79,7 +82,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragmentContainer) as? SupportMapFragment
+        val mapFragment =
+            supportFragmentManager.findFragmentById(R.id.mapFragmentContainer) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
     }
@@ -133,7 +137,11 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         tvLocationDistanceDetail.text =
             house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
         tvDescriptionDetail.text = house.description
-        ivHouseDetail.setImageBitmap(house.getBitmap())
+
+        val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
+
+        // Get and set house image
+        ImageHandler.handleImage(imageUrl, this, ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
     }
 
     private fun showGoogleMap(latLng: LatLng) {

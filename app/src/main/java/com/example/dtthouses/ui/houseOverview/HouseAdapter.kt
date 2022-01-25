@@ -12,8 +12,11 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
+import com.example.dtthouses.data.api.ApiService.Companion.DTT_BASE_URL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
+import com.example.dtthouses.utils.ImageHandler
 import com.google.gson.Gson
+
 
 /**
  * Adapter for handling the list of houses.
@@ -45,6 +48,11 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
          * Used for converting meters to kilometers.
          */
         const val DISTANCE_TO_KM = 1000
+
+        /**
+         * Default house image. Can be used when house image is not found during network call.
+         */
+        const val DEFAULT_IMAGE = R.drawable.house_placeholder
     }
 
     /**
@@ -57,7 +65,7 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
         private val tvNrOfBaths: TextView = view.findViewById(R.id.tvNrOfBathrooms)
         private val tvNrOfLayers: TextView = view.findViewById(R.id.tvNrOfSize)
         private val tvLocationDistance: TextView = view.findViewById(R.id.tvLocationDistance)
-        private val ivLocation : ImageView = view.findViewById(R.id.ivLocation)
+        private val ivLocation: ImageView = view.findViewById(R.id.ivLocation)
         private val ivHouse: ImageView = view.findViewById(R.id.ivHouse)
 
         init {
@@ -84,12 +92,17 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             val zip = house.zip.replace("\\s".toRegex(), "")
 
             tvPrice.text =
-                context.getString(R.string.dolor_sign).plus(context.getString(R.string.price_format).format(house.price.toInt()))
+                context.getString(R.string.dolor_sign)
+                    .plus(context.getString(R.string.price_format).format(house.price.toInt()))
             tvAddress.text = zip.plus(" ").plus(house.city)
             tvNrOfBeds.text = house.bedrooms.toString()
             tvNrOfBaths.text = house.bathrooms.toString()
             tvNrOfLayers.text = house.size.toString()
-            ivHouse.setImageBitmap(house.getBitmap())
+
+            val imageUrl = DTT_BASE_URL.plus(house.image)
+
+            // Get and set house image
+            ImageHandler.handleImage(imageUrl, context, ivHouse, DEFAULT_IMAGE)
 
             // Set location views visibility to GONE if location permission is denied
             setLocationViews(house)

@@ -24,16 +24,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
 import com.example.dtthouses.base.ViewModelFactory
-import com.example.dtthouses.data.api.ApiServiceImpl
 import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.utils.Status
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import java.util.concurrent.TimeUnit
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
+import com.example.dtthouses.data.api.ApiService
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
@@ -96,7 +97,7 @@ class HouseFragment : Fragment() {
         setupUI(view)
 
         // Setup view model
-        val viewModelFactory = ViewModelFactory(ServiceRepository(ApiServiceImpl()))
+        val viewModelFactory = ViewModelFactory(ServiceRepository(ApiService.getInstance()))
         houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModel::class.java]
 
         // Initialize fused location provider
@@ -156,6 +157,11 @@ class HouseFragment : Fragment() {
                 rvHouses.visibility = View.VISIBLE
                 viewSearchNotFound.visibility = View.GONE
             }
+        })
+
+        // Show toast message when there is a network error
+        houseViewModel.getErrorMessage().observe(this as LifecycleOwner, {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })
     }
 

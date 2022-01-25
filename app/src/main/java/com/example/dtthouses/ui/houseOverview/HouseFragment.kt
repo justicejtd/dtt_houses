@@ -113,12 +113,6 @@ class HouseFragment : Fragment() {
         return view
     }
 
-    override fun onStop() {
-        super.onStop()
-        // Stop location callback
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-    }
-
     private fun setObservers() {
         houseViewModel.getHouses().observe(this as LifecycleOwner, {
             when (it.status) {

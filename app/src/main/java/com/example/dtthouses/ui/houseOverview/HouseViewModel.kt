@@ -16,9 +16,10 @@ import kotlin.collections.ArrayList
 class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
     private val errorMessage = MutableLiveData<String>()
     private val housesLiveData = MutableLiveData<Resource<ArrayList<House>>>()
-    private lateinit var houses: ArrayList<House>
+    private var houses: ArrayList<House> = ArrayList()
     private val isSearchNotFound = MutableLiveData(false)
-    private var job: Job? = null
+    private var getHousesJob: Job? = null
+    private var filterHousesJob: Job? = null
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("Exception handled: ${throwable.localizedMessage}")
@@ -36,8 +37,9 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
     init {
         housesLiveData.postValue(Resource.loading(null))
-        job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
+        this.getHousesJob = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             val response = repository.getHouses()
+
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     val body = response.body()
@@ -62,7 +64,10 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        job?.cancel()
+
+        // Cancel all coroutines
+        getHousesJob?.cancel()
+        filterHousesJob?.cancel()
     }
 
     private fun onError(message: String) {
@@ -81,18 +86,24 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
      * Filters list of houses based on city and zip code.
      */
     fun filterCourseListBySearch(input: String?) {
-        val filteredHouses = houses.filter { house ->
-            // Make a search pattern with combination of city and/or zip code
-            var isFound = isFoundQueryFound(input.toString(), house.city, house.zip)
-            if (!isFound) {
-                // Make a search pattern with combination of zip code and/or city
-                isFound = isFoundQueryFound(input.toString(), house.zip, house.city)
+        filterHousesJob = CoroutineScope(Dispatchers.Default).launch {
+            val filteredHouses = houses.filter { house ->
+                // Make a search pattern with combination of city and/or zip code
+                var isFound = isFoundQueryFound(input.toString(), house.city, house.zip)
+
+                if (!isFound) {
+                    // Make a search pattern with combination of zip code and/or city
+                    isFound = isFoundQueryFound(input.toString(), house.zip, house.city)
+                }
+                isFound
             }
-            isFound
+
+            withContext(Dispatchers.Main) {
+                // If search is not found then show search not found image
+                isSearchNotFound.value = filteredHouses.isEmpty()
+                housesLiveData.postValue(Resource.success(ArrayList(filteredHouses)))
+            }
         }
-        // If search is not found then show search not found image
-        isSearchNotFound.value = filteredHouses.isEmpty()
-        housesLiveData.postValue(Resource.success(ArrayList(filteredHouses)))
     }
 
     private fun isFoundQueryFound(input: String, value1: String, value2: String): Boolean {

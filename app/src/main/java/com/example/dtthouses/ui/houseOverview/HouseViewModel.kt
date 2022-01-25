@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.data.model.House
+import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.ERROR_CONNECT_TO_SERVER_MSG
+import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.EXCEPTION_ERROR_PREFIX
 import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.NO_HOUSES_FOUND_ERROR
 import com.example.dtthouses.utils.Resource
 import kotlinx.coroutines.*
+import java.lang.Exception
 import kotlin.collections.ArrayList
 
 /**
@@ -22,7 +25,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
     private var filterHousesJob: Job? = null
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("Exception handled: ${throwable.localizedMessage}")
+        onError("$EXCEPTION_ERROR_PREFIX ${throwable.localizedMessage}")
     }
 
     /**
@@ -33,31 +36,50 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
          * Error message when no houses are found during network call.
          */
         const val NO_HOUSES_FOUND_ERROR = "No houses found!"
+
+        /**
+         * Error message when there is not connection to internet or something went wrong
+         * when trying to reach the server.
+         */
+        const val ERROR_CONNECT_TO_SERVER_MSG = "Error: Could not communicate with server"
+
+        /**
+         * Exception prefix when there is an error during network calls
+         */
+        const val EXCEPTION_ERROR_PREFIX = "Error: "
     }
 
     init {
-        housesLiveData.postValue(Resource.loading(null))
-        this.getHousesJob = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-            val response = repository.getHouses()
+        this.getHousesJob = CoroutineScope(Dispatchers.Main).launch {
+            housesLiveData.postValue(Resource.loading(null))
+            try {
+                withContext(Dispatchers.IO + exceptionHandler) {
+                    val response = repository.getHouses()
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            val body = response.body()
 
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    val body = response.body()
+                            if (body != null) {
+                                houses = body
+                                // Sort houses by price (cheapest to expensive)
+                                houses.sortBy { house -> house.price }
+                            }
 
-                    if (body != null) {
-                        houses = body
-                        // Sort houses by price (cheapest to expensive)
-                        houses.sortBy { house -> house.price }
+                            // Notify view when houses are fetched successfully
+                            housesLiveData.postValue(Resource.success(houses))
+                        } else {
+                            // If something goes wrong notify view with an error message
+                            housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
+
+                            onError("$EXCEPTION_ERROR_PREFIX ${response.message()} ")
+                        }
                     }
-
-                    // Notify view when houses are fetched successfully
-                    housesLiveData.postValue(Resource.success(houses))
-                } else {
-                    // If something goes wrong notify view with an error message
-                    housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
-
-                    onError("Error : ${response.message()} ")
                 }
+            } catch (ex: Exception) {
+                // If something goes wrong notify view with an error message
+                housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
+
+                onError("$EXCEPTION_ERROR_PREFIX $ERROR_CONNECT_TO_SERVER_MSG ")
             }
         }
     }

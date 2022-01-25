@@ -17,12 +17,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.view.View
 import android.view.WindowManager
 
 import androidx.appcompat.widget.Toolbar
 import com.example.dtthouses.data.api.ApiService
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
+import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.LOCATION_DISTANCE_ZERO
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseAdapter
@@ -65,6 +67,12 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
          * Determine how long should the zoom animation take.
          */
         const val MAPS_ZOOM_DURATION = 2000
+
+        /**
+         * Return location value equals to zero.
+         * Can be used to check if location distance between current user and other house is zero.
+         */
+        const val LOCATION_DISTANCE_ZERO = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -138,10 +146,26 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
         tvDescriptionDetail.text = house.description
 
+        // Handle location views
+        setLocationViews(house)
+
         val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
 
         // Get and set house image
         ImageHandler.handleImage(imageUrl, this, ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
+    }
+
+    private fun setLocationViews(house: House) {
+        val ivLocation = findViewById<ImageView>(R.id.ivLocation)
+
+        if (house.locationDistance == LOCATION_DISTANCE_ZERO) {
+            tvLocationDistanceDetail.visibility = View.GONE
+            ivLocation.visibility = View.GONE
+        } else {
+            tvLocationDistanceDetail.text =
+                house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
+        }
+
     }
 
     private fun showGoogleMap(latLng: LatLng) {

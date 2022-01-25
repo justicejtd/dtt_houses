@@ -13,11 +13,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import com.example.dtthouses.base.HouseActivity.HouseConstants.DTT_LINK
+import com.example.dtthouses.base.HouseActivity.HouseConstants.TOAST_PERMISSION_GRANTED
 
 
-class MainActivity : AppCompatActivity(), AboutFragmentCallback {
+class HouseActivity : AppCompatActivity(), AboutFragmentCallback {
     private val requestCode = 100
     private lateinit var hostFragment: NavHostFragment
+
+    object HouseConstants {
+        const val TOAST_PERMISSION_GRANTED = "Permission Granted"
+        const val DTT_LINK = "https://www.d-tt.nl/"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +55,7 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     // Notify user that permission has been granted
-                    Toast.makeText(this, "Permission Granted", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, TOAST_PERMISSION_GRANTED, Toast.LENGTH_LONG).show()
 
                     // If permission is granted started getting user location
                     houseFragment.getCurrentLocation()
@@ -63,7 +70,7 @@ class MainActivity : AppCompatActivity(), AboutFragmentCallback {
     }
 
     override fun showBrowser() {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.d-tt.nl/"))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(DTT_LINK))
         startActivity(intent)
     }
 }

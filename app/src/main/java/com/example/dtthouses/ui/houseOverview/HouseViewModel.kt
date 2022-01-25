@@ -4,16 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dtthouses.data.api.MainRepository
+import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.data.model.House
+import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.NO_HOUSES_FOUND_ERROR
 import com.example.dtthouses.utils.Resource
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
-class HouseViewModel(private val repository: MainRepository) : ViewModel() {
+class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
     private val housesLiveData = MutableLiveData<Resource<ArrayList<House>>>()
     private lateinit var houses: ArrayList<House>
     private val isSearchNotFound = MutableLiveData(false)
+
+    object HouseViewModelConstants {
+        const val NO_HOUSES_FOUND_ERROR = "No houses found!"
+    }
 
     init {
         // Get houses from repository
@@ -22,7 +27,7 @@ class HouseViewModel(private val repository: MainRepository) : ViewModel() {
             houses = repository.getHouses()
             if (houses.size == 0) {
                 // If something goes wrong notify view with an error message
-                housesLiveData.postValue(Resource.error("No houses found!", null))
+                housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
             } else {
                 // Sort houses by price (cheapest to expensive)
                 houses.sortBy { house -> house.price }

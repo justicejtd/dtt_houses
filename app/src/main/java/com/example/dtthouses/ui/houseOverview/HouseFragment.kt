@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
 import com.example.dtthouses.base.ViewModelFactory
 import com.example.dtthouses.data.api.ApiServiceImpl
-import com.example.dtthouses.data.api.MainRepository
+import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.utils.Status
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
@@ -34,6 +34,9 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
+import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
+import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
+import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
 import com.example.dtthouses.utils.makeClearableEditText
 
 class HouseFragment : Fragment() {
@@ -58,6 +61,12 @@ class HouseFragment : Fragment() {
     // This will store current location info
     private var currentLocation: Location? = null
 
+    object HouseFragmentConstants {
+        const val INTERVAL_DURATION: Long = 20
+        const val FASTEST_INTERVAL_DURATION: Long = 60
+        const val MAX_WAIT_TIME: Long = 2
+    }
+
     @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +79,7 @@ class HouseFragment : Fragment() {
         setupUI(view)
 
         // Setup view model
-        val viewModelFactory = ViewModelFactory(MainRepository(ApiServiceImpl()))
+        val viewModelFactory = ViewModelFactory(ServiceRepository(ApiServiceImpl()))
         houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModel::class.java]
 
         // Initialize fused location provider
@@ -273,17 +282,17 @@ class HouseFragment : Fragment() {
         // Create location request
         locationRequest = LocationRequest.create().apply {
             // Sets the desired interval for active location updates.
-            interval = TimeUnit.SECONDS.toMillis(20)
+            interval = TimeUnit.SECONDS.toMillis(INTERVAL_DURATION)
 
             // Sets the fastest rate for active location updates.
             // This interval is exact, and your application will never
             // receive updates more frequently than this value
-            fastestInterval = TimeUnit.SECONDS.toMillis(60)
+            fastestInterval = TimeUnit.SECONDS.toMillis(FASTEST_INTERVAL_DURATION)
 
             // Sets the maximum time when batched location
             // updates are delivered. Updates may be
             // delivered sooner than this interval
-            maxWaitTime = TimeUnit.MINUTES.toMillis(2)
+            maxWaitTime = TimeUnit.MINUTES.toMillis(MAX_WAIT_TIME)
 
             priority = PRIORITY_HIGH_ACCURACY
         }

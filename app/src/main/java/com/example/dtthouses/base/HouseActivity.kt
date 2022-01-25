@@ -13,15 +13,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import com.example.dtthouses.base.HouseActivity.HouseConstants.DTT_LINK
-import com.example.dtthouses.base.HouseActivity.HouseConstants.TOAST_PERMISSION_GRANTED
-
+import com.example.dtthouses.base.HouseActivity.HouseActivityConstants.DTT_LINK
+import com.example.dtthouses.base.HouseActivity.HouseActivityConstants.TOAST_PERMISSION_GRANTED
 
 class HouseActivity : AppCompatActivity(), AboutFragmentCallback {
     private val requestCode = 100
     private lateinit var hostFragment: NavHostFragment
 
-    object HouseConstants {
+    object HouseActivityConstants {
         const val TOAST_PERMISSION_GRANTED = "Permission Granted"
         const val DTT_LINK = "https://www.d-tt.nl/"
     }

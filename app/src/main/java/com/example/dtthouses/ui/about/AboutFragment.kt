@@ -14,15 +14,17 @@ import android.graphics.Color
 import android.text.style.ClickableSpan
 import android.text.SpannableString
 import com.example.dtthouses.R
+import com.example.dtthouses.ui.about.AboutFragment.AboutConstants.DTT_SPANNABLE_STRING
+import com.example.dtthouses.ui.about.AboutFragment.AboutConstants.FRAGMENT_RUNTIME_EX
 import java.lang.RuntimeException
 
 
 class AboutFragment : Fragment() {
-
     private lateinit var aboutFragmentCallback: AboutFragmentCallback
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    object AboutConstants {
+        const val FRAGMENT_RUNTIME_EX = " must implement AboutFragmentCallback"
+        const val DTT_SPANNABLE_STRING = "d-tt.nl"
     }
 
     override fun onAttach(context: Context) {
@@ -30,7 +32,7 @@ class AboutFragment : Fragment() {
         if (context is AboutFragmentCallback) {
             aboutFragmentCallback = context
         } else {
-            throw RuntimeException(context.toString().plus(" must implement AboutFragmentCallback"))
+            throw RuntimeException(context.toString().plus(FRAGMENT_RUNTIME_EX))
         }
     }
 
@@ -48,7 +50,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun setDTTLink(view: View) {
-        val ss = SpannableString("d-tt.nl")
+        val ss = SpannableString(DTT_SPANNABLE_STRING)
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
                 aboutFragmentCallback.showBrowser()

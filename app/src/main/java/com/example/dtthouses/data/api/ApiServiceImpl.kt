@@ -2,6 +2,7 @@ package com.example.dtthouses.data.api
 
 import android.graphics.BitmapFactory
 import com.example.dtthouses.data.api.ApiServiceImpl.ApiServiceConstants.API_KEY
+import com.example.dtthouses.data.api.ApiServiceImpl.ApiServiceConstants.BASE_URL
 import com.example.dtthouses.data.api.ApiServiceImpl.ApiServiceConstants.HOUSE_URL
 import com.example.dtthouses.data.model.House
 import com.google.gson.Gson
@@ -11,15 +12,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ApiServiceImpl : ApiService {
-    private val baseUrl = "https://intern.docker-dev.d-tt.nl"
 
     object ApiServiceConstants {
+        const val BASE_URL = "https://intern.docker-dev.d-tt.nl"
         const val HOUSE_URL = "/api/house"
-        const val API_KEY = "bww4ezuzfePCYFxJEWyszbUXc7dxRx"
+        const val API_KEY = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
     }
     override fun getHouses(): ArrayList<House> {
         val houses = ArrayList<House>()
-        val endpoint = URL(baseUrl.plus(HOUSE_URL))
+        val endpoint = URL(BASE_URL.plus(HOUSE_URL))
 
         try {
             val httpsURLConnection = endpoint.openConnection()
@@ -51,7 +52,7 @@ class ApiServiceImpl : ApiService {
         try {
             // Set bitmap for each house
             for (i in 0 until houses.size) {
-                val imageInputStream = URL(baseUrl.plus(houses[i].image)).openStream()
+                val imageInputStream = URL(BASE_URL.plus(houses[i].image)).openStream()
                 val bitmap = BitmapFactory.decodeStream(imageInputStream)
 
                 if (bitmap != null) {

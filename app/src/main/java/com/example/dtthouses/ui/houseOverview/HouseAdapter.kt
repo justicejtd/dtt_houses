@@ -22,6 +22,9 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
 
     companion object DetailsIntents {
         const val DETAILS_INTENT_KEY = "com.example.dtthouses.ui.houseOverview.detailKey"
+        const val USER_LOCATION_PROVIDER = "UserLocation"
+        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
+        const val DISTANCE_TO_KM = 1000
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -99,17 +102,17 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
         // Update all houses their location distance
         houses.forEach {
             // Set user location
-            val startPoint = Location("UserLocation")
+            val startPoint = Location(USER_LOCATION_PROVIDER)
             startPoint.latitude = it.latitude
             startPoint.longitude = it.longitude
 
             // Set house location
-            val endPoint = Location("HouseLocation")
+            val endPoint = Location(HOUSE_LOCATION_PROVIDER)
             endPoint.latitude = latitude
             endPoint.longitude = longitude
 
             // Calculate distance in km
-            val distance = startPoint.distanceTo(endPoint) / 1000
+            val distance = startPoint.distanceTo(endPoint) / DISTANCE_TO_KM
 
             // Set new distance
             it.locationDistance = distance.toInt()

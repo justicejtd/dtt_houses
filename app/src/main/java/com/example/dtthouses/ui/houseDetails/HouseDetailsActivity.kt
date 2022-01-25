@@ -16,16 +16,25 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
 import android.graphics.Color
-import android.location.Location
 import android.net.Uri
 import android.view.WindowManager
 
-import android.view.Window
 import androidx.appcompat.widget.Toolbar
+import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
+import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
+import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
+import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
 
 
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var house: House
+
+    object HouseDetailsConstants {
+        const val GOOGLE_NAVIGATION_QUERY_PREFIX = "google.navigation:q="
+        const val GOOGLE_PACKAGE_NAME = "com.google.android.apps.maps"
+        const val MAPS_ZOOM_LEVEL = 15f
+        const val MAPS_ZOOM_DURATION = 2000
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,19 +100,19 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showGoogleMap(latLng: LatLng) {
         val gmmIntentUri: Uri = Uri.parse(
-            "google.navigation:q=".plus(latLng.latitude).plus(",").plus(latLng.longitude)
+            GOOGLE_NAVIGATION_QUERY_PREFIX.plus(latLng.latitude).plus(",").plus(latLng.longitude)
         )
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.setPackage("com.google.android.apps.maps")
+        mapIntent.setPackage(GOOGLE_PACKAGE_NAME)
         startActivity(mapIntent)
     }
 
     private fun moveToCurrentLocation(currentLocation: LatLng, googleMap: GoogleMap) {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 15f))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, MAPS_ZOOM_LEVEL))
         // Zoom in, animating the camera.
         googleMap.animateCamera(CameraUpdateFactory.zoomIn())
-        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15f), 2000, null)
+        // Zoom out to zoom level 15, animating with a duration of 2 seconds.
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(MAPS_ZOOM_LEVEL), MAPS_ZOOM_DURATION, null)
     }
 
     private fun setToolbarAndStatusBar() {

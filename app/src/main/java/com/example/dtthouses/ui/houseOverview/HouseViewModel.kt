@@ -67,6 +67,9 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
                             // Notify view when houses are fetched successfully
                             housesLiveData.postValue(Resource.success(houses))
+
+                            // Bug (for some reason "isSearchNotFound" needs to be false on init)
+                            isSearchNotFound.postValue(false)
                         } else {
                             // If something goes wrong notify view with an error message
                             housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
@@ -122,7 +125,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
             withContext(Dispatchers.Main) {
                 // If search is not found then show search not found image
-                isSearchNotFound.value = filteredHouses.isEmpty()
+                isSearchNotFound.postValue(filteredHouses.isEmpty())
                 housesLiveData.postValue(Resource.success(ArrayList(filteredHouses)))
             }
         }

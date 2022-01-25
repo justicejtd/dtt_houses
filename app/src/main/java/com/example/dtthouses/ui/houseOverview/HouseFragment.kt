@@ -121,15 +121,17 @@ class HouseFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
-                        // Hide/gone progress bar
-                        pbLoading.visibility = View.GONE
+                        if (houses.isNotEmpty()) {
+                            // Hide/gone progress bar
+                            pbLoading.visibility = View.GONE
 
-                        // Get houses
-                        houseAdapter.addHouses(houses)
+                            // Get houses
+                            houseAdapter.addHouses(houses)
 
-                        // If permission is granted
-                        // check for gps permission and request location updates
-                        checkForLocationPermission()
+                            // If permission is granted
+                            // check for gps permission and request location updates
+                            checkForLocationPermission()
+                        }
                     }
                 }
                 Status.LOADING -> {

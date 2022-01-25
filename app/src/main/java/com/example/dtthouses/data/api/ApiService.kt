@@ -37,20 +37,19 @@ interface ApiService {
          */
         const val API_KEY = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
 
-        private var retrofitService: ApiService? = null
+        private lateinit var retrofitService: ApiService
 
         /**
          * Returns a new instance of ApiService
          */
         fun getInstance(): ApiService {
-            if (retrofitService == null) {
                 val retrofit = Retrofit.Builder()
                     .baseUrl(DTT_BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                 retrofitService = retrofit.create(ApiService::class.java)
-            }
-            return retrofitService!!
+
+            return retrofitService
         }
 
     }

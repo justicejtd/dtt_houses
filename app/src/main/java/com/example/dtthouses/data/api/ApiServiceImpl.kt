@@ -1,8 +1,8 @@
 package com.example.dtthouses.data.api
 
 import android.graphics.BitmapFactory
-import android.util.Log
-import com.bumptech.glide.Glide
+import com.example.dtthouses.data.api.ApiServiceImpl.ApiServiceConstants.API_KEY
+import com.example.dtthouses.data.api.ApiServiceImpl.ApiServiceConstants.HOUSE_URL
 import com.example.dtthouses.data.model.House
 import com.google.gson.Gson
 import java.io.IOException
@@ -13,9 +13,13 @@ import kotlin.collections.ArrayList
 class ApiServiceImpl : ApiService {
     private val baseUrl = "https://intern.docker-dev.d-tt.nl"
 
+    object ApiServiceConstants {
+        const val HOUSE_URL = "/api/house"
+        const val API_KEY = "bww4ezuzfePCYFxJEWyszbUXc7dxRx"
+    }
     override fun getHouses(): ArrayList<House> {
         val houses = ArrayList<House>()
-        val endpoint = URL(baseUrl.plus("/api/house"))
+        val endpoint = URL(baseUrl.plus(HOUSE_URL))
 
         try {
             val httpsURLConnection = endpoint.openConnection()
@@ -23,7 +27,7 @@ class ApiServiceImpl : ApiService {
             httpsURLConnection.setRequestProperty("Accept", "application/json")
             httpsURLConnection.setRequestProperty(
                 "Access-Key",
-                "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
+                API_KEY
             )
             httpsURLConnection.connect()
 

@@ -85,6 +85,8 @@
     <dimen name="margin_end_mapFragmentContainer">24dp</dimen>
     <dimen name="margin_bottom_mapFragmentContainer">24dp</dimen>
 
+    <dimen name="margin_top_tvSearchNotFound">32dp</dimen>
+
 <!-- Width and height -->
     <!-- EditTexts -->
     <dimen name="height_etSearchHome">48dp</dimen>

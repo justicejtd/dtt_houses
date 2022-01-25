@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="@dimen/margin_bottom_ivSearchNotFound"
             android:contentDescription="@string/search_not_found_image"
             android:src="@drawable/search_state_empty" />
     </LinearLayout>
@@ -30,7 +31,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginTop="@dimen/margin_top_tvSearchNotFound"
             android:maxLines="2"
             android:text="@string/no_search_found"
             android:textAlignment="center"

@@ -43,11 +43,11 @@ interface ApiService {
          * Returns a new instance of ApiService
          */
         fun getInstance(): ApiService {
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(DTT_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
-                retrofitService = retrofit.create(ApiService::class.java)
+            val retrofit = Retrofit.Builder()
+                .baseUrl(DTT_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+            retrofitService = retrofit.create(ApiService::class.java)
 
             return retrofitService
         }

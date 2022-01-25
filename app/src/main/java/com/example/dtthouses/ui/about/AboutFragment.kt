@@ -76,7 +76,12 @@ class AboutFragment : Fragment() {
                 ds.isUnderlineText = false
             }
         }
-        ss.setSpan(clickableSpan, SPAN_DTT_LINK_START, SPAN_DTT_LINK_END, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(
+            clickableSpan,
+            SPAN_DTT_LINK_START,
+            SPAN_DTT_LINK_END,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         val textView = view.findViewById<TextView>(R.id.tvLink)
         textView.text = ss

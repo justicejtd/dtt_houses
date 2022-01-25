@@ -61,7 +61,11 @@ class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     // Notify user that permission has been granted
-                    Toast.makeText(this, getString(R.string.permission_granted_msg), Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.permission_granted_msg),
+                        Toast.LENGTH_LONG
+                    ).show()
 
                     // If permission is granted started getting user location
                     houseFragment.getCurrentLocation()

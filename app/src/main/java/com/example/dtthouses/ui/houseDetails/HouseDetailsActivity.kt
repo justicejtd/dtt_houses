@@ -170,7 +170,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showGoogleMap(latLng: LatLng) {
         val gmmIntentUri: Uri = Uri.parse(
-            GOOGLE_NAVIGATION_QUERY_PREFIX.plus(latLng.latitude).plus(",").plus(latLng.longitude)
+            GOOGLE_NAVIGATION_QUERY_PREFIX.plus(latLng.latitude).plus(getString(R.string.comma))
+                .plus(latLng.longitude)
         )
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage(GOOGLE_PACKAGE_NAME)

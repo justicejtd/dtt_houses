@@ -53,6 +53,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
         this.getHousesJob = CoroutineScope(Dispatchers.Main).launch {
             housesLiveData.postValue(Resource.loading(null))
             try {
+                // Uses extra threads for network call
                 withContext(Dispatchers.IO + exceptionHandler) {
                     val response = repository.getHouses()
                     withContext(Dispatchers.Main) {

@@ -107,13 +107,16 @@ class HouseFragment : Fragment() {
         // Set location request
         setLocationRequest()
 
-        // Set location call back
-        setLocationCallBack()
-
         // Setup observers
         setObservers()
 
         return view
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Stop location callback
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
     private fun setObservers() {
@@ -131,6 +134,9 @@ class HouseFragment : Fragment() {
                             // If permission is granted
                             // check for gps permission and request location updates
                             checkForLocationPermission()
+
+                            // Set location call back
+                            setLocationCallBack()
                         }
                     }
                 }

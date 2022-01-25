@@ -4,6 +4,9 @@ import android.content.Context
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 
+/**
+ * Handles image from network using Glide.
+ */
 class ImageHandler {
     companion object {
         /**

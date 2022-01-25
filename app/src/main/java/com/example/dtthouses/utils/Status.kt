@@ -7,7 +7,18 @@ package com.example.dtthouses.utils
  * LOADING can be used when network call is in the loading state.
  */
 enum class Status {
+    /**
+     * SUCCESS can be used when network call has been executed successfully.
+     */
     SUCCESS,
+
+    /**
+     * ERROR can be used when network call has been executed unsuccessfully.
+     */
     ERROR,
+
+    /**
+     * LOADING can be used when network call is in the loading state.
+     */
     LOADING
 }

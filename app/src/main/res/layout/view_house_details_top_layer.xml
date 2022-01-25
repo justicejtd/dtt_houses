@@ -6,12 +6,12 @@
     android:background="@drawable/shape_house_details_overlay">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayoutHouseDetailsOuter"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="@dimen/margin_start_linearLayoutHouseDetailsOuter"
+        android:layout_marginTop="@dimen/margin_top_linearLayoutHouseDetailsOuter"
+        android:layout_marginEnd="@dimen/margin_end_linearLayoutHouseDetailsOuter"
         android:gravity="center_vertical|end"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,9 +27,10 @@
             android:theme="@style/GothamBookTitle01" />
 
         <LinearLayout
+            android:id="@+id/linearLayoutHouseDetailsInner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="@dimen/margin_start_linearLayoutHouseDetailsInner"
             android:gravity="center_horizontal|end"
             android:orientation="horizontal">
 
@@ -45,23 +46,23 @@
         android:id="@+id/tvTitleDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="@dimen/margin_start_tvTitleDescription"
+        android:layout_marginTop="@dimen/margin_top_tvTitleDescription"
+        android:layout_marginEnd="@dimen/margin_end_tvTitleDescription"
         android:text="@string/description"
         android:theme="@style/GothamBookTitle01"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutHouseDetailsOuter" />
 
     <TextView
         android:id="@+id/tvDescriptionDetail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="@dimen/margin_start_tvDescriptionDetail"
+        android:layout_marginTop="@dimen/margin_top_tvDescriptionDetail"
+        android:layout_marginEnd="@dimen/margin_end_tvDescriptionDetail"
         android:text="@string/mockup_text"
         android:theme="@style/GothamBookBody"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,9 +73,9 @@
         android:id="@+id/tvTitleLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="@dimen/margin_start_tvTitleLocation"
+        android:layout_marginTop="@dimen/margin_top_tvTitleLocation"
+        android:layout_marginEnd="@dimen/margin_end_tvTitleLocation"
         android:text="@string/location"
         android:theme="@style/GothamBookTitle01"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,14 +84,14 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDescriptionDetail" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
+        android:id="@+id/mapFragmentContainer"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="@dimen/width_mapFragmentContainer"
+        android:layout_marginStart="@dimen/margin_start_mapFragmentContainer"
+        android:layout_marginTop="@dimen/margin_top_mapFragmentContainer"
+        android:layout_marginEnd="@dimen/margin_end_mapFragmentContainer"
+        android:layout_marginBottom="@dimen/margin_bottom_mapFragmentContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -9,7 +9,7 @@
         android:id="@+id/ivBed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="@dimen/margin_end_ivBed"
         android:layout_weight="1"
         android:contentDescription="@string/bed_icon"
         app:srcCompat="@drawable/ic_bed" />
@@ -18,7 +18,7 @@
         android:id="@+id/tvNrOfBedrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="@dimen/margin_end_tvNrOfBedrooms"
         android:layout_weight="1"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />
@@ -27,7 +27,7 @@
         android:id="@+id/ivBath"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="@dimen/margin_end_ivBath"
         android:layout_weight="1"
         android:contentDescription="@string/bath_icon"
         app:srcCompat="@drawable/ic_bath" />
@@ -36,7 +36,7 @@
         android:id="@+id/tvNrOfBathrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="@dimen/margin_end_tvNrOfBathrooms"
         android:layout_weight="1"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />
@@ -45,7 +45,7 @@
         android:id="@+id/ivLayers"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="@dimen/margin_end_ivLayers"
         android:layout_weight="1"
         android:contentDescription="@string/layers_icon"
         app:srcCompat="@drawable/ic_layers" />
@@ -54,7 +54,7 @@
         android:id="@+id/tvNrOfSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="@dimen/margin_end_tvNrOfSize"
         android:layout_weight="1"
         android:maxLines="1"
         android:text="@string/_nr_placeholder"
@@ -64,7 +64,7 @@
         android:id="@+id/ivLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
+        android:layout_marginEnd="@dimen/margin_end_ivLocation"
         android:layout_weight="1"
         android:contentDescription="@string/location_icon"
         app:srcCompat="@drawable/ic_location" />

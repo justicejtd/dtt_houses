@@ -1,7 +1,102 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="house_horizontal_margin">24dp</dimen>
-    <dimen name="house_vertical_margin">24dp</dimen>
+<!-- Margins -->
+    <!-- Toolbar -->
+    <dimen name="margin_top_toolbarHouseDetails">24dp</dimen>
+
+    <!-- TextViews -->
+    <dimen name="margin_start_tvTitleAbout">24dp</dimen>
+    <dimen name="margin_Top_tvTitleAbout">32dp</dimen>
+
+    <dimen name="margin_start_tvAboutDescription">24dp</dimen>
+    <dimen name="margin_top_tvAboutDescription">24dp</dimen>
+    <dimen name="margin_end_tvAboutDescription">24dp</dimen>
+
+    <dimen name="margin_start_tvTitleDesignAndDevelopment">24dp</dimen>
+    <dimen name="margin_top_tvTitleDesignAndDevelopment">24dp</dimen>
+
+    <dimen name="margin_start_ivDttBanner">24dp</dimen>
+    <dimen name="margin_top_ivDttBanner">24dp</dimen>
+
+    <dimen name="margin_start_tvAuthor">32dp</dimen>
+    <dimen name="margin_top_tvAuthor">8dp</dimen>
+
+    <dimen name="margin_top_tvLink">4dp</dimen>
+
+    <dimen name="margin_start_tvOverviewTitle">24dp</dimen>
+    <dimen name="margin_top_tvOverviewTitle">32dp</dimen>
+
+    <dimen name="margin_top_rvHouses">32dp</dimen>
+
+    <dimen name="margin_start_etSearchHome">24dp</dimen>
+    <dimen name="margin_top_etSearchHome">24dp</dimen>
+    <dimen name="margin_end_etSearchHome">24dp</dimen>
+
+    <dimen name="margin_top_pbLoading">8dp</dimen>
+
+    <dimen name="margin_top_viewSearchNotFound">32dp</dimen>
+
+    <dimen name="margin_start_materialCardViewHouseItem">24dp</dimen>
+    <dimen name="margin_end_materialCardViewHouseItem">24dp</dimen>
+    <dimen name="margin_bottom_materialCardViewHouseItem">24dp</dimen>
+
+    <dimen name="margin_start_cvHouseImage">16dp</dimen>
+    <dimen name="margin_top_cvHouseImage">16dp</dimen>
+    <dimen name="margin_bottom_cvHouseImage">16dp</dimen>
+
+    <dimen name="margin_start_tvPrice">16dp</dimen>
+
+    <dimen name="margin_top_tvAddress">4dp</dimen>
+
+    <dimen name="margin_end_view_house_details">16dp</dimen>
+
+    <dimen name="margin_end_ivBed">2dp</dimen>
+
+    <dimen name="margin_end_tvNrOfBedrooms">4dp</dimen>
+
+    <dimen name="margin_end_ivBath">2dp</dimen>
+
+    <dimen name="margin_end_tvNrOfBathrooms">4dp</dimen>
+
+    <dimen name="margin_end_ivLayers">2dp</dimen>
+
+    <dimen name="margin_end_tvNrOfSize">4dp</dimen>
+
+    <dimen name="margin_end_ivLocation">2dp</dimen>
+
+    <dimen name="margin_start_linearLayoutHouseDetailsOuter">24dp</dimen>
+    <dimen name="margin_top_linearLayoutHouseDetailsOuter">24dp</dimen>
+    <dimen name="margin_end_linearLayoutHouseDetailsOuter">24dp</dimen>
+    <dimen name="margin_start_linearLayoutHouseDetailsInner">8dp</dimen>
+
+    <dimen name="margin_start_tvTitleDescription">24dp</dimen>
+    <dimen name="margin_top_tvTitleDescription">24dp</dimen>
+    <dimen name="margin_end_tvTitleDescription">24dp</dimen>
+
+    <dimen name="margin_start_tvDescriptionDetail">24dp</dimen>
+    <dimen name="margin_top_tvDescriptionDetail">24dp</dimen>
+    <dimen name="margin_end_tvDescriptionDetail">24dp</dimen>
+
+    <dimen name="margin_start_tvTitleLocation">24dp</dimen>
+    <dimen name="margin_top_tvTitleLocation">24dp</dimen>
+    <dimen name="margin_end_tvTitleLocation">24dp</dimen>
+
+    <dimen name="margin_start_mapFragmentContainer">24dp</dimen>
+    <dimen name="margin_top_mapFragmentContainer">24dp</dimen>
+    <dimen name="margin_end_mapFragmentContainer">24dp</dimen>
+    <dimen name="margin_bottom_mapFragmentContainer">24dp</dimen>
+
+<!-- Width and height -->
+    <!-- EditTexts -->
+    <dimen name="height_etSearchHome">48dp</dimen>
+
+    <!-- ProgressBars -->
+    <dimen name="minWidth_pbLoading">40dp</dimen>
+    <dimen name="minHeight_pbLoading">40dp</dimen>
+
+    <!-- ImageViews -->
+    <dimen name="width_cardViewHouseImage">100dp</dimen>
+    <dimen name="height_cardViewHouseImage">100dp</dimen>
+
+    <!-- Map -->
+    <dimen name="width_mapFragmentContainer">300dp</dimen>
 </resources>

@@ -79,7 +79,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapFragmentContainer) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
     }
@@ -108,13 +108,13 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setupViews() {
-        tvPriceDetail = findViewById<TextView>(R.id.tvPriceDetail)
-        tvNrOfBedroomsDetail = findViewById<TextView>(R.id.tvNrOfBedrooms)
-        tvNrOfBathroomsDetail = findViewById<TextView>(R.id.tvNrOfBathrooms)
-        tvNrOfSizeDetail = findViewById<TextView>(R.id.tvNrOfSize)
-        tvLocationDistanceDetail = findViewById<TextView>(R.id.tvLocationDistance)
-        tvDescriptionDetail = findViewById<TextView>(R.id.tvDescriptionDetail)
-        ivHouseDetail = findViewById<ImageView>(R.id.ivHouseDetail)
+        tvPriceDetail = findViewById(R.id.tvPriceDetail)
+        tvNrOfBedroomsDetail = findViewById(R.id.tvNrOfBedrooms)
+        tvNrOfBathroomsDetail = findViewById(R.id.tvNrOfBathrooms)
+        tvNrOfSizeDetail = findViewById(R.id.tvNrOfSize)
+        tvLocationDistanceDetail = findViewById(R.id.tvLocationDistance)
+        tvDescriptionDetail = findViewById(R.id.tvDescriptionDetail)
+        ivHouseDetail = findViewById(R.id.ivHouseDetail)
     }
 
     private fun setHouseDetails() {

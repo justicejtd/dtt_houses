@@ -34,10 +34,10 @@
                 android:id="@+id/toolbarHouseDetails"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="@dimen/margin_top_toolbarHouseDetails"
                 android:elevation="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent="0.15"
+                app:layout_constraintHeight_percent="0.18"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:theme="@style/ToolbarTheme" />

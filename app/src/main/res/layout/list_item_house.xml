@@ -5,9 +5,9 @@
     android:id="@+id/materialCardViewHouseItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/house_horizontal_margin"
-    android:layout_marginEnd="@dimen/house_horizontal_margin"
-    android:layout_marginBottom="@dimen/house_vertical_margin"
+    android:layout_marginStart="@dimen/margin_start_materialCardViewHouseItem"
+    android:layout_marginEnd="@dimen/margin_end_materialCardViewHouseItem"
+    android:layout_marginBottom="@dimen/margin_bottom_materialCardViewHouseItem"
     app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,12 +16,12 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardviewHouseImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:id="@+id/cvHouseImage"
+            android:layout_width="@dimen/width_cardViewHouseImage"
+            android:layout_height="@dimen/height_cardViewHouseImage"
+            android:layout_marginStart="@dimen/margin_start_cvHouseImage"
+            android:layout_marginTop="@dimen/margin_top_cvHouseImage"
+            android:layout_marginBottom="@dimen/margin_bottom_cvHouseImage"
             app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,9 +29,9 @@
 
             <ImageView
                 android:id="@+id/ivHouse"
-                android:contentDescription="@string/house_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/house_content"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/house_placeholder"
                 tools:layout_editor_absoluteX="16dp"
@@ -42,19 +42,19 @@
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/margin_start_tvPrice"
             android:text="@string/price"
             android:theme="@style/GothamBookTitle01"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/cardviewHouseImage"
-            app:layout_constraintTop_toTopOf="@+id/cardviewHouseImage" />
+            app:layout_constraintStart_toEndOf="@+id/cvHouseImage"
+            app:layout_constraintTop_toTopOf="@+id/cvHouseImage" />
 
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="@dimen/margin_top_tvAddress"
             android:text="@string/address"
             android:theme="@style/GothamBookBody"
             app:layout_constraintStart_toStartOf="@+id/tvPrice"
@@ -64,13 +64,12 @@
             layout="@layout/view_house_details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardviewHouseImage"
+            android:layout_marginEnd="@dimen/margin_end_view_house_details"
+            app:layout_constraintBottom_toBottomOf="@+id/cvHouseImage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tvAddress"
             app:layout_constraintTop_toBottomOf="@+id/tvAddress"
             app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </com.google.android.material.card.MaterialCardView>

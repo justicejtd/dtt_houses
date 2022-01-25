@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.dtthouses.R
 import com.example.dtthouses.data.model.House
-import com.example.dtthouses.ui.houseOverview.HouseAdapter.DetailsIntents.DETAILS_INTENT_KEY
+import com.example.dtthouses.ui.houseOverview.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
 import com.google.android.gms.maps.*
 import com.google.gson.Gson
 
@@ -25,14 +25,42 @@ import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsCo
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
 
-
+/**
+ * Activity for show all details of a house.
+ */
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var house: House
+    private lateinit var tvPriceDetail: TextView
+    private lateinit var tvNrOfBedroomsDetail: TextView
+    private lateinit var tvNrOfBathroomsDetail: TextView
+    private lateinit var tvNrOfSizeDetail: TextView
+    private lateinit var tvLocationDistanceDetail: TextView
+    private lateinit var tvDescriptionDetail: TextView
+    private lateinit var ivHouseDetail: ImageView
 
+    /**
+     * Constants values of HouseDetails.
+     */
     object HouseDetailsConstants {
+        /**
+         * Prefix for google navigation query.
+         * Used for passing attributes to google maps.
+         */
         const val GOOGLE_NAVIGATION_QUERY_PREFIX = "google.navigation:q="
+
+        /**
+         * Google package name for map intent.
+         */
         const val GOOGLE_PACKAGE_NAME = "com.google.android.apps.maps"
+
+        /**
+         * Determines how far should the map be zoomed to the user location.
+         */
         const val MAPS_ZOOM_LEVEL = 15f
+
+        /**
+         * Determine how long should the zoom animation take.
+         */
         const val MAPS_ZOOM_DURATION = 2000
     }
 
@@ -41,33 +69,14 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.activity_house_details)
 
         // Initialize views
-        val tvPriceDetail = findViewById<TextView>(R.id.tvPriceDetail)
-        val tvNrOfBedroomsDetail = findViewById<TextView>(R.id.tvNrOfBedrooms)
-        val tvNrOfBathroomsDetail = findViewById<TextView>(R.id.tvNrOfBathrooms)
-        val tvNrOfSizeDetail = findViewById<TextView>(R.id.tvNrOfSize)
-        val tvLocationDistanceDetail = findViewById<TextView>(R.id.tvLocationDistance)
-        val tvDescriptionDetail = findViewById<TextView>(R.id.tvDescriptionDetail)
-        val ivHouseDetail = findViewById<ImageView>(R.id.ivHouseDetail)
+        setupViews()
+
+        // Initialize house details
+        setHouseDetails()
 
         // Set toolbar and status bar to transparent
         setToolbarAndStatusBar()
 
-        // Get intent
-        val json = intent.getStringExtra(DETAILS_INTENT_KEY)
-
-        // Get house from intent
-        house = Gson().fromJson(json, House::class.java)
-
-        // Set house values to views
-        tvPriceDetail.text =
-            getString(R.string.dolor_sign).plus(getString(R.string.price_format).format(house.price.toInt()))
-        tvNrOfBedroomsDetail.text = house.bedrooms.toString()
-        tvNrOfBathroomsDetail.text = house.bathrooms.toString()
-        tvNrOfSizeDetail.text = house.size.toString()
-        tvLocationDistanceDetail.text =
-            house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
-        tvDescriptionDetail.text = house.description
-        ivHouseDetail.setImageBitmap(house.getBitmap())
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
@@ -98,6 +107,35 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun setupViews() {
+        tvPriceDetail = findViewById<TextView>(R.id.tvPriceDetail)
+        tvNrOfBedroomsDetail = findViewById<TextView>(R.id.tvNrOfBedrooms)
+        tvNrOfBathroomsDetail = findViewById<TextView>(R.id.tvNrOfBathrooms)
+        tvNrOfSizeDetail = findViewById<TextView>(R.id.tvNrOfSize)
+        tvLocationDistanceDetail = findViewById<TextView>(R.id.tvLocationDistance)
+        tvDescriptionDetail = findViewById<TextView>(R.id.tvDescriptionDetail)
+        ivHouseDetail = findViewById<ImageView>(R.id.ivHouseDetail)
+    }
+
+    private fun setHouseDetails() {
+        // Get intent
+        val json = intent.getStringExtra(DETAILS_INTENT_KEY)
+
+        // Get house from intent
+        house = Gson().fromJson(json, House::class.java)
+
+        // Set house values to views
+        tvPriceDetail.text =
+            getString(R.string.dolor_sign).plus(getString(R.string.price_format).format(house.price.toInt()))
+        tvNrOfBedroomsDetail.text = house.bedrooms.toString()
+        tvNrOfBathroomsDetail.text = house.bathrooms.toString()
+        tvNrOfSizeDetail.text = house.size.toString()
+        tvLocationDistanceDetail.text =
+            house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
+        tvDescriptionDetail.text = house.description
+        ivHouseDetail.setImageBitmap(house.getBitmap())
+    }
+
     private fun showGoogleMap(latLng: LatLng) {
         val gmmIntentUri: Uri = Uri.parse(
             GOOGLE_NAVIGATION_QUERY_PREFIX.plus(latLng.latitude).plus(",").plus(latLng.longitude)
@@ -112,7 +150,11 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Zoom in, animating the camera.
         googleMap.animateCamera(CameraUpdateFactory.zoomIn())
         // Zoom out to zoom level 15, animating with a duration of 2 seconds.
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(MAPS_ZOOM_LEVEL), MAPS_ZOOM_DURATION, null)
+        googleMap.animateCamera(
+            CameraUpdateFactory.zoomTo(MAPS_ZOOM_LEVEL),
+            MAPS_ZOOM_DURATION,
+            null
+        )
     }
 
     private fun setToolbarAndStatusBar() {

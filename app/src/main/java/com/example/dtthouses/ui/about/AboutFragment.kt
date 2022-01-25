@@ -14,17 +14,29 @@ import android.graphics.Color
 import android.text.style.ClickableSpan
 import android.text.SpannableString
 import com.example.dtthouses.R
-import com.example.dtthouses.ui.about.AboutFragment.AboutConstants.DTT_SPANNABLE_STRING
-import com.example.dtthouses.ui.about.AboutFragment.AboutConstants.FRAGMENT_RUNTIME_EX
+import com.example.dtthouses.ui.about.AboutFragment.AboutFragmentConstants.SPAN_DTT_LINK_END
+import com.example.dtthouses.ui.about.AboutFragment.AboutFragmentConstants.SPAN_DTT_LINK_START
 import java.lang.RuntimeException
 
-
+/**
+ * Fragment for showing information of DTT.
+ */
 class AboutFragment : Fragment() {
     private lateinit var aboutFragmentCallback: AboutFragmentCallback
 
-    object AboutConstants {
-        const val FRAGMENT_RUNTIME_EX = " must implement AboutFragmentCallback"
-        const val DTT_SPANNABLE_STRING = "d-tt.nl"
+    /**
+     * Constants values of AboutFragment.
+     */
+    object AboutFragmentConstants {
+        /**
+         * Span start value for DTT link name.
+         */
+        const val SPAN_DTT_LINK_START = 0
+
+        /**
+         * Span end value for DTT link name.
+         */
+        const val SPAN_DTT_LINK_END = 7
     }
 
     override fun onAttach(context: Context) {
@@ -32,7 +44,10 @@ class AboutFragment : Fragment() {
         if (context is AboutFragmentCallback) {
             aboutFragmentCallback = context
         } else {
-            throw RuntimeException(context.toString().plus(FRAGMENT_RUNTIME_EX))
+            throw RuntimeException(
+                context.toString().plus(" ")
+                    .plus(getString(R.string.about_fragment_runtime_exception))
+            )
         }
     }
 
@@ -50,7 +65,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun setDTTLink(view: View) {
-        val ss = SpannableString(DTT_SPANNABLE_STRING)
+        val ss = SpannableString(getString(R.string.dtt_link_name))
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(textView: View) {
                 aboutFragmentCallback.showBrowser()
@@ -61,7 +76,7 @@ class AboutFragment : Fragment() {
                 ds.isUnderlineText = false
             }
         }
-        ss.setSpan(clickableSpan, 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(clickableSpan, SPAN_DTT_LINK_START, SPAN_DTT_LINK_END, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val textView = view.findViewById<TextView>(R.id.tvLink)
         textView.text = ss

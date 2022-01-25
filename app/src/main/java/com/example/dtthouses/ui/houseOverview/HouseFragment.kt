@@ -39,6 +39,9 @@ import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstan
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
 import com.example.dtthouses.utils.makeClearableEditText
 
+/**
+ * Fragment showing an overview of houses.
+ */
 class HouseFragment : Fragment() {
     private lateinit var houseAdapter: HouseAdapter
     private val requestCode = 100
@@ -61,9 +64,23 @@ class HouseFragment : Fragment() {
     // This will store current location info
     private var currentLocation: Location? = null
 
+    /**
+     * Constants values of House fragment.
+     */
     object HouseFragmentConstants {
+        /**
+         * Location active update interval duration in seconds.
+         */
         const val INTERVAL_DURATION: Long = 20
+
+        /**
+         * Location fastest active update interval duration in seconds.
+         */
         const val FASTEST_INTERVAL_DURATION: Long = 60
+
+        /**
+         * Maximum time when batched location updates are delivered. (In seconds).
+         */
         const val MAX_WAIT_TIME: Long = 2
     }
 
@@ -188,6 +205,10 @@ class HouseFragment : Fragment() {
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
+    /**
+     * Start getting user current location.
+     * If GPS sensor is turned off, then GPS location will be automatically opened.
+     */
     @SuppressLint("MissingPermission")
     fun getCurrentLocation() {
         // Initialize location manager
@@ -233,9 +254,12 @@ class HouseFragment : Fragment() {
         }
     }
 
+    /**
+     * Handles location permission denied by hiding location icon and TextView distance.
+     */
     fun handlePermissionDenied() {
-        // Disable location icon and distance
-        houseAdapter.disableLocationViews()
+        // Hide location icon and distance
+        houseAdapter.hideLocationViews()
     }
 
     private fun checkForLocationPermission() {

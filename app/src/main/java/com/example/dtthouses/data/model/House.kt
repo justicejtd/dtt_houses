@@ -2,6 +2,9 @@ package com.example.dtthouses.data.model
 
 import android.graphics.Bitmap
 
+/**
+ * House model data class.
+ */
 data class House(
     val id: Int,
     val image: String,
@@ -15,6 +18,10 @@ data class House(
     val latitude: Double,
     val longitude: Double,
     val createdDate: String,
+    /**
+     * Keeps track of the location distance between current user and other other house(s).
+     * The default value is 0.
+     */
     var locationDistance: Int = 0,
     private var bitmap: Bitmap
 ) {

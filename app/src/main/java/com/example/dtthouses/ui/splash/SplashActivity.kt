@@ -6,11 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import com.example.dtthouses.R
-import com.example.dtthouses.base.HouseActivity
+import com.example.dtthouses.base.HomeActivity
 import com.example.dtthouses.ui.splash.SplashActivity.SplashActivityConstants.SPLASH_ALPHA
 import com.example.dtthouses.ui.splash.SplashActivity.SplashActivityConstants.SPLASH_DURATION
 
-
+/**
+ * Activity for showing splash screen during application launch.
+ */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     object SplashActivityConstants {
@@ -28,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
         // Show splash screen for 1 seconds
         ivLogo.animate().setDuration(SPLASH_DURATION).alpha(SPLASH_ALPHA).withEndAction {
             // Show Splash screen until main screen is ready
-            val intent = Intent(this, HouseActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
 
             // Set fade in and out animation

@@ -12,6 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.dtthouses.R
 
+/**
+ * Invoke function after text has been inputted into EditText.
+ */
 fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -27,12 +30,14 @@ fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
 }
 
 /**
- * Add ability to clear input with right button
+ * Add ability to clear input with right button.
  *
  * Arguments:
- *  @param onIsNotEmpty - callback which is invoked when input is completed and is not empty. Is good for clearing error
- *  @param onCanceled - callbacks which is invoked when cancel button is clicked and input is cleared
- *  @param clearDrawable - right drawable which is used as cancel button to clear input
+ *  @param onIsNotEmpty - callback which is invoked when input is completed
+ *  and is not empty. Is good for clearing error.
+ *  @param onCanceled - callbacks which is invoked when cancel button is clicked
+ *  and input is cleared.
+ *  @param clearDrawable - right drawable which is used as cancel button to clear input.
  */
 fun EditText.makeClearableEditText(
     onIsNotEmpty: (() -> Unit)?,
@@ -72,24 +77,27 @@ fun EditText.makeClearableEditText(
         updateRightDrawable()
     }
     this.onRightDrawableClicked {
-            hideSoftKeyboard(this)
-            this.text.clear()
-            this.clearFocus()
-            this.setCompoundDrawables(null, null, icon, null)
-            onCanceled?.invoke()
+        hideSoftKeyboard(this)
+        this.text.clear()
+        this.clearFocus()
+        this.setCompoundDrawables(null, null, icon, null)
+        onCanceled?.invoke()
     }
 }
 
 private const val COMPOUND_DRAWABLE_RIGHT_INDEX = 2
+private const val HIDE_SOFT_INPUT_FROM_WINDOW_FLAGS = 0
 
 /**
  *
- * Calculate right compound drawable and in case it exists calls
+ * Calculate right compound drawable and in case it exists calls.
  * @see EditText.makeClearableEditText
  *
  * Arguments:
- *  @param onIsNotEmpty - callback which is invoked when input is completed and is not empty. Is good for clearing error
- *  @param onCanceled - callbacks which is invoked when cancel button is clicked and input is cleared
+ *  @param onIsNotEmpty - callback which is invoked when input is completed and is not empty.
+ *  Is good for clearing error.
+ *  @param onCanceled - callbacks which is invoked when cancel button is clicked
+ *  and input is cleared.
  */
 fun EditText.makeClearableEditText(onIsNotEmpty: (() -> Unit)?, onCanceled: (() -> Unit)?) {
     compoundDrawables[COMPOUND_DRAWABLE_RIGHT_INDEX]?.let { clearDrawable ->
@@ -98,7 +106,8 @@ fun EditText.makeClearableEditText(onIsNotEmpty: (() -> Unit)?, onCanceled: (() 
 }
 
 /**
- * Based on View.OnTouchListener. Be careful EditText replaces old View.OnTouchListener when setting new one
+ * Based on View.OnTouchListener.
+ * Be careful EditText replaces old View.OnTouchListener when setting new one.
  */
 @SuppressLint("ClickableViewAccessibility")
 fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
@@ -124,5 +133,5 @@ private fun hideSoftKeyboard(view: View) {
             InputMethodManager::class.java
         )
     }
-    imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    imm?.hideSoftInputFromWindow(view.windowToken, HIDE_SOFT_INPUT_FROM_WINDOW_FLAGS)
 }

@@ -29,4 +29,7 @@
     <string name="dtt_banner">DTT banner</string>
     <string name="price_format">%,d</string>
     <string name="search_for_a_home">Search for a home</string>
+    <string name="permission_granted_msg">"Permission Granted"</string>
+    <string name="about_fragment_runtime_exception">"must implement AboutFragmentCallback"</string>
+    <string name="dtt_link_name">d-tt.nl</string>
 </resources>

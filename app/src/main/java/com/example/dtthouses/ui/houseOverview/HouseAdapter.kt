@@ -15,18 +15,41 @@ import com.example.dtthouses.R
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.google.gson.Gson
 
-
+/**
+ * Adapter for handling the list of houses.
+ */
 class HouseAdapter(var houses: List<House>, val context: Context) :
     RecyclerView.Adapter<HouseAdapter.ViewHolder>() {
     private var isLocationPermissionDenied = false
 
-    companion object DetailsIntents {
+    /**
+     * Constants values of HouseAdapter.
+     */
+    companion object HouseAdapterConstants {
+        /**
+         * Intent key for passing house object.
+         */
         const val DETAILS_INTENT_KEY = "com.example.dtthouses.ui.houseOverview.detailKey"
+
+        /**
+         * Name of user location provider.
+         */
         const val USER_LOCATION_PROVIDER = "UserLocation"
+
+        /**
+         * Name of house location provider.
+         */
         const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
+
+        /**
+         * Used for converting meters to kilometers.
+         */
         const val DISTANCE_TO_KM = 1000
     }
 
+    /**
+     * Initialized and handles list item views for a house.
+     */
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val tvPrice: TextView = view.findViewById(R.id.tvPrice)
         private val tvAddress: TextView = view.findViewById(R.id.tvAddress)
@@ -53,6 +76,9 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             }
         }
 
+        /**
+         * Set house data to views.
+         */
         fun setViews(house: House) {
             // Remove any space in the zip code
             val zip = house.zip.replace("\\s".toRegex(), "")
@@ -65,7 +91,7 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
             tvNrOfLayers.text = house.size.toString()
             ivHouse.setImageBitmap(house.getBitmap())
 
-            // Set location views visibility to GONE if location permission id denied
+            // Set location views visibility to GONE if location permission is denied
             setLocationViews(house)
         }
 
@@ -93,11 +119,17 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
 
     override fun getItemCount() = houses.size
 
+    /**
+     * Add list of houses to recycler view.
+     */
     fun addHouses(houses: ArrayList<House>) {
         this.houses = houses
         notifyDataSetChanged()
     }
 
+    /**
+     * Calculate and set distance between current and house location.
+     */
     fun updateHousesLocation(latitude: Double, longitude: Double) {
         // Update all houses their location distance
         houses.forEach {
@@ -121,10 +153,9 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
     }
 
     /**
-     * Keep track if location permission has been denied
-     * If permission is denied then location text view and icon will be hidden
+     * Hide location icon and TextView.
      */
-    fun disableLocationViews() {
+    fun hideLocationViews() {
         isLocationPermissionDenied = true
         notifyDataSetChanged()
     }

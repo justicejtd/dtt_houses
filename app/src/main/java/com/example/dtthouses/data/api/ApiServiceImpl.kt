@@ -11,11 +11,28 @@ import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
+/**
+ * API service which handles all of the API calls.
+ */
 class ApiServiceImpl : ApiService {
 
+    /**
+     * API service constants values.
+     */
     object ApiServiceConstants {
+        /**
+         * Base URL of the service.
+         */
         const val BASE_URL = "https://intern.docker-dev.d-tt.nl"
+
+        /**
+         * Endpoint to house(s).
+         */
         const val HOUSE_URL = "/api/house"
+
+        /**
+         * API key to get authorization to any endpoint.
+         */
         const val API_KEY = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
     }
     override fun getHouses(): ArrayList<House> {

@@ -48,7 +48,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     // Feature module Support
-    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.3.5")
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:2.4.2")
 
     // Gson library for converting json to objects and vice versa
     implementation 'com.google.code.gson:gson:2.8.9'

@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.data.model.House
-import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.ERROR_CONNECT_TO_SERVER_MSG
-import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.EXCEPTION_ERROR_PREFIX
-import com.example.dtthouses.ui.houseOverview.HouseViewModel.HouseViewModelConstants.NO_HOUSES_FOUND_ERROR
 import com.example.dtthouses.utils.Resource
 import kotlinx.coroutines.*
 import java.lang.Exception
@@ -31,22 +28,22 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
     /**
      * Constants values of HouseViewModel.
      */
-    object HouseViewModelConstants {
+    companion object {
         /**
          * Error message when no houses are found during network call.
          */
-        const val NO_HOUSES_FOUND_ERROR = "No houses found!"
+        private const val NO_HOUSES_FOUND_ERROR = "No houses found!"
 
         /**
          * Error message when there is not connection to internet or something went wrong
          * when trying to reach the server.
          */
-        const val ERROR_CONNECT_TO_SERVER_MSG = "Error: Could not communicate with server"
+        private const val ERROR_CONNECT_TO_SERVER_MSG = "Error: Could not communicate with server"
 
         /**
          * Exception prefix when there is an error during network calls
          */
-        const val EXCEPTION_ERROR_PREFIX = "Error: "
+        private const val EXCEPTION_ERROR_PREFIX = "Error: "
     }
 
     init {

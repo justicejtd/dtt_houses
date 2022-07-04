@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
-import com.example.dtthouses.base.ViewModelFactory
+import com.example.dtthouses.base.factories.ViewModelFactory
 import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.utils.Status
 import com.google.android.gms.location.*

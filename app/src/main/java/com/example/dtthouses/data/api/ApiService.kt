@@ -20,11 +20,14 @@ interface ApiService {
     suspend fun getHouses(): Response<ArrayList<House>>
 
     companion object {
+        private lateinit var retrofitService: ApiService
+
+
         /**
          * Base URL of the service.
          * URL: https://intern.docker-dev.d-tt.nl
          */
-        const val DTT_BASE_URL = "https://intern.docker-dev.d-tt.nl"
+        const val DTT_BASE_URL = "https://intern.development.d-tt.dev"
 
         /**
          * Endpoint to house(s).
@@ -36,8 +39,6 @@ interface ApiService {
          * API key to get authorization to any endpoint.
          */
         const val API_KEY = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
-
-        private lateinit var retrofitService: ApiService
 
         /**
          * Returns a new instance of ApiService

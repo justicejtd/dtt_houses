@@ -80,6 +80,7 @@
         android:textColorLink="@color/blue"
         app:layout_constraintBottom_toBottomOf="@+id/ivDttBanner"
         app:layout_constraintEnd_toEndOf="@+id/tvAuthor"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvAuthor"
         app:layout_constraintTop_toBottomOf="@+id/tvAuthor"
         app:layout_constraintVertical_bias="0.0" />

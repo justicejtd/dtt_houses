@@ -9,18 +9,12 @@ import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.houseOverview.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
 import com.google.android.gms.maps.*
 import com.google.gson.Gson
-
 import com.google.android.gms.maps.model.MarkerOptions
-
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.view.View
-import android.view.WindowManager
-
-import androidx.appcompat.widget.Toolbar
 import com.example.dtthouses.data.api.ApiService
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
@@ -84,10 +78,6 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Initialize house details
         setHouseDetails()
-
-        // Set toolbar and status bar to transparent
-        setToolbarAndStatusBar()
-
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         val mapFragment =
@@ -188,21 +178,5 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             MAPS_ZOOM_DURATION,
             null
         )
-    }
-
-    private fun setToolbarAndStatusBar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbarHouseDetails)
-
-        // Set toolbar color to transparent
-        toolbar.setBackgroundColor(Color.TRANSPARENT)
-
-        setSupportActionBar(toolbar)
-        supportActionBar!!.title = ""
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-        // Set status bar color to transparent
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-        window.statusBarColor = Color.TRANSPARENT
     }
 }

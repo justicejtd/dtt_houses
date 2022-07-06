@@ -1,8 +1,8 @@
-package com.example.dtthouses.base
+package com.example.dtthouses.base.factories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.dtthouses.base.ViewModelFactory.ViewModelFactoryConstants.FACTORY_EXCEPTION_MSG
+import com.example.dtthouses.base.factories.ViewModelFactory.ViewModelFactoryConstants.FACTORY_EXCEPTION_MSG
 import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.ui.houseOverview.HouseViewModel
 import java.lang.IllegalArgumentException

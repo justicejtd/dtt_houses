@@ -15,30 +15,31 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
-import com.example.dtthouses.base.ViewModelFactory
-import com.example.dtthouses.data.api.ServiceRepository
-import com.example.dtthouses.utils.Status
-import com.google.android.gms.location.*
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import java.util.concurrent.TimeUnit
-import android.widget.EditText
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.widget.doOnTextChanged
+import com.example.dtthouses.base.factories.ViewModelFactory
 import com.example.dtthouses.data.api.ApiService
+import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
+import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
+import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+import java.util.concurrent.TimeUnit
+
 
 /**
  * Fragment showing an overview of houses.
@@ -114,7 +115,7 @@ class HouseFragment : Fragment() {
     }
 
     private fun setObservers() {
-        houseViewModel.getHouses().observe(this as LifecycleOwner, {
+        houseViewModel.getHouses().observe(this as LifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
@@ -149,9 +150,9 @@ class HouseFragment : Fragment() {
                     viewSearchNotFound.visibility = View.VISIBLE
                 }
             }
-        })
+        }
 
-        houseViewModel.getIsSearchNotFound().observe(this as LifecycleOwner, {
+        houseViewModel.getIsSearchNotFound().observe(this as LifecycleOwner) {
             if (it) {
                 rvHouses.visibility = View.GONE
                 viewSearchNotFound.visibility = View.VISIBLE
@@ -159,12 +160,12 @@ class HouseFragment : Fragment() {
                 rvHouses.visibility = View.VISIBLE
                 viewSearchNotFound.visibility = View.GONE
             }
-        })
+        }
 
         // Show toast message when there is a network error
-        houseViewModel.getErrorMessage().observe(this as LifecycleOwner, {
+        houseViewModel.getErrorMessage().observe(this as LifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
-        })
+        }
     }
 
     private fun setupUI(view: View) {
@@ -300,11 +301,13 @@ class HouseFragment : Fragment() {
                 locationResult.let { super.onLocationResult(it) }
                 locationResult.lastLocation.let {
                     currentLocation = it
-                    val latitude = it.latitude
-                    val longitude = it.longitude
+                    val latitude = it?.latitude
+                    val longitude = it?.longitude
 
                     // Calculate and update house location distance
-                    houseAdapter.updateHousesLocation(latitude, longitude)
+                    if (latitude != null && longitude != null) {
+                        houseAdapter.updateHousesLocation(latitude, longitude)
+                    }
                 }
             }
         }
@@ -326,7 +329,7 @@ class HouseFragment : Fragment() {
             // delivered sooner than this interval
             maxWaitTime = TimeUnit.MINUTES.toMillis(MAX_WAIT_TIME)
 
-            priority = PRIORITY_HIGH_ACCURACY
+            priority = Priority.PRIORITY_HIGH_ACCURACY
         }
     }
 }

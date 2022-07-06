@@ -13,6 +13,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import androidx.core.view.WindowInsetsCompat.Type.ime
+import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
+import androidx.core.view.isGone
 import com.example.dtthouses.base.HomeActivity.HouseActivityConstants.DTT_URL
 
 /**
@@ -21,6 +24,7 @@ import com.example.dtthouses.base.HomeActivity.HouseActivityConstants.DTT_URL
 class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
     private val requestCode = 100
     private lateinit var hostFragment: NavHostFragment
+    private lateinit var bottomNav: BottomNavigationView
 
     /**
      * Constant values of house activity.
@@ -34,17 +38,20 @@ class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
 
         // Initialize views
         hostFragment = supportFragmentManager.findFragmentById(R.id.fcvHost) as NavHostFragment
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav = findViewById(R.id.bottomNavigationView)
 
         // Setup navigation graph controller to bottom navigation
-        bottomNav?.setupWithNavController(hostFragment.navController)
+        bottomNav.setupWithNavController(hostFragment.navController)
 
         // Set status bar color to gray
         this.window.statusBarColor = Color.GRAY
+
+        // Hide bottom navigation when keyboard is shown
+        hideBottomNavigation()
     }
 
     override fun onRequestPermissionsResult(
@@ -82,5 +89,13 @@ class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
     override fun showBrowser() {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(DTT_URL))
         startActivity(intent)
+    }
+
+    private fun hideBottomNavigation() {
+        window.decorView.setOnApplyWindowInsetsListener { view, insets ->
+            val insetsCompat = toWindowInsetsCompat(insets, view)
+            bottomNav.isGone = insetsCompat.isVisible(ime())
+            view.onApplyWindowInsets(insets)
+        }
     }
 }

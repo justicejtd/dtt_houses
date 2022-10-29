@@ -52,7 +52,7 @@ dependencies {
     implementation("androidx.navigation:navigation-dynamic-features-fragment:2.5.3")
 
     // Gson library for converting json to objects and vice versa
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.code.gson:gson:2.10'
 
     // Google play service location library for getting user location
     implementation 'com.google.android.gms:play-services-location:21.0.0'

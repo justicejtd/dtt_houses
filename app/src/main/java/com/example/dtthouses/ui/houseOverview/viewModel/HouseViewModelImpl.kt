@@ -1,25 +1,28 @@
-package com.example.dtthouses.ui.houseOverview
+package com.example.dtthouses.ui.houseOverview.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.dtthouses.data.api.ServiceRepository
+import com.example.dtthouses.data.api.service.house.repository.HouseRepo
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.utils.Resource
 import kotlinx.coroutines.*
-import java.lang.Exception
-import kotlin.collections.ArrayList
 
 /**
- * Handles any business logic for HouseFragment.
+ * Handles any UI logic for HouseFragment.
  */
-class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
-    private val errorMessage = MutableLiveData<String>()
-    private val housesLiveData = MutableLiveData<Resource<ArrayList<House>>>()
-    private var houses: ArrayList<House> = ArrayList()
-    private val isSearchNotFound = MutableLiveData(false)
+class HouseViewModelImpl(private val repository: HouseRepo) : ViewModel(), HouseViewModel {
     private var getHousesJob: Job? = null
     private var filterHousesJob: Job? = null
+    private var houses: List<House> = listOf()
+    private var _filteredHouses = MutableLiveData<Resource<List<House>>>()
+    private val _isSearchNotFound = MutableLiveData(false)
+    private val _errorMessage = MutableLiveData<String>()
+
+    // Exposed variables
+    override val filteredHouses: LiveData<Resource<List<House>>> = _filteredHouses
+    override val isSearchNotFound: LiveData<Boolean> = _isSearchNotFound
+    override val errorMessage: LiveData<String> = _errorMessage
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         onError("$EXCEPTION_ERROR_PREFIX ${throwable.localizedMessage}")
@@ -48,7 +51,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
     init {
         this.getHousesJob = CoroutineScope(Dispatchers.Main).launch {
-            housesLiveData.postValue(Resource.loading(null))
+            _filteredHouses.postValue(Resource.loading(null))
             try {
                 // Uses extra threads for network call
                 withContext(Dispatchers.IO + exceptionHandler) {
@@ -58,19 +61,21 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
                             val body = response.body()
 
                             if (body != null) {
+                                // Set houses
                                 houses = body
+
+                                // Notify view when houses are fetched successfully
+                                _filteredHouses.postValue(Resource.success(body))
+
                                 // Sort houses by price (cheapest to expensive)
-                                houses.sortBy { house -> house.price }
+                                _filteredHouses.value?.data?.sortedBy { house -> house.price }
                             }
 
-                            // Notify view when houses are fetched successfully
-                            housesLiveData.postValue(Resource.success(houses))
-
                             // Bug (for some reason "isSearchNotFound" needs to be false on init)
-                            isSearchNotFound.postValue(false)
+                            _isSearchNotFound.postValue(false)
                         } else {
                             // If something goes wrong notify view with an error message
-                            housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
+                            _filteredHouses.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
 
                             onError("$EXCEPTION_ERROR_PREFIX ${response.message()} ")
                         }
@@ -78,7 +83,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
                 }
             } catch (ex: Exception) {
                 // If something goes wrong notify view with an error message
-                housesLiveData.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
+                _filteredHouses.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
 
                 onError("$EXCEPTION_ERROR_PREFIX $ERROR_CONNECT_TO_SERVER_MSG ")
             }
@@ -94,15 +99,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
     }
 
     private fun onError(message: String) {
-        errorMessage.value = message
-    }
-
-    /**
-     * Return LiveData of an array list of houses.
-     * Used to keep track when list has been updated.
-     */
-    fun getHouses(): LiveData<Resource<ArrayList<House>>> {
-        return housesLiveData
+        _errorMessage.value = message
     }
 
     /**
@@ -110,7 +107,7 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
      */
     fun filterCourseListBySearch(input: String?) {
         filterHousesJob = CoroutineScope(Dispatchers.Default).launch {
-            val filteredHouses = houses.filter { house ->
+            val searchedHouses = houses.filter { house ->
                 // Make a search pattern with combination of city and/or zip code
                 var isFound = isFoundQueryFound(input.toString(), house.city, house.zip)
 
@@ -123,8 +120,8 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
             withContext(Dispatchers.Main) {
                 // If search is not found then show search not found image
-                isSearchNotFound.postValue(filteredHouses.isEmpty())
-                housesLiveData.postValue(Resource.success(ArrayList(filteredHouses)))
+                _isSearchNotFound.postValue(searchedHouses.isEmpty())
+                _filteredHouses.postValue(Resource.success(searchedHouses))
             }
         }
     }
@@ -141,19 +138,5 @@ class HouseViewModel(private val repository: ServiceRepository) : ViewModel() {
 
         // Check if house is found
         return pattern.contains(query)
-    }
-
-    /**
-     * Keeps track if search query has found any houses.
-     */
-    fun getIsSearchNotFound(): LiveData<Boolean> {
-        return isSearchNotFound
-    }
-
-    /**
-     * Return error message when something goes wrong during network call
-     */
-    fun getErrorMessage(): LiveData<String> {
-        return errorMessage
     }
 }

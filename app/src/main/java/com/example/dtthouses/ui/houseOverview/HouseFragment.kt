@@ -34,6 +34,8 @@ import com.example.dtthouses.data.api.ServiceRepository
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
+import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModel
+import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModelImpl
 import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*

@@ -29,8 +29,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
 import com.example.dtthouses.base.factories.ViewModelFactory
-import com.example.dtthouses.data.api.ApiService
-import com.example.dtthouses.data.api.ServiceRepository
+import com.example.dtthouses.data.api.service.ApiService
+import com.example.dtthouses.data.api.service.house.repository.HouseRepoImpl
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
@@ -100,8 +100,8 @@ class HouseFragment : Fragment() {
         setupUI(view)
 
         // Setup view model
-        val viewModelFactory = ViewModelFactory(ServiceRepository(ApiService.getInstance()))
-        houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModel::class.java]
+        val viewModelFactory = ViewModelFactory(HouseRepoImpl(ApiService.getHouseService()))
+        houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModelImpl::class.java]
 
         // Initialize fused location provider
         fusedLocationProviderClient =

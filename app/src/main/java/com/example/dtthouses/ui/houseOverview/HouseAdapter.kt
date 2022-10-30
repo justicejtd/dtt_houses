@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
-import com.example.dtthouses.data.api.ApiService.Companion.DTT_BASE_URL
 import com.example.dtthouses.data.api.service.ApiService.DTT_BASE_URL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.example.dtthouses.utils.ImageHandler
@@ -136,7 +135,7 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
     /**
      * Add list of houses to recycler view.
      */
-    fun addHouses(houses: ArrayList<House>) {
+    fun addHouses(houses: List<House>) {
         this.houses = houses
         notifyDataSetChanged()
     }

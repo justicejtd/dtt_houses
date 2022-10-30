@@ -39,7 +39,6 @@ import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModelImpl
 import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import java.util.concurrent.TimeUnit
 
 
@@ -117,7 +116,7 @@ class HouseFragment : Fragment() {
     }
 
     private fun setObservers() {
-        houseViewModel.getHouses().observe(this as LifecycleOwner) {
+        houseViewModel.filteredHouses.observe(this as LifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
@@ -154,7 +153,7 @@ class HouseFragment : Fragment() {
             }
         }
 
-        houseViewModel.getIsSearchNotFound().observe(this as LifecycleOwner) {
+        houseViewModel.isSearchNotFound.observe(this as LifecycleOwner) {
             if (it) {
                 rvHouses.visibility = View.GONE
                 viewSearchNotFound.visibility = View.VISIBLE
@@ -165,7 +164,7 @@ class HouseFragment : Fragment() {
         }
 
         // Show toast message when there is a network error
-        houseViewModel.getErrorMessage().observe(this as LifecycleOwner) {
+        houseViewModel.errorMessage.observe(this as LifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }

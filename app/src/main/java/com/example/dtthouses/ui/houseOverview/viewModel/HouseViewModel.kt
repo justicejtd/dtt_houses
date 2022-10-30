@@ -23,4 +23,9 @@ interface HouseViewModel {
      * Return error message when something goes wrong during network call
      */
     val errorMessage: LiveData<String>
+
+    /**
+     * Filters list of houses based on city and zip code.
+     */
+    fun filterCourseListBySearch(input: String?)
 }

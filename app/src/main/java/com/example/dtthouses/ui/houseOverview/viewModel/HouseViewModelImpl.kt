@@ -102,10 +102,7 @@ class HouseViewModelImpl(private val repository: HouseRepo) : ViewModel(), House
         _errorMessage.value = message
     }
 
-    /**
-     * Filters list of houses based on city and zip code.
-     */
-    fun filterCourseListBySearch(input: String?) {
+    override fun filterCourseListBySearch(input: String?) {
         filterHousesJob = CoroutineScope(Dispatchers.Default).launch {
             val searchedHouses = houses.filter { house ->
                 // Make a search pattern with combination of city and/or zip code

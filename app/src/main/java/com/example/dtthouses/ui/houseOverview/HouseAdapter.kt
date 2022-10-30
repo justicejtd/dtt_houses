@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
 import com.example.dtthouses.data.api.ApiService.Companion.DTT_BASE_URL
+import com.example.dtthouses.data.api.service.ApiService.DTT_BASE_URL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.example.dtthouses.utils.ImageHandler
 import com.google.gson.Gson

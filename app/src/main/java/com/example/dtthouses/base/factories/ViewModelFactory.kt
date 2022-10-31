@@ -3,14 +3,13 @@ package com.example.dtthouses.base.factories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.dtthouses.base.factories.ViewModelFactory.ViewModelFactoryConstants.FACTORY_EXCEPTION_MSG
-import com.example.dtthouses.data.api.service.house.repository.HouseRepo
+import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepo
 import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModelImpl
 import com.example.dtthouses.useCases.house.HouseUseCases
 
 /**
  * Handles initialization of all view models.
  */
-class ViewModelFactory(private val repository: HouseRepo) : ViewModelProvider.Factory {
 class ViewModelFactory(private val houseUsesCases: HouseUseCases) : ViewModelProvider.Factory {
     /**
      * Constants values of view model factory.
@@ -25,7 +24,6 @@ class ViewModelFactory(private val houseUsesCases: HouseUseCases) : ViewModelPro
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HouseViewModelImpl::class.java)) {
-            return HouseViewModelImpl(repository) as T
             return HouseViewModelImpl(houseUsesCases) as T
         }
         throw IllegalArgumentException(FACTORY_EXCEPTION_MSG)

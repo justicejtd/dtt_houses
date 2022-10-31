@@ -12,6 +12,7 @@ import kotlinx.coroutines.*
  * Handles any UI logic for HouseFragment.
  */
 class HouseViewModelImpl(private val repository: HouseRepo) : ViewModel(), HouseViewModel {
+class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel(), HouseViewModel {
     private var getHousesJob: Job? = null
     private var filterHousesJob: Job? = null
     private var houses: List<House> = listOf()
@@ -56,6 +57,7 @@ class HouseViewModelImpl(private val repository: HouseRepo) : ViewModel(), House
                 // Uses extra threads for network call
                 withContext(Dispatchers.IO + exceptionHandler) {
                     val response = repository.getHouses()
+                    val housesResponse = houseUseCases.getHouses()
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
                             val body = response.body()

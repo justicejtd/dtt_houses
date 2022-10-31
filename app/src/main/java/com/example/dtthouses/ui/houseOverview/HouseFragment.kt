@@ -29,15 +29,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
 import com.example.dtthouses.base.factories.ViewModelFactory
-import com.example.dtthouses.data.api.ApiService
-import com.example.dtthouses.data.api.ServiceRepository
+import com.example.dtthouses.data.api.service.ApiService
+import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepoImpl
+import com.example.dtthouses.data.api.repository.house.localHouse.LocalHouseRepoImpl
+import com.example.dtthouses.data.database.AppDatabase
+import com.example.dtthouses.data.database.dao.HouseDao
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
+import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModel
+import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModelImpl
+import com.example.dtthouses.useCases.house.HouseUseCasesImpl
 import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import java.util.concurrent.TimeUnit
 
 
@@ -97,9 +102,17 @@ class HouseFragment : Fragment() {
         // Initialize views
         setupUI(view)
 
+        // Setup database
+        val database = AppDatabase.getInstance(requireContext())
+
         // Setup view model
-        val viewModelFactory = ViewModelFactory(ServiceRepository(ApiService.getInstance()))
-        houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModel::class.java]
+        val viewModelFactory = ViewModelFactory(
+            HouseUseCasesImpl(
+                HttpHouseRepoImpl(ApiService.getHouseService()),
+                LocalHouseRepoImpl(database.getHouseDao())
+            )
+        )
+        houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModelImpl::class.java]
 
         // Initialize fused location provider
         fusedLocationProviderClient =
@@ -115,7 +128,7 @@ class HouseFragment : Fragment() {
     }
 
     private fun setObservers() {
-        houseViewModel.getHouses().observe(this as LifecycleOwner) {
+        houseViewModel.filteredHouses.observe(this as LifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
@@ -152,7 +165,7 @@ class HouseFragment : Fragment() {
             }
         }
 
-        houseViewModel.getIsSearchNotFound().observe(this as LifecycleOwner) {
+        houseViewModel.isSearchNotFound.observe(this as LifecycleOwner) {
             if (it) {
                 rvHouses.visibility = View.GONE
                 viewSearchNotFound.visibility = View.VISIBLE
@@ -163,7 +176,7 @@ class HouseFragment : Fragment() {
         }
 
         // Show toast message when there is a network error
-        houseViewModel.getErrorMessage().observe(this as LifecycleOwner) {
+        houseViewModel.errorMessage.observe(this as LifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
     }

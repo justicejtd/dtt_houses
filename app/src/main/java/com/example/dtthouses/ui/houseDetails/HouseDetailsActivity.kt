@@ -17,7 +17,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import com.example.dtthouses.data.api.ApiService
+import com.example.dtthouses.data.api.service.ApiService
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.LOCATION_DISTANCE_ZERO

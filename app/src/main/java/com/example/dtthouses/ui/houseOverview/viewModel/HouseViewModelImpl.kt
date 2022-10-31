@@ -3,15 +3,18 @@ package com.example.dtthouses.ui.houseOverview.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.dtthouses.data.api.service.house.repository.HouseRepo
+import com.example.dtthouses.data.api.repository.house.exception.NoHouseException
+import com.example.dtthouses.data.contstant.Error.EXCEPTION_ERROR_PREFIX
+import com.example.dtthouses.data.exception.GenericException
+import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
+import com.example.dtthouses.useCases.house.HouseUseCases
 import com.example.dtthouses.utils.Resource
 import kotlinx.coroutines.*
 
 /**
  * Handles any UI logic for HouseFragment.
  */
-class HouseViewModelImpl(private val repository: HouseRepo) : ViewModel(), HouseViewModel {
 class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel(), HouseViewModel {
     private var getHousesJob: Job? = null
     private var filterHousesJob: Job? = null
@@ -26,28 +29,7 @@ class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel()
     override val errorMessage: LiveData<String> = _errorMessage
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        onError("$EXCEPTION_ERROR_PREFIX ${throwable.localizedMessage}")
-    }
-
-    /**
-     * Constants values of HouseViewModel.
-     */
-    companion object {
-        /**
-         * Error message when no houses are found during network call.
-         */
-        private const val NO_HOUSES_FOUND_ERROR = "No houses found!"
-
-        /**
-         * Error message when there is not connection to internet or something went wrong
-         * when trying to reach the server.
-         */
-        private const val ERROR_CONNECT_TO_SERVER_MSG = "Error: Could not communicate with server"
-
-        /**
-         * Exception prefix when there is an error during network calls
-         */
-        private const val EXCEPTION_ERROR_PREFIX = "Error: "
+        throwable.localizedMessage?.let { onError("$EXCEPTION_ERROR_PREFIX $it") }
     }
 
     init {
@@ -56,38 +38,30 @@ class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel()
             try {
                 // Uses extra threads for network call
                 withContext(Dispatchers.IO + exceptionHandler) {
-                    val response = repository.getHouses()
                     val housesResponse = houseUseCases.getHouses()
                     withContext(Dispatchers.Main) {
-                        if (response.isSuccessful) {
-                            val body = response.body()
+                        // Set houses
+                        houses = housesResponse
 
-                            if (body != null) {
-                                // Set houses
-                                houses = body
+                        // Notify view when houses are fetched successfully
+                        _filteredHouses.postValue(Resource.success(housesResponse))
 
-                                // Notify view when houses are fetched successfully
-                                _filteredHouses.postValue(Resource.success(body))
-
-                                // Sort houses by price (cheapest to expensive)
-                                _filteredHouses.value?.data?.sortedBy { house -> house.price }
-                            }
-
-                            // Bug (for some reason "isSearchNotFound" needs to be false on init)
-                            _isSearchNotFound.postValue(false)
-                        } else {
-                            // If something goes wrong notify view with an error message
-                            _filteredHouses.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
-
-                            onError("$EXCEPTION_ERROR_PREFIX ${response.message()} ")
-                        }
+                        // Sort houses by price (cheapest to expensive)
+                        _filteredHouses.value?.data?.sortedBy { house -> house.price }
                     }
-                }
-            } catch (ex: Exception) {
-                // If something goes wrong notify view with an error message
-                _filteredHouses.postValue(Resource.error(NO_HOUSES_FOUND_ERROR, null))
 
-                onError("$EXCEPTION_ERROR_PREFIX $ERROR_CONNECT_TO_SERVER_MSG ")
+                    // Bug (for some reason "isSearchNotFound" needs to be false on init)
+                    _isSearchNotFound.postValue(false)
+                }
+            } catch (ex: NoHouseException) {
+                // If there are no houses found from the API show an error message.
+                _filteredHouses.postValue(Resource.error(ex.message.toString(), null))
+                onError(ex.message.toString())
+            } catch (ex: GenericException) {
+                // Todo: Show error image or message instead of the loading progress bar
+                onError(ex.message.toString())
+            } catch (ex: NetworkException) {
+                onError(ex.message.toString())
             }
         }
     }

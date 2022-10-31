@@ -6,6 +6,9 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
 
+/**
+ * House service functions to handle networking calls from/to API.
+ */
 interface HouseService {
     companion object {
         /**
@@ -17,7 +20,7 @@ interface HouseService {
 
     /**
      * Gets a list of houses from API.
-     * @return Return a Response type List<House>
+     * @return a response with list of [House].
      */
     @Headers(ACCEPT_APPLICATION_JSON_TYPE)
     @GET(HOUSE_URL)

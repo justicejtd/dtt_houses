@@ -1,9 +1,14 @@
 package com.example.dtthouses.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * House model data class.
  */
+@Entity
 data class House(
+    @PrimaryKey
     val id: Int,
     val image: String,
     val price: Double,

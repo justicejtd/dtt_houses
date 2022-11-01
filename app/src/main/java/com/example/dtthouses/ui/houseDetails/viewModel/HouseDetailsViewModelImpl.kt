@@ -13,7 +13,10 @@ import kotlinx.coroutines.launch
 /**
  * Handles any UI logic for HouseDetailsActivity.
  */
-class HouseDetailsViewModelImpl(private val houseUseCases: HouseUseCases, private val houseId: Int) : ViewModel(),
+class HouseDetailsViewModelImpl(
+    private val houseUseCases: HouseUseCases,
+    private val houseId: Int
+) : ViewModel(),
     HouseDetailsViewModel {
     private var _house = MutableLiveData<House>()
     override val house: LiveData<House> = _house

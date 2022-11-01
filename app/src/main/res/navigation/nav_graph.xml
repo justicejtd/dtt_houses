@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navHouseOverviewFragment"
-        android:name="com.example.dtthouses.ui.houseOverview.HouseFragment"
+        android:name="com.example.dtthouses.ui.house.HouseFragment"
         android:label="HouseFragment" />
 
     <fragment

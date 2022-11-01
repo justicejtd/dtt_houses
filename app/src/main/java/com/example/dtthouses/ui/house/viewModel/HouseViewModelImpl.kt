@@ -1,4 +1,4 @@
-package com.example.dtthouses.ui.houseOverview.viewModel
+package com.example.dtthouses.ui.house.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

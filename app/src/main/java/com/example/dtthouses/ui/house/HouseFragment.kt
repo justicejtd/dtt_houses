@@ -1,4 +1,4 @@
-package com.example.dtthouses.ui.houseOverview
+package com.example.dtthouses.ui.house
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -28,17 +28,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
-import com.example.dtthouses.base.factories.ViewModelFactory
+import com.example.dtthouses.ui.house.factory.HouseVmFactory
 import com.example.dtthouses.data.api.service.ApiService
 import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepoImpl
 import com.example.dtthouses.data.api.repository.house.localHouse.LocalHouseRepoImpl
 import com.example.dtthouses.data.database.AppDatabase
-import com.example.dtthouses.data.database.dao.HouseDao
-import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
-import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
-import com.example.dtthouses.ui.houseOverview.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
-import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModel
-import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModelImpl
+import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
+import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
+import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
+import com.example.dtthouses.ui.house.adapter.HouseAdapter
+import com.example.dtthouses.ui.house.viewModel.HouseViewModel
+import com.example.dtthouses.ui.house.viewModel.HouseViewModelImpl
 import com.example.dtthouses.useCases.house.HouseUseCasesImpl
 import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
@@ -106,13 +106,13 @@ class HouseFragment : Fragment() {
         val database = AppDatabase.getInstance(requireContext())
 
         // Setup view model
-        val viewModelFactory = ViewModelFactory(
+        val houseVmFactory = HouseVmFactory(
             HouseUseCasesImpl(
                 HttpHouseRepoImpl(ApiService.getHouseService()),
                 LocalHouseRepoImpl(database.getHouseDao())
             )
         )
-        houseViewModel = ViewModelProvider(this, viewModelFactory)[HouseViewModelImpl::class.java]
+        houseViewModel = ViewModelProvider(this, houseVmFactory)[HouseViewModelImpl::class.java]
 
         // Initialize fused location provider
         fusedLocationProviderClient =

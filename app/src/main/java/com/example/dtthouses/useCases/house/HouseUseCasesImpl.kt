@@ -25,4 +25,6 @@ class HouseUseCasesImpl(
         }
         return houses
     }
+
+    override suspend fun getHouseById(id: Int): House = localHouseRepo.getHouseById(id)
 }

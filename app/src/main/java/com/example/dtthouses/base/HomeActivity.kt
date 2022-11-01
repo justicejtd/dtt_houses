@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.dtthouses.R
 import com.example.dtthouses.ui.about.AboutFragmentCallback
-import com.example.dtthouses.ui.houseOverview.HouseFragment
+import com.example.dtthouses.ui.house.HouseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
 import android.graphics.Color

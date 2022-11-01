@@ -1,2 +1,2 @@
 # dtt_houses
- Internship assignment for DTT
+ Traineeship assignment for DTT

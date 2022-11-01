@@ -1,4 +1,4 @@
-package com.example.dtthouses.ui.houseOverview
+package com.example.dtthouses.ui.house.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -73,11 +73,9 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
                 // Create intent
                 val intent = Intent(context, HouseDetailsActivity::class.java)
 
-                // Convert house object to json
-                val json = Gson().toJson(houses[adapterPosition], House::class.java)
-
-                // Set json string to intent string extra
-                intent.putExtra(DETAILS_INTENT_KEY, json)
+                // Set house id to intent int extra
+                val houseId = houses[adapterPosition].id
+                intent.putExtra(DETAILS_INTENT_KEY, houseId)
 
                 // Show detail page
                 startActivity(context, intent, null)

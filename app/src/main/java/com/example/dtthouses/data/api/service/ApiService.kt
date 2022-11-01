@@ -16,8 +16,6 @@ const val ACCEPT_APPLICATION_JSON_TYPE = "Accept: application/json"
  * API service that handles the endpoints.
  */
 object ApiService {
-    private lateinit var retrofitService: ApiService
-
     /**
      * Base URL of the service.
      * URL: https://intern.docker-dev.d-tt.nl
@@ -31,7 +29,6 @@ object ApiService {
 
     // Add parameters for okhttp client and logging
     private fun getRetrofit(): Retrofit {
-
         val client: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 chain.proceed(chain.request().newBuilder().also {

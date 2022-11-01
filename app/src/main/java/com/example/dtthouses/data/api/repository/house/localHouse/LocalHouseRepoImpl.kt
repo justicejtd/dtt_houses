@@ -12,4 +12,6 @@ class LocalHouseRepoImpl(private val houseDao: HouseDao) : LocalHouseRepo {
     override suspend fun saveHouses(houses: List<House>) {
         houseDao.insertAll(houses)
     }
+
+    override suspend fun getHouseById(id: Int): House = houseDao.findById(id)
 }

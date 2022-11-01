@@ -6,9 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.dtthouses.R
 import com.example.dtthouses.data.model.House
-import com.example.dtthouses.ui.houseOverview.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
+import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
 import com.google.android.gms.maps.*
-import com.google.gson.Gson
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -17,20 +16,29 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
+import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepoImpl
+import com.example.dtthouses.data.api.repository.house.localHouse.LocalHouseRepoImpl
 import com.example.dtthouses.data.api.service.ApiService
+import com.example.dtthouses.data.database.AppDatabase
+import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.DEFAULT_HOUSE_ID
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.LOCATION_DISTANCE_ZERO
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
-import com.example.dtthouses.ui.houseOverview.HouseAdapter
+import com.example.dtthouses.ui.houseDetails.factory.HouseDetailsVmFactory
+import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
+import com.example.dtthouses.ui.house.adapter.HouseAdapter
+import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModel
+import com.example.dtthouses.useCases.house.HouseUseCasesImpl
 import com.example.dtthouses.utils.ImageHandler
 
 /**
  * Activity for show all details of a house.
  */
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var house: House
     private lateinit var tvPriceDetail: TextView
     private lateinit var tvNrOfBedroomsDetail: TextView
     private lateinit var tvNrOfBathroomsDetail: TextView
@@ -38,6 +46,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var tvLocationDistanceDetail: TextView
     private lateinit var tvDescriptionDetail: TextView
     private lateinit var ivHouseDetail: ImageView
+    private lateinit var houseDetailsViewModel: HouseDetailsViewModel
 
     /**
      * Constants values of HouseDetails.
@@ -69,6 +78,11 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
          * Can be used to check if location distance between current user and other house is zero.
          */
         const val LOCATION_DISTANCE_ZERO = 0
+
+        /**
+         * Default house id, used if no house id is found from intent.
+         */
+        const val DEFAULT_HOUSE_ID = -1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +91,12 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Initialize views
         setupViews()
+
+        // Setup database
+        val database = AppDatabase.getInstance(applicationContext)
+
+        // Setup viewModel
+        setupViewModel(database, getHouseId())
 
         // Initialize house details
         setHouseDetails()
@@ -92,25 +112,27 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val latLng = LatLng(house.latitude, house.longitude)
-        googleMap.addMarker(
-            MarkerOptions()
-                .position(latLng)
-        )
+        houseDetailsViewModel.house.observe(this as LifecycleOwner) { house ->
+            val latLng = LatLng(house.latitude, house.longitude)
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+            )
 
-        // Zoom map to the marker
-        moveToCurrentLocation(latLng, googleMap)
+            // Zoom map to the marker
+            moveToCurrentLocation(latLng, googleMap)
 
-        // Show google maps and show direction
-        googleMap.setOnMapClickListener {
-            // Show google maps from device
-            showGoogleMap(latLng)
-        }
+            // Show google maps and show direction
+            googleMap.setOnMapClickListener {
+                // Show google maps from device
+                showGoogleMap(latLng)
+            }
 
-        googleMap.setOnMarkerClickListener {
-            // Show google maps from device
-            showGoogleMap(latLng)
-            true
+            googleMap.setOnMarkerClickListener {
+                // Show google maps from device
+                showGoogleMap(latLng)
+                true
+            }
         }
     }
 
@@ -125,6 +147,17 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun setupViewModel(database: AppDatabase, houseId: Int) {
+        val houseDetailsVmFactory = HouseDetailsVmFactory(
+            HouseUseCasesImpl(
+                HttpHouseRepoImpl(ApiService.getHouseService()),
+                LocalHouseRepoImpl(database.getHouseDao())
+            ), houseId
+        )
+        houseDetailsViewModel =
+            ViewModelProvider(this, houseDetailsVmFactory)[HouseDetailsViewModelImpl::class.java]
+    }
+
     private fun setupViews() {
         tvPriceDetail = findViewById(R.id.tvPriceDetail)
         tvNrOfBedroomsDetail = findViewById(R.id.tvNrOfBedrooms)
@@ -136,29 +169,25 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setHouseDetails() {
-        // Get intent
-        val json = intent.getStringExtra(DETAILS_INTENT_KEY)
+        houseDetailsViewModel.house.observe(this as LifecycleOwner) { house ->
+            // Set house values to views
+            tvPriceDetail.text =
+                getString(R.string.dolor_sign).plus(getString(R.string.price_format).format(house.price.toInt()))
+            tvNrOfBedroomsDetail.text = house.bedrooms.toString()
+            tvNrOfBathroomsDetail.text = house.bathrooms.toString()
+            tvNrOfSizeDetail.text = house.size.toString()
+            tvLocationDistanceDetail.text =
+                house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
+            tvDescriptionDetail.text = house.description
 
-        // Get house from intent
-        house = Gson().fromJson(json, House::class.java)
+            // Handle location views
+            setLocationViews(house)
 
-        // Set house values to views
-        tvPriceDetail.text =
-            getString(R.string.dolor_sign).plus(getString(R.string.price_format).format(house.price.toInt()))
-        tvNrOfBedroomsDetail.text = house.bedrooms.toString()
-        tvNrOfBathroomsDetail.text = house.bathrooms.toString()
-        tvNrOfSizeDetail.text = house.size.toString()
-        tvLocationDistanceDetail.text =
-            house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
-        tvDescriptionDetail.text = house.description
+            val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
 
-        // Handle location views
-        setLocationViews(house)
-
-        val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
-
-        // Get and set house image
-        ImageHandler.handleImage(imageUrl, this, ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
+            // Get and set house image
+            ImageHandler.handleImage(imageUrl, this, ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
+        }
     }
 
     private fun setLocationViews(house: House) {
@@ -195,4 +224,6 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             null
         )
     }
+
+    private fun getHouseId(): Int = intent.getIntExtra(DETAILS_INTENT_KEY, DEFAULT_HOUSE_ID)
 }

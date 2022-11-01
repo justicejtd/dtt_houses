@@ -1,6 +1,6 @@
 package com.example.dtthouses.data.exception
 
-import com.example.dtthouses.data.contstant.Error.EXCEPTION_ERROR_PREFIX
+import com.example.dtthouses.data.contstant.ErrorMessage.EXCEPTION_ERROR_PREFIX
 
 /**
  * This is a generic exception used to handle unexpected errors

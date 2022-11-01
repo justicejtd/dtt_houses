@@ -1,14 +1,14 @@
-package com.example.dtthouses.ui.houseOverview.viewModel
+package com.example.dtthouses.ui.house.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.dtthouses.data.api.repository.house.exception.NoHouseException
-import com.example.dtthouses.data.contstant.Error.EXCEPTION_ERROR_PREFIX
 import com.example.dtthouses.data.exception.GenericException
 import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.useCases.house.HouseUseCases
+import com.example.dtthouses.utils.ExceptionHandler
 import com.example.dtthouses.utils.Resource
 import kotlinx.coroutines.*
 
@@ -28,16 +28,14 @@ class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel()
     override val isSearchNotFound: LiveData<Boolean> = _isSearchNotFound
     override val errorMessage: LiveData<String> = _errorMessage
 
-    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        throwable.localizedMessage?.let { onError("$EXCEPTION_ERROR_PREFIX $it") }
-    }
-
     init {
         this.getHousesJob = CoroutineScope(Dispatchers.Main).launch {
             _filteredHouses.postValue(Resource.loading(null))
             try {
                 // Uses extra threads for network call
-                withContext(Dispatchers.IO + exceptionHandler) {
+                withContext(Dispatchers.IO + ExceptionHandler.getCoroutineExceptionHandler { _, throwable ->
+                    throwable.message?.let { onError(it) }
+                }) {
                     val housesResponse = houseUseCases.getHouses()
                     withContext(Dispatchers.Main) {
                         // Set houses

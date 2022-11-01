@@ -20,6 +20,11 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var instance: AppDatabase? = null
 
+        // Creates Room database instance
+        private fun buildDatabase(context: Context): AppDatabase {
+            return Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
+        }
+
         /**
          * Creates an instance of AppDatabase
          */
@@ -28,11 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
             return instance ?: synchronized(this) {
                 instance ?: buildDatabase(context).also { instance = it }
             }
-        }
-
-        // Creates Room database instance
-        private fun buildDatabase(context: Context): AppDatabase {
-            return Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
         }
     }
 

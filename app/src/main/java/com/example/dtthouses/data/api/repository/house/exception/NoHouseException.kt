@@ -1,6 +1,6 @@
 package com.example.dtthouses.data.api.repository.house.exception
 
-import com.example.dtthouses.data.contstant.Error.EXCEPTION_ERROR_PREFIX
+import com.example.dtthouses.data.contstant.ErrorMessage.EXCEPTION_ERROR_PREFIX
 
 class NoHouseException: Exception(NO_HOUSES_FOUND_ERROR) {
     /**

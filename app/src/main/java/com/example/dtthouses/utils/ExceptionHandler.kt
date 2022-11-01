@@ -2,7 +2,7 @@ package com.example.dtthouses.utils
 
 import android.util.Log
 import kotlinx.coroutines.CoroutineExceptionHandler
-import  com.example.dtthouses.data.contstant.Error.EXCEPTION_ERROR_PREFIX
+import  com.example.dtthouses.data.contstant.ErrorMessage.EXCEPTION_ERROR_PREFIX
 import kotlin.coroutines.CoroutineContext
 
 /**

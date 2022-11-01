@@ -20,7 +20,7 @@ interface HouseDao {
     fun getAll(): List<House>
 
     /**
-     * Get house where id equal the inputted id.
+     * Gets house where id equal the inputted id.
      */
     @Query("SELECT * FROM house WHERE id IN (:id)")
     fun findById(id: Int): House
@@ -30,4 +30,10 @@ interface HouseDao {
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(houses: List<House>)
+
+    /**
+     * Gets house where search query is like city or zip code.
+     */
+    @Query("SELECT * FROM house WHERE city LIKE '%' || (:searchQuery) || '%' OR zip LIKE '%' || (:searchQuery) || '%'")
+    fun findBySearchQuery(searchQuery: String): List<House>
 }

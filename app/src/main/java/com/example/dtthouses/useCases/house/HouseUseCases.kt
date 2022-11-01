@@ -15,7 +15,12 @@ interface HouseUseCases {
     suspend fun getHouses(): List<House>
 
     /**
-     * Get house based on inputted house id.
+     * Gets house based on the provided house id.
      */
     suspend fun getHouseById(id: Int): House
+
+    /**
+     * Gets house based on the provided search query.
+     */
+    suspend fun getHousesBySearchQuery(searchQuery: String): List<House>
 }

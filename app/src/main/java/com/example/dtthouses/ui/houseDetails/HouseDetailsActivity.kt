@@ -17,13 +17,22 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import com.example.dtthouses.base.factories.ViewModelFactory
+import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepoImpl
+import com.example.dtthouses.data.api.repository.house.localHouse.LocalHouseRepoImpl
 import com.example.dtthouses.data.api.service.ApiService
+import com.example.dtthouses.data.database.AppDatabase
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.LOCATION_DISTANCE_ZERO
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
+import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.ui.houseOverview.HouseAdapter
+import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModel
+import com.example.dtthouses.ui.houseOverview.viewModel.HouseViewModelImpl
+import com.example.dtthouses.useCases.house.HouseUseCasesImpl
 import com.example.dtthouses.utils.ImageHandler
 
 /**
@@ -38,6 +47,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var tvLocationDistanceDetail: TextView
     private lateinit var tvDescriptionDetail: TextView
     private lateinit var ivHouseDetail: ImageView
+    private lateinit var houseDetailsViewModel: HouseViewModel
 
     /**
      * Constants values of HouseDetails.
@@ -77,6 +87,12 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Initialize views
         setupViews()
+
+        // Setup database
+        val database = AppDatabase.getInstance(applicationContext)
+
+        // Setup viewModel
+        setupViewModel(database)
 
         // Initialize house details
         setHouseDetails()
@@ -125,6 +141,15 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun setupViewModel(database: AppDatabase, houseId: Int) {
+        val viewModelFactory = HouseDetailsViewModelFactory(
+            HouseUseCasesImpl(
+                HttpHouseRepoImpl(ApiService.getHouseService()),
+                LocalHouseRepoImpl(database.getHouseDao())
+            ), houseId
+        )
+        houseDetailsViewModel = ViewModelProvider(this, viewModelFactory)[HouseDetailsViewModelImpl::class.java]
+    }
     private fun setupViews() {
         tvPriceDetail = findViewById(R.id.tvPriceDetail)
         tvNrOfBedroomsDetail = findViewById(R.id.tvNrOfBedrooms)

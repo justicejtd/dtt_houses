@@ -14,13 +14,19 @@ import com.example.dtthouses.data.database.AppDatabase
 @Dao
 interface HouseDao {
     /**
-     * Gets list of [House] using "SELECT * FROM house" query to the [AppDatabase]
+     * Gets list of [House] using "SELECT * FROM house" query to the [AppDatabase].
      */
     @Query("SELECT * FROM house")
     fun getAll(): List<House>
 
     /**
-     * Save list of [House]
+     * Get house where id equal the inputted id.
+     */
+    @Query("SELECT * FROM house WHERE id IN (:id)")
+    fun findById(id: Int): House
+
+    /**
+     * Save list of [House].
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(houses: List<House>)

@@ -13,4 +13,9 @@ interface HouseUseCases {
      * Gets a list of [House] either from the AppDatabase or from the API.
      */
     suspend fun getHouses(): List<House>
+
+    /**
+     * Get house based on inputted house id.
+     */
+    suspend fun getHouseById(id: Int): House
 }

@@ -19,4 +19,9 @@ interface LocalHouseRepo {
      * @param houses List of houses
      */
     suspend fun saveHouses(houses: List<House>)
+
+    /**
+     * Get house based on inputted house id.
+     */
+    suspend fun getHouseById(id: Int): House
 }

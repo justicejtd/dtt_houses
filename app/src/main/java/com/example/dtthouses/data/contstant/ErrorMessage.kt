@@ -9,4 +9,8 @@ object ErrorMessage {
      */
     const val EXCEPTION_ERROR_PREFIX = "Error:"
 
+    /**
+     * Exception message when view model is not found during initialization.
+     */
+    const val FACTORY_EXCEPTION_MSG = "Unknown ViewModel"
 }

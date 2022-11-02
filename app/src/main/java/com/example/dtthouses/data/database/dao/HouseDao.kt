@@ -32,8 +32,11 @@ interface HouseDao {
     fun insertAll(houses: List<House>)
 
     /**
-     * Gets house where search query is like city or zip code.
+     * Gets house where search query is like city and/or zip code.
      */
-    @Query("SELECT * FROM house WHERE city LIKE '%' || (:searchQuery) || '%' OR zip LIKE '%' || (:searchQuery) || '%'")
+    @Query("SELECT * FROM house WHERE REPLACE(UPPER(city || zip), ' ', '') " +
+            "LIKE '%' || REPLACE((:searchQuery), ' ', '') || '%' " +
+            "OR REPLACE(UPPER(zip || city), ' ', '') " +
+            "LIKE '%' || REPLACE(UPPER(:searchQuery), ' ', '') || '%'")
     fun findBySearchQuery(searchQuery: String): List<House>
 }

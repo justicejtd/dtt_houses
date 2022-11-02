@@ -24,4 +24,9 @@ interface LocalHouseRepo {
      * Get house based on inputted house id.
      */
     suspend fun getHouseById(id: Int): House
+
+    /**
+     * Gets house based on the provided search query.
+     */
+    suspend fun getHousesBySearchQuery(searchQuery: String): List<House>
 }

@@ -78,16 +78,17 @@ class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel()
 
     override fun filterCourseListBySearch(input: String?) {
         filterHousesJob = CoroutineScope(Dispatchers.Default).launch {
-            val searchedHouses = houses.filter { house ->
-                // Make a search pattern with combination of city and/or zip code
-                var isFound = isFoundQueryFound(input.toString(), house.city, house.zip)
-
-                if (!isFound) {
-                    // Make a search pattern with combination of zip code and/or city
-                    isFound = isFoundQueryFound(input.toString(), house.zip, house.city)
-                }
-                isFound
-            }
+            val searchedHouses = houseUseCases.getHousesBySearchQuery(input.toString())
+//                houses.filter { house ->
+//                // Make a search pattern with combination of city and/or zip code
+//                var isFound = isFoundQueryFound(input.toString(), house.city, house.zip)
+//
+//                if (!isFound) {
+//                    // Make a search pattern with combination of zip code and/or city
+//                    isFound = isFoundQueryFound(input.toString(), house.zip, house.city)
+//                }
+//                isFound
+//            }
 
             withContext(Dispatchers.Main) {
                 // If search is not found then show search not found image

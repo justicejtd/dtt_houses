@@ -10,7 +10,7 @@ import com.example.dtthouses.data.model.House
  */
 class HouseUseCasesImpl(
     private val httpHouseRepo: HttpHouseRepo,
-    private val localHouseRepo: LocalHouseRepo
+    private val localHouseRepo: LocalHouseRepo,
 ) : HouseUseCases {
     override suspend fun getHouses(): List<House> {
         var houses = localHouseRepo.getHouses()
@@ -27,4 +27,7 @@ class HouseUseCasesImpl(
     }
 
     override suspend fun getHouseById(id: Int): House = localHouseRepo.getHouseById(id)
+
+    override suspend fun getHousesBySearchQuery(searchQuery: String): List<House> =
+        localHouseRepo.getHousesBySearchQuery(searchQuery)
 }

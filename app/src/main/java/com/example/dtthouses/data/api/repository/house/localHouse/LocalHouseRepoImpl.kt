@@ -9,9 +9,10 @@ import com.example.dtthouses.data.model.House
 class LocalHouseRepoImpl(private val houseDao: HouseDao) : LocalHouseRepo {
     override suspend fun getHouses(): List<House> = houseDao.getAll()
 
-    override suspend fun saveHouses(houses: List<House>) {
-        houseDao.insertAll(houses)
-    }
+    override suspend fun saveHouses(houses: List<House>) = houseDao.insertAll(houses)
 
     override suspend fun getHouseById(id: Int): House = houseDao.findById(id)
+
+    override suspend fun getHousesBySearchQuery(searchQuery: String): List<House> =
+        houseDao.findBySearchQuery(searchQuery)
 }

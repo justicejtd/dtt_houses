@@ -88,7 +88,7 @@ class HouseFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHouseBinding.inflate(inflater, container, false)
 
@@ -96,11 +96,10 @@ class HouseFragment : Fragment() {
         setupUI()
 
         // Setup view model
-        houseViewModel = ViewModelProvider(this)[HouseViewModelImpl::class.java]
+        setupViewModel()
 
         // Initialize fused location provider
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(activity as Activity)
+        setupFusedLocationProvider()
 
         // Set location request
         setLocationRequest()
@@ -114,6 +113,15 @@ class HouseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setupViewModel() {
+        houseViewModel = ViewModelProvider(this)[HouseViewModelImpl::class.java]
+    }
+
+    private fun setupFusedLocationProvider() {
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(activity as Activity)
     }
 
     private fun setObservers() {

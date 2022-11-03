@@ -2,7 +2,6 @@ package com.example.dtthouses.ui.houseDetails
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
 import com.example.dtthouses.R
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
@@ -14,7 +13,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.example.dtthouses.data.api.service.ApiService
@@ -98,9 +96,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         setToolbarAndStatusBar()
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.mapFragmentContainer) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
+        val mapFragment: SupportMapFragment = houseDetailsTopLayer.mapFragmentContainer.getFragment()
+        mapFragment.getMapAsync(this)
 
     }
 
@@ -137,7 +134,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setToolbarAndStatusBar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbarHouseDetails)
+        val toolbar = binding.toolbarHouseDetails
 
         // Set toolbar color to transparent
         toolbar.setBackgroundColor(Color.TRANSPARENT)
@@ -170,11 +167,9 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setLocationViews(house: House) {
-        val ivLocation = findViewById<ImageView>(R.id.ivLocation)
-
         if (house.locationDistance == LOCATION_DISTANCE_ZERO) {
             houseDetails.tvLocationDistance.visibility = View.GONE
-            ivLocation.visibility = View.GONE
+            houseDetails.ivLocation.visibility = View.GONE
         } else {
             houseDetails.tvLocationDistance.text =
                 house.locationDistance.toString().plus(" ").plus(getString(R.string.km))

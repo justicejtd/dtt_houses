@@ -61,39 +61,13 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
         _errorMessage.value = message
     }
 
-    override fun filterCourseListBySearch(input: String?) {
-        filterHousesJob = CoroutineScope(Dispatchers.Default).launch {
+    override fun onSearchTextChanged(input: String?) {
+        viewModelScope.launch(Dispatchers.Default) {
             val searchedHouses = houseUseCases.getHousesBySearchQuery(input.toString())
-//                houses.filter { house ->
-//                // Make a search pattern with combination of city and/or zip code
-//                var isFound = isFoundQueryFound(input.toString(), house.city, house.zip)
-//
-//                if (!isFound) {
-//                    // Make a search pattern with combination of zip code and/or city
-//                    isFound = isFoundQueryFound(input.toString(), house.zip, house.city)
-//                }
-//                isFound
-//            }
 
-            withContext(Dispatchers.Main) {
-                // If search is not found then show search not found image
-                _isSearchNotFound.postValue(searchedHouses.isEmpty())
-                _filteredHouses.postValue(Resource.success(searchedHouses))
-            }
+            // If search is not found then show search not found image
+            _isSearchNotFound.postValue(searchedHouses.isEmpty())
+            _filteredHouses.postValue(Resource.success(searchedHouses))
         }
-    }
-
-    private fun isFoundQueryFound(input: String, value1: String, value2: String): Boolean {
-        // Make a search pattern with combination of city and/or postal code
-        var pattern = value1.uppercase().plus(value2.uppercase())
-
-        // Remove any white spaces
-        pattern = pattern.replace("\\s".toRegex(), "")
-
-        // Set input value to uppercase and remove any whitespaces
-        val query = input.uppercase().replace("\\s".toRegex(), "")
-
-        // Check if house is found
-        return pattern.contains(query)
     }
 }

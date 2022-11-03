@@ -5,11 +5,12 @@ import com.example.dtthouses.data.exception.GenericException
 import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
 import retrofit2.Response
+import javax.inject.Inject
 
 /**
  * House repository makes network calls from [HouseService].
  */
-class HttpHouseRepoImpl(private val service: HouseService) : HttpHouseRepo {
+class HttpHouseRepoImpl @Inject constructor(private val service: HouseService) : HttpHouseRepo {
 
     @Throws(NetworkException::class, GenericException::class)
     override suspend fun getHouses(): List<House> {

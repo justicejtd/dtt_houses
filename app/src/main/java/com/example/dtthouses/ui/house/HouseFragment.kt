@@ -28,27 +28,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
-import com.example.dtthouses.ui.house.factory.HouseVmFactory
-import com.example.dtthouses.data.api.service.ApiService
-import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepoImpl
-import com.example.dtthouses.data.api.repository.house.localHouse.LocalHouseRepoImpl
-import com.example.dtthouses.data.database.AppDatabase
 import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.ui.house.viewModel.HouseViewModel
 import com.example.dtthouses.ui.house.viewModel.HouseViewModelImpl
-import com.example.dtthouses.useCases.house.HouseUseCasesImpl
 import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
 
 /**
  * Fragment showing an overview of houses.
  */
+@AndroidEntryPoint
 class HouseFragment : Fragment() {
     private lateinit var houseAdapter: HouseAdapter
     private val requestCode = 100
@@ -102,17 +98,8 @@ class HouseFragment : Fragment() {
         // Initialize views
         setupUI(view)
 
-        // Setup database
-        val database = AppDatabase.getInstance(requireContext())
-
         // Setup view model
-        val houseVmFactory = HouseVmFactory(
-            HouseUseCasesImpl(
-                HttpHouseRepoImpl(ApiService.getHouseService()),
-                LocalHouseRepoImpl(database.getHouseDao())
-            )
-        )
-        houseViewModel = ViewModelProvider(this, houseVmFactory)[HouseViewModelImpl::class.java]
+        houseViewModel = ViewModelProvider(this)[HouseViewModelImpl::class.java]
 
         // Initialize fused location provider
         fusedLocationProviderClient =
@@ -199,7 +186,7 @@ class HouseFragment : Fragment() {
 
         etSearch.doOnTextChanged { value, _, _, _ ->
             // Update list on search
-            houseViewModel.filterCourseListBySearch(value.toString())
+            houseViewModel.onSearchTextChanged(value.toString())
         }
 
         // Hide keyboard and clear search focus after search has been performed

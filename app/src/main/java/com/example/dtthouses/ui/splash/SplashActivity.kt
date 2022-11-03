@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import com.example.dtthouses.R
-import com.example.dtthouses.base.HomeActivity
+import com.example.dtthouses.ui.house.HomeActivity
 import com.example.dtthouses.ui.splash.SplashActivity.SplashActivityConstants.SPLASH_ALPHA
 import com.example.dtthouses.ui.splash.SplashActivity.SplashActivityConstants.SPLASH_DURATION
 

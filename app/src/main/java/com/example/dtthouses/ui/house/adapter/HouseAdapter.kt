@@ -15,7 +15,6 @@ import com.example.dtthouses.R
 import com.example.dtthouses.data.api.service.ApiService.DTT_BASE_URL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.example.dtthouses.utils.ImageHandler
-import com.google.gson.Gson
 
 
 /**

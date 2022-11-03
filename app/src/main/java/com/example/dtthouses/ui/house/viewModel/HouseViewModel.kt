@@ -27,5 +27,5 @@ interface HouseViewModel {
     /**
      * Filters list of houses based on city and zip code.
      */
-    fun filterCourseListBySearch(input: String?)
+    fun onSearchTextChanged(input: String?)
 }

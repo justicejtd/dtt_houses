@@ -1,7 +1,5 @@
 package com.example.dtthouses.data.api.repository.house.httpHouse
 
-import com.example.dtthouses.data.exception.GenericException
-import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
 
 /**

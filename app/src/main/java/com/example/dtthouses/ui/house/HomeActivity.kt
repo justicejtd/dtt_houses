@@ -1,4 +1,4 @@
-package com.example.dtthouses.base
+package com.example.dtthouses.ui.house
 
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -8,7 +8,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.dtthouses.R
 import com.example.dtthouses.ui.about.AboutFragmentCallback
-import com.example.dtthouses.ui.house.HouseFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
 import android.graphics.Color
@@ -16,11 +15,13 @@ import android.net.Uri
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
 import androidx.core.view.isGone
-import com.example.dtthouses.base.HomeActivity.HouseActivityConstants.DTT_URL
+import com.example.dtthouses.ui.house.HomeActivity.HouseActivityConstants.DTT_URL
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Activity for handling bottom navigation fragments.
  */
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
     private val requestCode = 100
     private lateinit var hostFragment: NavHostFragment

@@ -14,30 +14,28 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
-import com.example.dtthouses.data.api.repository.house.httpHouse.HttpHouseRepoImpl
-import com.example.dtthouses.data.api.repository.house.localHouse.LocalHouseRepoImpl
 import com.example.dtthouses.data.api.service.ApiService
-import com.example.dtthouses.data.database.AppDatabase
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.DEFAULT_HOUSE_ID
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.LOCATION_DISTANCE_ZERO
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
-import com.example.dtthouses.ui.houseDetails.factory.HouseDetailsVmFactory
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModel
-import com.example.dtthouses.useCases.house.HouseUseCasesImpl
 import com.example.dtthouses.utils.ImageHandler
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Activity for show all details of a house.
  */
+@AndroidEntryPoint
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var tvPriceDetail: TextView
     private lateinit var tvNrOfBedroomsDetail: TextView
@@ -92,11 +90,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Initialize views
         setupViews()
 
-        // Setup database
-        val database = AppDatabase.getInstance(applicationContext)
-
         // Setup viewModel
-        setupViewModel(database, getHouseId())
+        setupViewModel()
 
         // Initialize house details
         setHouseDetails()
@@ -109,6 +104,13 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             supportFragmentManager.findFragmentById(R.id.mapFragmentContainer) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
 
+    }
+
+    private fun setupViewModel() {
+        houseDetailsViewModel = ViewModelProvider(this)[HouseDetailsViewModelImpl::class.java]
+
+        // Load detail house from database based on house id
+        houseDetailsViewModel.onLoadHouse(getHouseId())
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -145,17 +147,6 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = ""
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun setupViewModel(database: AppDatabase, houseId: Int) {
-        val houseDetailsVmFactory = HouseDetailsVmFactory(
-            HouseUseCasesImpl(
-                HttpHouseRepoImpl(ApiService.getHouseService()),
-                LocalHouseRepoImpl(database.getHouseDao())
-            ), houseId
-        )
-        houseDetailsViewModel =
-            ViewModelProvider(this, houseDetailsVmFactory)[HouseDetailsViewModelImpl::class.java]
     }
 
     private fun setupViews() {

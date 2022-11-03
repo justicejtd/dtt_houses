@@ -3,7 +3,6 @@ package com.example.dtthouses.ui.houseDetails
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.TextView
 import com.example.dtthouses.R
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
@@ -14,7 +13,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner

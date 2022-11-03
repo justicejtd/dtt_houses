@@ -12,4 +12,9 @@ interface HouseDetailsViewModel {
      * LiveData House object to for showing the house details.
      */
     val house: LiveData<House>
+
+    /**
+     * Loads selected house based on provided house id.
+     */
+    fun onLoadHouse(houseId: Int)
 }

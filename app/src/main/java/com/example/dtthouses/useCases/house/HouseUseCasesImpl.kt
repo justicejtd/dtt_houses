@@ -25,11 +25,16 @@ class HouseUseCasesImpl @Inject constructor(
             // Save house into database
             localHouseRepo.saveHouses(houses)
         }
-        return houses
+
+        return sortHouses(houses)
     }
 
     override suspend fun getHouseById(id: Int): House = localHouseRepo.getHouseById(id)
 
     override suspend fun getHousesBySearchQuery(searchQuery: String): List<House> =
         localHouseRepo.getHousesBySearchQuery(searchQuery)
+
+    private fun sortHouses(houses: List<House>): List<House> {
+        return houses.sortedBy { house -> house.price }
+    }
 }

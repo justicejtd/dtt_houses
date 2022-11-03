@@ -16,7 +16,6 @@ import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -26,8 +25,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.R
+import com.example.dtthouses.databinding.FragmentHouseBinding
 import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
 import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
 import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
@@ -49,9 +48,8 @@ class HouseFragment : Fragment() {
     private lateinit var houseAdapter: HouseAdapter
     private val requestCode = 100
     private lateinit var houseViewModel: HouseViewModel
-    private lateinit var rvHouses: RecyclerView
-    private lateinit var viewSearchNotFound: View
-    private lateinit var pbLoading: ProgressBar
+    private var _binding: FragmentHouseBinding? = null
+    private val binding get() = _binding!!
 
     // FusedLocationProviderClient - Main class for receiving location updates.
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -90,20 +88,18 @@ class HouseFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_house, container, false)
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentHouseBinding.inflate(inflater, container, false)
 
         // Initialize views
-        setupUI(view)
+        setupUI()
 
         // Setup view model
-        houseViewModel = ViewModelProvider(this)[HouseViewModelImpl::class.java]
+        setupViewModel()
 
         // Initialize fused location provider
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(activity as Activity)
+        setupFusedLocationProvider()
 
         // Set location request
         setLocationRequest()
@@ -111,11 +107,27 @@ class HouseFragment : Fragment() {
         // Setup observers
         setObservers()
 
-        return view
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun setupViewModel() {
+        houseViewModel = ViewModelProvider(this)[HouseViewModelImpl::class.java]
+    }
+
+    private fun setupFusedLocationProvider() {
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(activity as Activity)
     }
 
     private fun setObservers() {
         houseViewModel.filteredHouses.observe(this as LifecycleOwner) {
+            val pbLoading = binding.pbLoading
+
             when (it.status) {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
@@ -144,21 +156,21 @@ class HouseFragment : Fragment() {
                     pbLoading.visibility = View.GONE
 
                     // Hide house overview list
-                    rvHouses.visibility = View.GONE
+                    binding.rvHouses.visibility = View.GONE
 
                     // Show SearchNot found
-                    viewSearchNotFound.visibility = View.VISIBLE
+                    binding.viewSearchNotFound.root.visibility = View.VISIBLE
                 }
             }
         }
 
         houseViewModel.isSearchNotFound.observe(this as LifecycleOwner) {
             if (it) {
-                rvHouses.visibility = View.GONE
-                viewSearchNotFound.visibility = View.VISIBLE
+                binding.rvHouses.visibility = View.GONE
+                binding.viewSearchNotFound.root.visibility = View.VISIBLE
             } else {
-                rvHouses.visibility = View.VISIBLE
-                viewSearchNotFound.visibility = View.GONE
+                binding.rvHouses.visibility = View.VISIBLE
+                binding.viewSearchNotFound.root.visibility = View.GONE
             }
         }
 
@@ -168,15 +180,11 @@ class HouseFragment : Fragment() {
         }
     }
 
-    private fun setupUI(view: View) {
+    private fun setupUI() {
         houseAdapter = HouseAdapter(arrayListOf(), requireContext())
-        pbLoading = view.findViewById(R.id.pbLoading)
-        viewSearchNotFound = view.findViewById(R.id.viewSearchNotFound)
-        rvHouses = view.findViewById(R.id.rvHouses)
-        rvHouses.layoutManager = LinearLayoutManager(context)
-        rvHouses.adapter = houseAdapter
-
-        val etSearch = view.findViewById<EditText>(R.id.etSearchHome)
+        binding.rvHouses.layoutManager = LinearLayoutManager(context)
+        binding.rvHouses.adapter = houseAdapter
+        val etSearch = binding.etSearchHome
 
         // Set cancel button to search edit text view
         addRightCancelDrawable(etSearch)

@@ -38,6 +38,7 @@
             app:theme="@style/ToolbarTheme" />
 
         <include
+            android:id="@+id/includeViewHouseDetailsTopLayer"
             layout="@layout/view_house_details_top_layer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

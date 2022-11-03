@@ -35,6 +35,7 @@
             android:orientation="horizontal">
 
             <include
+                android:id="@+id/includeViewHouseDetails"
                 layout="@layout/view_house_details"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />

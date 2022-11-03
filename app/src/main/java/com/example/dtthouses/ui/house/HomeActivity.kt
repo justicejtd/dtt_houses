@@ -15,6 +15,7 @@ import android.net.Uri
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
 import androidx.core.view.isGone
+import com.example.dtthouses.databinding.ActivityHomeBinding
 import com.example.dtthouses.ui.house.HomeActivity.HouseActivityConstants.DTT_URL
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
     private val requestCode = 100
+    private lateinit var binding: ActivityHomeBinding
     private lateinit var hostFragment: NavHostFragment
     private lateinit var bottomNav: BottomNavigationView
 
@@ -39,20 +41,28 @@ class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        // Setup view binding
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize views
-        hostFragment = supportFragmentManager.findFragmentById(R.id.fcvHost) as NavHostFragment
-        bottomNav = findViewById(R.id.bottomNavigationView)
-
-        // Setup navigation graph controller to bottom navigation
-        bottomNav.setupWithNavController(hostFragment.navController)
+        setupViews()
 
         // Set status bar color to gray
-        this.window.statusBarColor = Color.GRAY
+        setStatusBarColor()
 
         // Hide bottom navigation when keyboard is shown
         hideBottomNavigation()
+    }
+
+    private fun setupViews() {
+        hostFragment = binding.fcvHost.getFragment()
+        bottomNav = binding.bottomNavigationView
+        bottomNav.setupWithNavController(hostFragment.navController)
+    }
+
+    private fun setStatusBarColor() {
+        this.window.statusBarColor = Color.GRAY
     }
 
     override fun onRequestPermissionsResult(

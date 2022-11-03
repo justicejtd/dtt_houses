@@ -2,8 +2,6 @@ package com.example.dtthouses.ui.houseDetails
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import com.example.dtthouses.R
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
@@ -14,12 +12,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.example.dtthouses.data.api.service.ApiService
+import com.example.dtthouses.databinding.ActivityHouseDetailsBinding
+import com.example.dtthouses.databinding.ViewHouseDetailsBinding
+import com.example.dtthouses.databinding.ViewHouseDetailsTopLayerBinding
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.DEFAULT_HOUSE_ID
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
@@ -37,13 +36,9 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var tvPriceDetail: TextView
-    private lateinit var tvNrOfBedroomsDetail: TextView
-    private lateinit var tvNrOfBathroomsDetail: TextView
-    private lateinit var tvNrOfSizeDetail: TextView
-    private lateinit var tvLocationDistanceDetail: TextView
-    private lateinit var tvDescriptionDetail: TextView
-    private lateinit var ivHouseDetail: ImageView
+    private lateinit var binding: ActivityHouseDetailsBinding
+    private lateinit var houseDetailsTopLayer: ViewHouseDetailsTopLayerBinding
+    private lateinit var houseDetails: ViewHouseDetailsBinding
     private lateinit var houseDetailsViewModel: HouseDetailsViewModel
 
     /**
@@ -85,10 +80,11 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_house_details)
-
-        // Initialize views
-        setupViews()
+        // Setup view binding
+        binding = ActivityHouseDetailsBinding.inflate(layoutInflater)
+        houseDetailsTopLayer = binding.includeViewHouseDetailsTopLayer
+        houseDetails = binding.includeViewHouseDetailsTopLayer.includeViewHouseDetails
+        setContentView(binding.root)
 
         // Setup viewModel
         setupViewModel()
@@ -100,9 +96,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         setToolbarAndStatusBar()
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment =
-            supportFragmentManager.findFragmentById(R.id.mapFragmentContainer) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
+        val mapFragment: SupportMapFragment = houseDetailsTopLayer.mapFragmentContainer.getFragment()
+        mapFragment.getMapAsync(this)
 
     }
 
@@ -139,7 +134,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setToolbarAndStatusBar() {
-        val toolbar = findViewById<Toolbar>(R.id.toolbarHouseDetails)
+        val toolbar = binding.toolbarHouseDetails
 
         // Set toolbar color to transparent
         toolbar.setBackgroundColor(Color.TRANSPARENT)
@@ -149,27 +144,17 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun setupViews() {
-        tvPriceDetail = findViewById(R.id.tvPriceDetail)
-        tvNrOfBedroomsDetail = findViewById(R.id.tvNrOfBedrooms)
-        tvNrOfBathroomsDetail = findViewById(R.id.tvNrOfBathrooms)
-        tvNrOfSizeDetail = findViewById(R.id.tvNrOfSize)
-        tvLocationDistanceDetail = findViewById(R.id.tvLocationDistance)
-        tvDescriptionDetail = findViewById(R.id.tvDescriptionDetail)
-        ivHouseDetail = findViewById(R.id.ivHouseDetail)
-    }
-
     private fun setHouseDetails() {
         houseDetailsViewModel.house.observe(this as LifecycleOwner) { house ->
             // Set house values to views
-            tvPriceDetail.text =
+            houseDetailsTopLayer.tvPriceDetail.text =
                 getString(R.string.dolor_sign).plus(getString(R.string.price_format).format(house.price.toInt()))
-            tvNrOfBedroomsDetail.text = house.bedrooms.toString()
-            tvNrOfBathroomsDetail.text = house.bathrooms.toString()
-            tvNrOfSizeDetail.text = house.size.toString()
-            tvLocationDistanceDetail.text =
+            houseDetails.tvNrOfBedrooms.text = house.bedrooms.toString()
+            houseDetails.tvNrOfBathrooms.text = house.bathrooms.toString()
+            houseDetails.tvNrOfSize.text = house.size.toString()
+            houseDetails.tvLocationDistance.text =
                 house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
-            tvDescriptionDetail.text = house.description
+            houseDetailsTopLayer.tvDescriptionDetail.text = house.description
 
             // Handle location views
             setLocationViews(house)
@@ -177,18 +162,16 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
 
             // Get and set house image
-            ImageHandler.handleImage(imageUrl, this, ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
+            ImageHandler.handleImage(imageUrl, this,  binding.ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
         }
     }
 
     private fun setLocationViews(house: House) {
-        val ivLocation = findViewById<ImageView>(R.id.ivLocation)
-
         if (house.locationDistance == LOCATION_DISTANCE_ZERO) {
-            tvLocationDistanceDetail.visibility = View.GONE
-            ivLocation.visibility = View.GONE
+            houseDetails.tvLocationDistance.visibility = View.GONE
+            houseDetails.ivLocation.visibility = View.GONE
         } else {
-            tvLocationDistanceDetail.text =
+            houseDetails.tvLocationDistance.text =
                 house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
         }
 

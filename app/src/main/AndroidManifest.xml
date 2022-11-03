@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DTTHouses">
         <activity
-            android:parentActivityName=".base.HomeActivity"
+            android:parentActivityName=".ui.house.HomeActivity"
             android:name=".ui.houseDetails.HouseDetailsActivity"
             android:exported="false" />
         <activity
@@ -31,7 +31,7 @@
         </activity>
 
         <activity
-            android:name=".base.HomeActivity"
+            android:name=".ui.house.HomeActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 

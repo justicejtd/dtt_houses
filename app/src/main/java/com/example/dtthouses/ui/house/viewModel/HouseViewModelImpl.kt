@@ -31,29 +31,19 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
     override val isSearchNotFound: LiveData<Boolean> = _isSearchNotFound
     override val errorMessage: LiveData<String> = _errorMessage
 
-    init {
-        this.getHousesJob = CoroutineScope(Dispatchers.Main).launch {
-            _filteredHouses.postValue(Resource.loading(null))
+    init { loadHouses() }
+
+    private fun loadHouses() {
+        viewModelScope.launch(Dispatchers.IO + ExceptionHandler.getCoroutineExceptionHandler { _, throwable ->
+            throwable.message?.let { onError(it) }
+        }) {
             try {
-                // Uses extra threads for network call
-                withContext(Dispatchers.IO + ExceptionHandler.getCoroutineExceptionHandler { _, throwable ->
-                    throwable.message?.let { onError(it) }
-                }) {
-                    val housesResponse = houseUseCases.getHouses()
-                    withContext(Dispatchers.Main) {
-                        // Set houses
-                        houses = housesResponse
+                _filteredHouses.postValue(Resource.loading(null))
+                houses = houseUseCases.getHouses()
 
-                        // Notify view when houses are fetched successfully
-                        _filteredHouses.postValue(Resource.success(housesResponse))
+                // Notify view when houses are fetched successfully
+                _filteredHouses.postValue(Resource.success(houses))
 
-                        // Sort houses by price (cheapest to expensive)
-                        _filteredHouses.value?.data?.sortedBy { house -> house.price }
-                    }
-
-                    // Bug (for some reason "isSearchNotFound" needs to be false on init)
-                    _isSearchNotFound.postValue(false)
-                }
             } catch (ex: NoHouseException) {
                 // If there are no houses found from the API show an error message.
                 _filteredHouses.postValue(Resource.error(ex.message.toString(), null))
@@ -65,14 +55,6 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
                 onError(ex.message.toString())
             }
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        // Cancel all coroutines
-        getHousesJob?.cancel()
-        filterHousesJob?.cancel()
     }
 
     private fun onError(message: String) {

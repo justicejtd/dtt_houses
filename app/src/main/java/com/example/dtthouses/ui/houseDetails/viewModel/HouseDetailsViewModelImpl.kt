@@ -7,26 +7,23 @@ import androidx.lifecycle.viewModelScope
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.useCases.house.HouseUseCases
 import com.example.dtthouses.utils.ExceptionHandler
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Handles any UI logic for HouseDetailsActivity.
  */
-class HouseDetailsViewModelImpl(
-    private val houseUseCases: HouseUseCases,
-    private val houseId: Int
-) : ViewModel(),
+@HiltViewModel
+class HouseDetailsViewModelImpl @Inject constructor(private val houseUseCases: HouseUseCases) :
+    ViewModel(),
     HouseDetailsViewModel {
     private var _house = MutableLiveData<House>()
     override val house: LiveData<House> = _house
 
-    init {
+    override fun onLoadHouse(houseId: Int) {
         // Get and set house from database using house id.
-        loadHouse()
-    }
-
-    private fun loadHouse() {
         viewModelScope.launch(Dispatchers.IO + ExceptionHandler.getCoroutineExceptionHandler(null)) {
             _house.postValue(houseUseCases.getHouseById(houseId))
         }

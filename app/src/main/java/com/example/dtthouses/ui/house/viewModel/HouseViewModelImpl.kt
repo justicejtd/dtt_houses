@@ -3,6 +3,7 @@ package com.example.dtthouses.ui.house.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dtthouses.data.api.repository.house.exception.NoHouseException
 import com.example.dtthouses.data.exception.GenericException
 import com.example.dtthouses.data.exception.NetworkException
@@ -10,14 +11,16 @@ import com.example.dtthouses.data.model.House
 import com.example.dtthouses.useCases.house.HouseUseCases
 import com.example.dtthouses.utils.ExceptionHandler
 import com.example.dtthouses.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 /**
  * Handles any UI logic for HouseFragment.
  */
-class HouseViewModelImpl(private val houseUseCases: HouseUseCases) : ViewModel(), HouseViewModel {
-    private var getHousesJob: Job? = null
-    private var filterHousesJob: Job? = null
+@HiltViewModel
+class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUseCases) :
+    ViewModel(), HouseViewModel {
     private var houses: List<House> = listOf()
     private var _filteredHouses = MutableLiveData<Resource<List<House>>>()
     private val _isSearchNotFound = MutableLiveData(false)

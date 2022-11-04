@@ -32,11 +32,12 @@ interface HouseViewModel {
 
     /**
      * Calculate location distance between provided start pont and point location
+     * and return an updated list of houses.
      */
-    fun onUpdateHousesDistance(startPoint: Location, endPoint: Location): Int
+    fun onCalculateHousesDistance(startPoint: Location, endPoint: Location, houses: List<House>): List<House>
 
     /**
-     * Update houses data to the database.
+     * Return a sorted list of houses.
      */
-    fun updateHouses(houses: List<House>)
+    fun onSortHouses(houses: List<House>): List<House>
 }

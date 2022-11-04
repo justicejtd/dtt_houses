@@ -145,6 +145,9 @@ class HouseFragment : Fragment() {
 
                             // Get houses
                             houseAdapter.addHouses(houses)
+                            // Get houses, this sorting is called here because it seems
+                            // on refresh the houses are coming from cache and not from view model
+                            houseAdapter.addHouses(houseViewModel.onSortHouses(houses))
                         }
                     }
                 }

@@ -19,7 +19,7 @@ class LocationUseCasesImpl @Inject constructor(): LocationUseCases {
         const val DISTANCE_TO_KM = 1000
     }
 
-     override fun calculateLocationDistance(startPoint: Location, endPoint: Location): Int {
+     override suspend fun calculateLocationDistance(startPoint: Location, endPoint: Location): Int {
         // Calculate distance in km
         return (startPoint.distanceTo(endPoint) / DISTANCE_TO_KM).toInt()
     }

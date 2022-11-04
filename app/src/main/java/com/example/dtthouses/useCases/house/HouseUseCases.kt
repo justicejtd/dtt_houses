@@ -28,4 +28,9 @@ interface HouseUseCases {
      * Update all houses data.
      */
     suspend fun updateHouses(houses: List<House>)
+
+    /**
+     * Returns a list of sorted houses.
+     */
+    fun sortHouses(houses: List<House>): List<House>
 }

@@ -143,8 +143,6 @@ class HouseFragment : Fragment() {
                             // Hide/gone progress bar
                             pbLoading.visibility = View.GONE
 
-                            // Get houses
-                            houseAdapter.addHouses(houses)
                             // Get houses, this sorting is called here because it seems
                             // on refresh the houses are coming from cache and not from view model
                             houseAdapter.addHouses(houseViewModel.onSortHouses(houses))
@@ -334,10 +332,11 @@ class HouseFragment : Fragment() {
 
     private fun setLocationRequest() {
         // Create location request
-        locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, INTERVAL_DURATION)
-            .setWaitForAccurateLocation(WAIT_FOR_ACCURATE_LOCATION)
-            .setMinUpdateIntervalMillis(FASTEST_INTERVAL_DURATION)
-            .setMaxUpdateDelayMillis(MAX_WAIT_TIME)
-            .build()
+        locationRequest =
+            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, INTERVAL_DURATION)
+                .setWaitForAccurateLocation(WAIT_FOR_ACCURATE_LOCATION)
+                .setMinUpdateIntervalMillis(FASTEST_INTERVAL_DURATION)
+                .setMaxUpdateDelayMillis(MAX_WAIT_TIME)
+                .build()
     }
 }

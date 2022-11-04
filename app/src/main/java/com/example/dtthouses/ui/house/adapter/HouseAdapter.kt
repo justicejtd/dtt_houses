@@ -2,7 +2,6 @@ package com.example.dtthouses.ui.house.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -110,7 +109,6 @@ class HouseAdapter(
                 tvLocationDistance.text =
                     house.locationDistance.toString().plus(" ").plus(context.getString(R.string.km))
             }
-
         }
     }
 
@@ -135,24 +133,6 @@ class HouseAdapter(
      */
     fun addHouses(houses: List<House>) {
         this.houses = houses
-        notifyDataSetChanged()
-    }
-
-    /**
-     * Update all houses location distance with the provided distance.
-     */
-    fun updateHousesLocation(
-        userLet: Double,
-        userLong: Double,
-        onCalculateLocationDistance: ((startPoint: Location, endPoint: Location, house: List<House>) -> List<House>),
-    ) {
-        // Set user location
-        val startPoint = Location(USER_LOCATION_PROVIDER)
-        startPoint.latitude = userLet
-        startPoint.longitude = userLong
-        val endPoint = Location(HOUSE_LOCATION_PROVIDER)
-
-        this.houses = onCalculateLocationDistance(startPoint, endPoint, houses)
         notifyDataSetChanged()
     }
 

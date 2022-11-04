@@ -3,10 +3,8 @@ package com.example.dtthouses.ui.house
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.dtthouses.R
 import com.example.dtthouses.ui.about.AboutFragmentCallback
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Intent
@@ -78,13 +76,6 @@ class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    // Notify user that permission has been granted
-                    Toast.makeText(
-                        this,
-                        getString(R.string.permission_granted_msg),
-                        Toast.LENGTH_LONG
-                    ).show()
-
                     // If permission is granted started getting user location
                     houseFragment.getCurrentLocation()
 

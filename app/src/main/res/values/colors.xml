@@ -20,5 +20,6 @@
     <color name="input_background_color">@color/dark_gray</color>
     <color name="primary_color">@color/black</color>
     <color name="surface_color">@color/white</color>
-    <color name="bottom_navigation_color">@color/white</color>
+    <color name="bottom_nav_background_color">@color/white</color>
+    <color name="bottom_nav_inactive_color">@color/light</color>
 </resources>

@@ -20,9 +20,12 @@ import com.example.dtthouses.utils.ImageHandler
 /**
  * Adapter for handling the list of houses.
  */
-class HouseAdapter(var houses: List<House>, val context: Context) :
+class HouseAdapter(
+    var houses: List<House>,
+    val context: Context,
+    var isLocationPermissionDenied: Boolean = false,
+) :
     RecyclerView.Adapter<HouseAdapter.ViewHolder>() {
-    private var isLocationPermissionDenied = false
 
     /**
      * Constants values of HouseAdapter.
@@ -37,6 +40,16 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
          * Default house image. Can be used when house image is not found during network call.
          */
         const val DEFAULT_IMAGE = R.drawable.house_placeholder
+
+        /**
+         * Name of user location provider.
+         */
+        const val USER_LOCATION_PROVIDER = "UserLocation"
+
+        /**
+         * Name of house location provider.
+         */
+        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
     }
 
     /**
@@ -132,13 +145,13 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
         calculateLocationDistance: ((startPoint: Location, endPoint: Location) -> Int),
     ) {
         // Set user location
-        val startPoint = Location(HouseFragment.HouseFragmentConstants.USER_LOCATION_PROVIDER)
+        val startPoint = Location(USER_LOCATION_PROVIDER)
         startPoint.latitude = userLet
         startPoint.longitude = userLong
 
         houses.forEach {
             // Set house location
-            val endPoint = Location(HouseFragment.HouseFragmentConstants.HOUSE_LOCATION_PROVIDER)
+            val endPoint = Location(HOUSE_LOCATION_PROVIDER)
             endPoint.latitude = it.latitude
             endPoint.longitude = it.longitude
 

@@ -2,7 +2,6 @@ package com.example.dtthouses.ui.house.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.location.Location
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,19 +9,21 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
 import com.example.dtthouses.data.api.service.ApiService.DTT_BASE_URL
-import com.example.dtthouses.ui.house.HouseFragment
+import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.example.dtthouses.utils.ImageHandler
 
 /**
  * Adapter for handling the list of houses.
  */
-class HouseAdapter(var houses: List<House>, val context: Context) :
+class HouseAdapter(
+    var houses: List<House>,
+    val context: Context,
+    var isLocationPermissionDenied: Boolean = false,
+) :
     RecyclerView.Adapter<HouseAdapter.ViewHolder>() {
-    private var isLocationPermissionDenied = false
 
     /**
      * Constants values of HouseAdapter.
@@ -37,6 +38,16 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
          * Default house image. Can be used when house image is not found during network call.
          */
         const val DEFAULT_IMAGE = R.drawable.house_placeholder
+
+        /**
+         * Name of user location provider.
+         */
+        const val USER_LOCATION_PROVIDER = "UserLocation"
+
+        /**
+         * Name of house location provider.
+         */
+        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
     }
 
     /**
@@ -98,7 +109,6 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
                 tvLocationDistance.text =
                     house.locationDistance.toString().plus(" ").plus(context.getString(R.string.km))
             }
-
         }
     }
 
@@ -114,37 +124,15 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
 
     override fun getItemCount() = houses.size
 
+    override fun getItemId(position: Int): Long {
+        return houses[position].id.toLong()
+    }
+
     /**
      * Add list of houses to recycler view.
      */
     fun addHouses(houses: List<House>) {
         this.houses = houses
-        notifyDataSetChanged()
-    }
-
-    /**
-     * Update all houses location distance with the provided distance.
-     */
-    fun updateHousesLocation(
-        userLet: Double,
-        userLong: Double,
-        updateHouses: ((houses: List<House>) -> Unit),
-        calculateLocationDistance: ((startPoint: Location, endPoint: Location) -> Int),
-    ) {
-        // Set user location
-        val startPoint = Location(HouseFragment.HouseFragmentConstants.USER_LOCATION_PROVIDER)
-        startPoint.latitude = userLet
-        startPoint.longitude = userLong
-
-        houses.forEach {
-            // Set house location
-            val endPoint = Location(HouseFragment.HouseFragmentConstants.HOUSE_LOCATION_PROVIDER)
-            endPoint.latitude = it.latitude
-            endPoint.longitude = it.longitude
-
-            it.locationDistance = calculateLocationDistance(startPoint, endPoint)
-        }
-        updateHouses(houses)
         notifyDataSetChanged()
     }
 

@@ -46,7 +46,7 @@ class HouseViewModelImpl @Inject constructor(
         }) {
             try {
                 _filteredHouses.postValue(Resource.loading(null))
-                houses = houseUseCases.getHouses()
+                houses = sortHouses(houseUseCases.getHouses())
 
                 // Notify view when houses are fetched successfully
                 _filteredHouses.postValue(Resource.success(houses))
@@ -69,7 +69,7 @@ class HouseViewModelImpl @Inject constructor(
 
     override fun onSearchTextChanged(input: String?) {
         viewModelScope.launch(Dispatchers.Default) {
-            val searchedHouses = houseUseCases.getHousesBySearchQuery(input.toString())
+            val searchedHouses = sortHouses(houseUseCases.getHousesBySearchQuery(input.toString()))
 
             // If search is not found then show search not found image
             _isSearchNotFound.postValue(searchedHouses.isEmpty())
@@ -77,13 +77,33 @@ class HouseViewModelImpl @Inject constructor(
         }
     }
 
-    override fun onUpdateHousesDistance(startPoint: Location, endPoint: Location): Int {
-        return locationUseCases.calculateLocationDistance(startPoint, endPoint)
+    override fun onHousesLocationDistanceUpdate(
+        startPoint: Location,
+        endPoint: Location,
+    ) {
+        viewModelScope.launch(Dispatchers.Default) {
+            // Update all the houses locations distances
+            houses.forEach {
+                // Set house location
+                endPoint.latitude = it.latitude
+                endPoint.longitude = it.longitude
+
+                it.locationDistance =
+                    locationUseCases.calculateLocationDistance(startPoint, endPoint)
+            }
+            withContext(Dispatchers.IO) {
+                // Update houses in the database
+                updateHouses(houses)
+            }
+            _filteredHouses.postValue(Resource.success(houses))
+        }
     }
 
-    override fun updateHouses(houses: List<House>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            houseUseCases.updateHouses(houses)
-        }
+    private suspend fun updateHouses(houses: List<House>) {
+        houseUseCases.updateHouses(houses)
+    }
+
+    private suspend fun sortHouses(houses: List<House>): List<House> {
+        return houseUseCases.sortHouses(houses)
     }
 }

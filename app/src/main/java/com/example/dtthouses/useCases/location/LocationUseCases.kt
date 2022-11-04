@@ -9,5 +9,5 @@ interface LocationUseCases {
     /**
      * Calculate location distance between provided start pont and point location
      */
-    fun calculateLocationDistance(startPoint: Location, endPoint: Location): Int
+    suspend fun calculateLocationDistance(startPoint: Location, endPoint: Location): Int
 }

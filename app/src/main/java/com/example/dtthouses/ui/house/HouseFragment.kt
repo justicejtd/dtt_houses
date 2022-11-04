@@ -27,9 +27,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dtthouses.R
 import com.example.dtthouses.databinding.FragmentHouseBinding
-import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.FASTEST_INTERVAL_DURATION
-import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.INTERVAL_DURATION
-import com.example.dtthouses.ui.house.HouseFragment.HouseFragmentConstants.MAX_WAIT_TIME
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.ui.house.viewModel.HouseViewModel
 import com.example.dtthouses.ui.house.viewModel.HouseViewModelImpl
@@ -37,8 +34,7 @@ import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
-
+import java.util.*
 
 /**
  * Fragment showing an overview of houses.
@@ -50,6 +46,8 @@ class HouseFragment : Fragment() {
     private lateinit var houseViewModel: HouseViewModel
     private var _binding: FragmentHouseBinding? = null
     private val binding get() = _binding!!
+    private val startPoint = Location(HouseAdapter.USER_LOCATION_PROVIDER)
+    private val endPoint = Location(HouseAdapter.HOUSE_LOCATION_PROVIDER)
 
     // FusedLocationProviderClient - Main class for receiving location updates.
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -68,32 +66,26 @@ class HouseFragment : Fragment() {
     /**
      * Constants values of House fragment.
      */
-    object HouseFragmentConstants {
+    companion object {
         /**
          * Location active update interval duration in seconds.
          */
-        const val INTERVAL_DURATION: Long = 20
+        private const val INTERVAL_DURATION: Long = 1000
 
         /**
          * Location fastest active update interval duration in seconds.
          */
-        const val FASTEST_INTERVAL_DURATION: Long = 60
+        private const val FASTEST_INTERVAL_DURATION: Long = 500
 
         /**
          * Maximum time when batched location updates are delivered. (In seconds).
          */
-        const val MAX_WAIT_TIME: Long = 2
+        private const val MAX_WAIT_TIME: Long = 1000
 
         /**
-         * Name of user location provider.
+         * Sets if the location request should wait for accurate location.
          */
-        const val USER_LOCATION_PROVIDER = "UserLocation"
-
-        /**
-         * Name of house location provider.
-         */
-        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
-
+        private const val WAIT_FOR_ACCURATE_LOCATION: Boolean = false
     }
 
     @SuppressLint("MissingPermission")
@@ -117,6 +109,13 @@ class HouseFragment : Fragment() {
 
         // Setup observers
         setObservers()
+
+        // If permission is granted
+        // check for gps permission and request location updates
+        checkForLocationPermission()
+
+        // Set location call back
+        setLocationCallBack()
 
         return binding.root
     }
@@ -146,22 +145,16 @@ class HouseFragment : Fragment() {
                             // Hide/gone progress bar
                             pbLoading.visibility = View.GONE
 
-                            // Get houses
+                            // Get houses, this sorting is called here because it seems
+                            // on refresh the houses are coming from cache and not from view model
                             houseAdapter.addHouses(houses)
-
-                            // If permission is granted
-                            // check for gps permission and request location updates
-                            checkForLocationPermission()
-
-                            // Set location call back
-                            setLocationCallBack()
                         }
                     }
                 }
-                Status.LOADING -> {
-                    // Show progress bar
-                    pbLoading.visibility = View.VISIBLE
-                }
+
+                // Show progress bar
+                Status.LOADING -> pbLoading.visibility = View.VISIBLE
+
                 Status.ERROR -> {
                     // Hide/gone progress bar
                     pbLoading.visibility = View.GONE
@@ -253,12 +246,12 @@ class HouseFragment : Fragment() {
                 val location = it.result
                 // Check if location is null
                 if (location != null) {
-                    // Calculate and update house location distance
-                    houseAdapter.updateHousesLocation(location.latitude,
-                        location.longitude,
-                        { houses -> houseViewModel.updateHouses(houses) }) { startPoint, endPoint ->
-                        houseViewModel.onUpdateHousesDistance(startPoint, endPoint)
-                    }
+                    // Set user location
+                    startPoint.latitude = location.latitude
+                    startPoint.longitude = location.longitude
+
+                    // Update house location distance
+                    houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
                 } else {
                     // Request location updates
                     fusedLocationProviderClient.requestLocationUpdates(
@@ -328,13 +321,11 @@ class HouseFragment : Fragment() {
                     val latitude = it?.latitude
                     val longitude = it?.longitude
 
-                    // Calculate and update house location distance
+                    // Update house location distance
                     if (latitude != null && longitude != null) {
-                        houseAdapter.updateHousesLocation(latitude,
-                            longitude,
-                            { houses -> houseViewModel.updateHouses(houses) }) { startPoint, endPoint ->
-                            houseViewModel.onUpdateHousesDistance(startPoint, endPoint)
-                        }
+                        startPoint.latitude = latitude
+                        startPoint.longitude = longitude
+                        houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
                     }
                 }
             }
@@ -343,21 +334,11 @@ class HouseFragment : Fragment() {
 
     private fun setLocationRequest() {
         // Create location request
-        locationRequest = LocationRequest.create().apply {
-            // Sets the desired interval for active location updates.
-            interval = TimeUnit.SECONDS.toMillis(INTERVAL_DURATION)
-
-            // Sets the fastest rate for active location updates.
-            // This interval is exact, and your application will never
-            // receive updates more frequently than this value
-            fastestInterval = TimeUnit.SECONDS.toMillis(FASTEST_INTERVAL_DURATION)
-
-            // Sets the maximum time when batched location
-            // updates are delivered. Updates may be
-            // delivered sooner than this interval
-            maxWaitTime = TimeUnit.MINUTES.toMillis(MAX_WAIT_TIME)
-
-            priority = Priority.PRIORITY_HIGH_ACCURACY
-        }
+        locationRequest =
+            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, INTERVAL_DURATION)
+                .setWaitForAccurateLocation(WAIT_FOR_ACCURATE_LOCATION)
+                .setMinUpdateIntervalMillis(FASTEST_INTERVAL_DURATION)
+                .setMaxUpdateDelayMillis(MAX_WAIT_TIME)
+                .build()
     }
 }

@@ -47,7 +47,7 @@ class HouseViewModelImpl @Inject constructor(
         }) {
             try {
                 _filteredHouses.postValue(Resource.loading(null))
-                houses = houseUseCases.getHouses()
+                houses = sortHouses(houseUseCases.getHouses())
 
                 // Notify view when houses are fetched successfully
                 _filteredHouses.postValue(Resource.success(houses))
@@ -70,7 +70,7 @@ class HouseViewModelImpl @Inject constructor(
 
     override fun onSearchTextChanged(input: String?) {
         viewModelScope.launch(Dispatchers.Default) {
-            val searchedHouses = houseUseCases.getHousesBySearchQuery(input.toString())
+            val searchedHouses = sortHouses(houseUseCases.getHousesBySearchQuery(input.toString()))
 
             // If search is not found then show search not found image
             _isSearchNotFound.postValue(searchedHouses.isEmpty())
@@ -104,7 +104,7 @@ class HouseViewModelImpl @Inject constructor(
         }
     }
 
-    override fun onSortHouses(houses: List<House>): List<House> {
+    private suspend fun sortHouses(houses: List<House>): List<House> {
         return houseUseCases.sortHouses(houses)
     }
 }

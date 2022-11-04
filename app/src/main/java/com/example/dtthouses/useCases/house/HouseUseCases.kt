@@ -32,5 +32,5 @@ interface HouseUseCases {
     /**
      * Returns a list of sorted houses.
      */
-    fun sortHouses(houses: List<House>): List<House>
+    suspend fun sortHouses(houses: List<House>): List<House>
 }

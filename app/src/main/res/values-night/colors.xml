@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main colors -->
+    <color name="red">#E65541</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="light_gray">#F7F7F7</color>
+    <color name="dark_gray">#EBEBEB</color>
+    <color name="onyx">#3D3D3D</color>
+
+    <!-- Text colors -->
+    <color name="strong">#FFFFFF</color>
+    <color name="medium">#EBEBEB</color>
+    <color name="light">#D6D6D6</color>
+
+    <!-- Theme based colors -->
+    <color name="search_icon_color">#66000000</color>
+    <color name="background_color">#212121</color>
+    <color name="primary_color">@color/red</color>
+    <color name="input_background_color">@color/dark_gray</color>
+    <color name="surface_color">@color/onyx</color>
+    <color name="bottom_navigation_color">@color/background_color</color>
+</resources>

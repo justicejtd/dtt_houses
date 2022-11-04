@@ -29,4 +29,9 @@ interface LocalHouseRepo {
      * Gets house based on the provided search query.
      */
     suspend fun getHousesBySearchQuery(searchQuery: String): List<House>
+
+    /**
+     * Updates houses data to the database
+     */
+    suspend fun updateHouses(houses: List<House>)
 }

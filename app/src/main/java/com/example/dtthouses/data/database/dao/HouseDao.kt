@@ -1,9 +1,6 @@
 package com.example.dtthouses.data.database.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.data.database.AppDatabase
 
@@ -39,4 +36,10 @@ interface HouseDao {
             "OR REPLACE(UPPER(zip || city), ' ', '') " +
             "LIKE '%' || REPLACE(UPPER(:searchQuery), ' ', '') || '%'")
     fun findBySearchQuery(searchQuery: String): List<House>
+
+    /**
+     * Update all houses data.
+     */
+    @Update
+    fun updateHouses(houses: List<House>)
 }

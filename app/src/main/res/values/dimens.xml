@@ -85,8 +85,6 @@
     <dimen name="margin_end_mapFragmentContainer">24dp</dimen>
     <dimen name="margin_bottom_mapFragmentContainer">24dp</dimen>
 
-    <dimen name="margin_bottom_ivSearchNotFound">8dp</dimen>
-
 <!-- Width and height -->
     <!-- EditTexts -->
     <dimen name="height_etSearchHome">48dp</dimen>

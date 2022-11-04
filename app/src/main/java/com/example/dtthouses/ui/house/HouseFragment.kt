@@ -83,6 +83,17 @@ class HouseFragment : Fragment() {
          * Maximum time when batched location updates are delivered. (In seconds).
          */
         const val MAX_WAIT_TIME: Long = 2
+
+        /**
+         * Name of user location provider.
+         */
+        const val USER_LOCATION_PROVIDER = "UserLocation"
+
+        /**
+         * Name of house location provider.
+         */
+        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
+
     }
 
     @SuppressLint("MissingPermission")
@@ -182,6 +193,7 @@ class HouseFragment : Fragment() {
 
     private fun setupUI() {
         houseAdapter = HouseAdapter(arrayListOf(), requireContext())
+        houseAdapter.setHasStableIds(true)
         binding.rvHouses.layoutManager = LinearLayoutManager(context)
         binding.rvHouses.adapter = houseAdapter
         val etSearch = binding.etSearchHome
@@ -242,7 +254,11 @@ class HouseFragment : Fragment() {
                 // Check if location is null
                 if (location != null) {
                     // Calculate and update house location distance
-                    houseAdapter.updateHousesLocation(location.latitude, location.longitude)
+                    houseAdapter.updateHousesLocation(location.latitude,
+                        location.longitude,
+                        { houses -> houseViewModel.updateHouses(houses) }) { startPoint, endPoint ->
+                        houseViewModel.onUpdateHousesDistance(startPoint, endPoint)
+                    }
                 } else {
                     // Request location updates
                     fusedLocationProviderClient.requestLocationUpdates(
@@ -314,7 +330,11 @@ class HouseFragment : Fragment() {
 
                     // Calculate and update house location distance
                     if (latitude != null && longitude != null) {
-                        houseAdapter.updateHousesLocation(latitude, longitude)
+                        houseAdapter.updateHousesLocation(latitude,
+                            longitude,
+                            { houses -> houseViewModel.updateHouses(houses) }) { startPoint, endPoint ->
+                            houseViewModel.onUpdateHousesDistance(startPoint, endPoint)
+                        }
                     }
                 }
             }

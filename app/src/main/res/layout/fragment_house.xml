@@ -4,7 +4,7 @@
     android:id="@+id/clHousesOverview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_gray">
+    android:background="@color/background_color">
 
     <TextView
         android:id="@+id/tvOverviewTitle"
@@ -40,18 +40,18 @@
         android:layout_marginTop="@dimen/margin_top_etSearchHome"
         android:layout_marginEnd="@dimen/margin_end_etSearchHome"
         android:autofillHints="@null"
-        android:hint="@string/search_for_a_home"
         android:background="@drawable/bg_rounded"
         android:drawableEnd="@drawable/ic_search"
+        android:hint="@string/search_for_a_home"
         android:imeOptions="actionSearch"
         android:inputType="text"
         android:maxLines="1"
         android:theme="@style/GothamBookHint"
         app:endIconDrawable="@drawable/ic_close"
-        app:textInputLayoutFocusedRectEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOverviewTitle"/>
+        app:layout_constraintTop_toBottomOf="@+id/tvOverviewTitle"
+        app:textInputLayoutFocusedRectEnabled="false" />
 
     <ProgressBar
         android:id="@+id/pbLoading"

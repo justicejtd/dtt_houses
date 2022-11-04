@@ -1,5 +1,6 @@
 package com.example.dtthouses.ui.house.viewModel
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.utils.Resource
@@ -28,4 +29,14 @@ interface HouseViewModel {
      * Filters list of houses based on city and zip code.
      */
     fun onSearchTextChanged(input: String?)
+
+    /**
+     * Calculate location distance between provided start pont and point location
+     */
+    fun onUpdateHousesDistance(startPoint: Location, endPoint: Location): Int
+
+    /**
+     * Update houses data to the database.
+     */
+    fun updateHouses(houses: List<House>)
 }

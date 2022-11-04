@@ -16,4 +16,7 @@ class LocalHouseRepoImpl @Inject constructor(private val houseDao: HouseDao) : L
 
     override suspend fun getHousesBySearchQuery(searchQuery: String): List<House> =
         houseDao.findBySearchQuery(searchQuery)
+
+    override suspend fun updateHouses(houses: List<House>) = houseDao.updateHouses(houses)
+
 }

@@ -1,5 +1,6 @@
 package com.example.dtthouses.ui.house.viewModel
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +10,7 @@ import com.example.dtthouses.data.exception.GenericException
 import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.useCases.house.HouseUseCases
+import com.example.dtthouses.useCases.location.LocationUseCases
 import com.example.dtthouses.utils.ExceptionHandler
 import com.example.dtthouses.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +21,10 @@ import javax.inject.Inject
  * Handles any UI logic for HouseFragment.
  */
 @HiltViewModel
-class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUseCases) :
+class HouseViewModelImpl @Inject constructor(
+    private val houseUseCases: HouseUseCases,
+    private val locationUseCases: LocationUseCases,
+) :
     ViewModel(), HouseViewModel {
     private var houses: List<House> = listOf()
     private var _filteredHouses = MutableLiveData<Resource<List<House>>>()
@@ -31,7 +36,9 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
     override val isSearchNotFound: LiveData<Boolean> = _isSearchNotFound
     override val errorMessage: LiveData<String> = _errorMessage
 
-    init { loadHouses() }
+    init {
+        loadHouses()
+    }
 
     private fun loadHouses() {
         viewModelScope.launch(Dispatchers.IO + ExceptionHandler.getCoroutineExceptionHandler { _, throwable ->
@@ -49,7 +56,6 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
                 _filteredHouses.postValue(Resource.error(ex.message.toString(), null))
                 onError(ex.message.toString())
             } catch (ex: GenericException) {
-                // Todo: Show error image or message instead of the loading progress bar
                 onError(ex.message.toString())
             } catch (ex: NetworkException) {
                 onError(ex.message.toString())
@@ -68,6 +74,16 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
             // If search is not found then show search not found image
             _isSearchNotFound.postValue(searchedHouses.isEmpty())
             _filteredHouses.postValue(Resource.success(searchedHouses))
+        }
+    }
+
+    override fun onUpdateHousesDistance(startPoint: Location, endPoint: Location): Int {
+        return locationUseCases.calculateLocationDistance(startPoint, endPoint)
+    }
+
+    override fun updateHouses(houses: List<House>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            houseUseCases.updateHouses(houses)
         }
     }
 }

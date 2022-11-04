@@ -9,6 +9,7 @@ import com.example.dtthouses.data.api.repository.house.exception.NoHouseExceptio
 import com.example.dtthouses.data.exception.GenericException
 import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
+import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.useCases.house.HouseUseCases
 import com.example.dtthouses.useCases.location.LocationUseCases
 import com.example.dtthouses.utils.ExceptionHandler
@@ -77,13 +78,33 @@ class HouseViewModelImpl @Inject constructor(
         }
     }
 
-    override fun onUpdateHousesDistance(startPoint: Location, endPoint: Location): Int {
-        return locationUseCases.calculateLocationDistance(startPoint, endPoint)
+    override fun onCalculateHousesDistance(
+        startPoint: Location,
+        endPoint: Location,
+        houses: List<House>,
+    ): List<House> {
+
+        // Update all the houses locations distances
+        houses.forEach {
+            // Set house location
+            endPoint.latitude = it.latitude
+            endPoint.longitude = it.longitude
+
+            it.locationDistance = locationUseCases.calculateLocationDistance(startPoint, endPoint)
+        }
+
+        // Update houses in the database
+        updateHouses(houses)
+        return houses
     }
 
-    override fun updateHouses(houses: List<House>) {
+    private fun updateHouses(houses: List<House>) {
         viewModelScope.launch(Dispatchers.IO) {
             houseUseCases.updateHouses(houses)
         }
+    }
+
+    override fun onSortHouses(houses: List<House>): List<House> {
+        return houseUseCases.sortHouses(houses)
     }
 }

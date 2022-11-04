@@ -245,9 +245,8 @@ class HouseFragment : Fragment() {
                 if (location != null) {
                     // Calculate and update house location distance
                     houseAdapter.updateHousesLocation(location.latitude,
-                        location.longitude,
-                        { houses -> houseViewModel.updateHouses(houses) }) { startPoint, endPoint ->
-                        houseViewModel.onUpdateHousesDistance(startPoint, endPoint)
+                        location.longitude) { startPoint, endPoint, houses ->
+                        houseViewModel.onCalculateHousesDistance(startPoint, endPoint, houses)
                     }
                 } else {
                     // Request location updates
@@ -321,9 +320,8 @@ class HouseFragment : Fragment() {
                     // Calculate and update house location distance
                     if (latitude != null && longitude != null) {
                         houseAdapter.updateHousesLocation(latitude,
-                            longitude,
-                            { houses -> houseViewModel.updateHouses(houses) }) { startPoint, endPoint ->
-                            houseViewModel.onUpdateHousesDistance(startPoint, endPoint)
+                            longitude) { startPoint, endPoint, houses ->
+                            houseViewModel.onCalculateHousesDistance(startPoint, endPoint, houses)
                         }
                     }
                 }

@@ -144,23 +144,15 @@ class HouseAdapter(
     fun updateHousesLocation(
         userLet: Double,
         userLong: Double,
-        updateHouses: ((houses: List<House>) -> Unit),
-        calculateLocationDistance: ((startPoint: Location, endPoint: Location) -> Int),
+        onCalculateLocationDistance: ((startPoint: Location, endPoint: Location, house: List<House>) -> List<House>),
     ) {
         // Set user location
         val startPoint = Location(USER_LOCATION_PROVIDER)
         startPoint.latitude = userLet
         startPoint.longitude = userLong
+        val endPoint = Location(HOUSE_LOCATION_PROVIDER)
 
-        houses.forEach {
-            // Set house location
-            val endPoint = Location(HOUSE_LOCATION_PROVIDER)
-            endPoint.latitude = it.latitude
-            endPoint.longitude = it.longitude
-
-            it.locationDistance = calculateLocationDistance(startPoint, endPoint)
-        }
-        updateHouses(houses)
+        this.houses = onCalculateLocationDistance(startPoint, endPoint, houses)
         notifyDataSetChanged()
     }
 

@@ -10,10 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
 import com.example.dtthouses.data.api.service.ApiService.DTT_BASE_URL
-import com.example.dtthouses.ui.house.HouseFragment
+import com.example.dtthouses.data.model.House
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.example.dtthouses.utils.ImageHandler
 
@@ -126,6 +125,10 @@ class HouseAdapter(
     }
 
     override fun getItemCount() = houses.size
+
+    override fun getItemId(position: Int): Long {
+        return houses[position].id.toLong()
+    }
 
     /**
      * Add list of houses to recycler view.

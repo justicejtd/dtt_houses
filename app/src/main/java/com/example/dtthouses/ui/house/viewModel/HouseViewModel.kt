@@ -31,13 +31,7 @@ interface HouseViewModel {
     fun onSearchTextChanged(input: String?)
 
     /**
-     * Calculate location distance between provided start pont and point location
-     * and return an updated list of houses.
+     * Calculate location distance between provided start pont and point location.
      */
-    fun onCalculateHousesDistance(startPoint: Location, endPoint: Location, houses: List<House>): List<House>
-
-    /**
-     * Return a sorted list of houses.
-     */
-    fun onSortHouses(houses: List<House>): List<House>
+    fun onHousesLocationDistanceUpdate(startPoint: Location, endPoint: Location)
 }

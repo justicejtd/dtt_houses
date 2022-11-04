@@ -9,7 +9,6 @@ import com.example.dtthouses.data.api.repository.house.exception.NoHouseExceptio
 import com.example.dtthouses.data.exception.GenericException
 import com.example.dtthouses.data.exception.NetworkException
 import com.example.dtthouses.data.model.House
-import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.useCases.house.HouseUseCases
 import com.example.dtthouses.useCases.location.LocationUseCases
 import com.example.dtthouses.utils.ExceptionHandler
@@ -78,30 +77,30 @@ class HouseViewModelImpl @Inject constructor(
         }
     }
 
-    override fun onCalculateHousesDistance(
+    override fun onHousesLocationDistanceUpdate(
         startPoint: Location,
         endPoint: Location,
-        houses: List<House>,
-    ): List<House> {
+    ) {
+        viewModelScope.launch(Dispatchers.Default) {
+            // Update all the houses locations distances
+            houses.forEach {
+                // Set house location
+                endPoint.latitude = it.latitude
+                endPoint.longitude = it.longitude
 
-        // Update all the houses locations distances
-        houses.forEach {
-            // Set house location
-            endPoint.latitude = it.latitude
-            endPoint.longitude = it.longitude
-
-            it.locationDistance = locationUseCases.calculateLocationDistance(startPoint, endPoint)
+                it.locationDistance =
+                    locationUseCases.calculateLocationDistance(startPoint, endPoint)
+            }
+            withContext(Dispatchers.IO) {
+                // Update houses in the database
+                updateHouses(houses)
+            }
+            _filteredHouses.postValue(Resource.success(houses))
         }
-
-        // Update houses in the database
-        updateHouses(houses)
-        return houses
     }
 
-    private fun updateHouses(houses: List<House>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            houseUseCases.updateHouses(houses)
-        }
+    private suspend fun updateHouses(houses: List<House>) {
+        houseUseCases.updateHouses(houses)
     }
 
     private suspend fun sortHouses(houses: List<House>): List<House> {

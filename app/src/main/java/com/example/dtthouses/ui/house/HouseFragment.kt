@@ -34,7 +34,7 @@ import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
-
+import java.util.*
 
 /**
  * Fragment showing an overview of houses.
@@ -46,6 +46,8 @@ class HouseFragment : Fragment() {
     private lateinit var houseViewModel: HouseViewModel
     private var _binding: FragmentHouseBinding? = null
     private val binding get() = _binding!!
+    private val startPoint = Location(HouseAdapter.USER_LOCATION_PROVIDER)
+    private val endPoint = Location(HouseAdapter.HOUSE_LOCATION_PROVIDER)
 
     // FusedLocationProviderClient - Main class for receiving location updates.
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -145,7 +147,7 @@ class HouseFragment : Fragment() {
 
                             // Get houses, this sorting is called here because it seems
                             // on refresh the houses are coming from cache and not from view model
-                            houseAdapter.addHouses(houseViewModel.onSortHouses(houses))
+                            houseAdapter.addHouses(houses)
                         }
                     }
                 }
@@ -244,11 +246,12 @@ class HouseFragment : Fragment() {
                 val location = it.result
                 // Check if location is null
                 if (location != null) {
-                    // Calculate and update house location distance
-                    houseAdapter.updateHousesLocation(location.latitude,
-                        location.longitude) { startPoint, endPoint, houses ->
-                        houseViewModel.onCalculateHousesDistance(startPoint, endPoint, houses)
-                    }
+                    // Set user location
+                    startPoint.latitude = location.latitude
+                    startPoint.longitude = location.longitude
+
+                    // Update house location distance
+                    houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
                 } else {
                     // Request location updates
                     fusedLocationProviderClient.requestLocationUpdates(
@@ -318,12 +321,11 @@ class HouseFragment : Fragment() {
                     val latitude = it?.latitude
                     val longitude = it?.longitude
 
-                    // Calculate and update house location distance
+                    // Update house location distance
                     if (latitude != null && longitude != null) {
-                        houseAdapter.updateHousesLocation(latitude,
-                            longitude) { startPoint, endPoint, houses ->
-                            houseViewModel.onCalculateHousesDistance(startPoint, endPoint, houses)
-                        }
+                        startPoint.latitude = latitude
+                        startPoint.longitude = longitude
+                        houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
                     }
                 }
             }

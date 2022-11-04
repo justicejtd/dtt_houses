@@ -20,13 +20,13 @@ class HouseUseCasesImpl @Inject constructor(
             // Get houses from API if there nothing in the database.
             // It was assume that the houses data will not changed.
             // Sort houses by price (cheapest to expensive)
-            houses = httpHouseRepo.getHouses()
+            houses = sortHouses(httpHouseRepo.getHouses())
 
             // Save house into database
             localHouseRepo.saveHouses(houses)
         }
 
-        return sortHouses(houses)
+        return houses
     }
 
     override suspend fun getHouseById(id: Int): House = localHouseRepo.getHouseById(id)
@@ -36,5 +36,9 @@ class HouseUseCasesImpl @Inject constructor(
 
     private fun sortHouses(houses: List<House>): List<House> {
         return houses.sortedBy { house -> house.price }
+    }
+
+    override suspend fun updateHouses(houses: List<House>) {
+        localHouseRepo.updateHouses(houses)
     }
 }

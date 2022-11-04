@@ -23,4 +23,9 @@ interface HouseUseCases {
      * Gets house based on the provided search query.
      */
     suspend fun getHousesBySearchQuery(searchQuery: String): List<House>
+
+    /**
+     * Update all houses data.
+     */
+    suspend fun updateHouses(houses: List<House>)
 }

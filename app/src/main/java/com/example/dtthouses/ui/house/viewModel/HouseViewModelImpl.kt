@@ -70,4 +70,9 @@ class HouseViewModelImpl @Inject constructor(private val houseUseCases: HouseUse
             _filteredHouses.postValue(Resource.success(searchedHouses))
         }
     }
+    override fun updateHouses(houses: List<House>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            houseUseCases.updateHouses(houses)
+        }
+    }
 }

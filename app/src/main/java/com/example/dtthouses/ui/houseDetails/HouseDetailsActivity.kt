@@ -152,8 +152,6 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             houseDetails.tvNrOfBedrooms.text = house.bedrooms.toString()
             houseDetails.tvNrOfBathrooms.text = house.bathrooms.toString()
             houseDetails.tvNrOfSize.text = house.size.toString()
-            houseDetails.tvLocationDistance.text =
-                house.locationDistance.toString().plus(" ").plus(getString(R.string.km))
             houseDetailsTopLayer.tvDescriptionDetail.text = house.description
 
             // Handle location views

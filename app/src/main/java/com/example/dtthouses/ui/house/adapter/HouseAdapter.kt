@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dtthouses.data.model.House
 import com.example.dtthouses.R
 import com.example.dtthouses.data.api.service.ApiService.DTT_BASE_URL
+import com.example.dtthouses.ui.house.HouseFragment
 import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity
 import com.example.dtthouses.utils.ImageHandler
-
 
 /**
  * Adapter for handling the list of houses.
@@ -32,21 +32,6 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
          * Intent key for passing house object.
          */
         const val DETAILS_INTENT_KEY = "com.example.dtthouses.ui.houseOverview.detailKey"
-
-        /**
-         * Name of user location provider.
-         */
-        const val USER_LOCATION_PROVIDER = "UserLocation"
-
-        /**
-         * Name of house location provider.
-         */
-        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
-
-        /**
-         * Used for converting meters to kilometers.
-         */
-        const val DISTANCE_TO_KM = 1000
 
         /**
          * Default house image. Can be used when house image is not found during network call.
@@ -138,27 +123,28 @@ class HouseAdapter(var houses: List<House>, val context: Context) :
     }
 
     /**
-     * Calculate and set distance between current and house location.
+     * Update all houses location distance with the provided distance.
      */
-    fun updateHousesLocation(latitude: Double, longitude: Double) {
-        // Update all houses their location distance
+    fun updateHousesLocation(
+        userLet: Double,
+        userLong: Double,
+        updateHouses: ((houses: List<House>) -> Unit),
+        calculateLocationDistance: ((startPoint: Location, endPoint: Location) -> Int),
+    ) {
+        // Set user location
+        val startPoint = Location(HouseFragment.HouseFragmentConstants.USER_LOCATION_PROVIDER)
+        startPoint.latitude = userLet
+        startPoint.longitude = userLong
+
         houses.forEach {
-            // Set user location
-            val startPoint = Location(USER_LOCATION_PROVIDER)
-            startPoint.latitude = it.latitude
-            startPoint.longitude = it.longitude
-
             // Set house location
-            val endPoint = Location(HOUSE_LOCATION_PROVIDER)
-            endPoint.latitude = latitude
-            endPoint.longitude = longitude
+            val endPoint = Location(HouseFragment.HouseFragmentConstants.HOUSE_LOCATION_PROVIDER)
+            endPoint.latitude = it.latitude
+            endPoint.longitude = it.longitude
 
-            // Calculate distance in km
-            val distance = startPoint.distanceTo(endPoint) / DISTANCE_TO_KM
-
-            // Set new distance
-            it.locationDistance = distance.toInt()
+            it.locationDistance = calculateLocationDistance(startPoint, endPoint)
         }
+        updateHouses(houses)
         notifyDataSetChanged()
     }
 

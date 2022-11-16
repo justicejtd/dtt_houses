@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/ivHouseDetail"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/size_zero"
             android:contentDescription="@string/house_content"
             android:scaleType="fitXY"
             android:src="@drawable/house_placeholder"
@@ -27,10 +27,10 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbarHouseDetails"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_top_toolbarHouseDetails"
-            android:elevation="100dp"
+            android:layout_width="@dimen/size_zero"
+            android:layout_height="@dimen/size_zero"
+            android:layout_marginTop="@dimen/size_extra_large"
+            android:elevation="@dimen/elevation_toolbar_house_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.2"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         <include
             android:id="@+id/includeViewHouseDetailsTopLayer"
             layout="@layout/view_house_details_top_layer"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/size_zero"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

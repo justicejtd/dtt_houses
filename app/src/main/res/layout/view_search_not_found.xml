@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="@dimen/size_huge"
             android:contentDescription="@string/search_not_found_image"
             android:src="@drawable/search_state_empty"
             app:layout_constraintBottom_toTopOf="@+id/tvSearchNotFound"

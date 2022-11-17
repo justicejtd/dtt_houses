@@ -25,7 +25,7 @@ interface HouseUseCases {
     suspend fun getHousesBySearchQuery(searchQuery: String): List<House>
 
     /**
-     * Update all houses data.
+     * Update all houses data in the local database.
      */
     suspend fun updateHouses(houses: List<House>)
 

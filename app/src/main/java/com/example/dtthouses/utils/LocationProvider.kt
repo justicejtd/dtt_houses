@@ -34,11 +34,6 @@ object LocationProvider {
     private const val WAIT_FOR_ACCURATE_LOCATION: Boolean = false
 
     /**
-     * Name of user location provider.
-     */
-    const val USER_LOCATION_PROVIDER = "UserLocation"
-
-    /**
      * Name of house location provider.
      */
     const val HOUSE_LOCATION_PROVIDER = "HouseLocation"

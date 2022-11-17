@@ -19,12 +19,6 @@ import com.example.dtthouses.data.api.service.ApiService
 import com.example.dtthouses.databinding.ActivityHouseDetailsBinding
 import com.example.dtthouses.databinding.ViewHouseDetailsBinding
 import com.example.dtthouses.databinding.ViewHouseDetailsTopLayerBinding
-import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.DEFAULT_HOUSE_ID
-import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_NAVIGATION_QUERY_PREFIX
-import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.GOOGLE_PACKAGE_NAME
-import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.LOCATION_DISTANCE_ZERO
-import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_LEVEL
-import com.example.dtthouses.ui.houseDetails.HouseDetailsActivity.HouseDetailsConstants.MAPS_ZOOM_DURATION
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModel
@@ -44,38 +38,38 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     /**
      * Constants values of HouseDetails.
      */
-    object HouseDetailsConstants {
+    companion object {
         /**
          * Prefix for google navigation query.
          * Used for passing attributes to google maps.
          */
-        const val GOOGLE_NAVIGATION_QUERY_PREFIX = "google.navigation:q="
+        private const val GOOGLE_NAVIGATION_QUERY_PREFIX = "google.navigation:q="
 
         /**
          * Google package name for map intent.
          */
-        const val GOOGLE_PACKAGE_NAME = "com.google.android.apps.maps"
+        private const val GOOGLE_PACKAGE_NAME = "com.google.android.apps.maps"
 
         /**
          * Determines how far should the map be zoomed to the user location.
          */
-        const val MAPS_ZOOM_LEVEL = 15f
+        private const val MAPS_ZOOM_LEVEL = 15f
 
         /**
          * Determine how long should the zoom animation take.
          */
-        const val MAPS_ZOOM_DURATION = 2000
+        private const val MAPS_ZOOM_DURATION = 2000
 
         /**
          * Return location value equals to zero.
          * Can be used to check if location distance between current user and other house is zero.
          */
-        const val LOCATION_DISTANCE_ZERO = 0
+        private const val LOCATION_DISTANCE_ZERO = 0
 
         /**
          * Default house id, used if no house id is found from intent.
          */
-        const val DEFAULT_HOUSE_ID = -1
+        private const val DEFAULT_HOUSE_ID = -1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

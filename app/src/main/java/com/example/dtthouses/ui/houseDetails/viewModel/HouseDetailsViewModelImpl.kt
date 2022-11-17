@@ -17,8 +17,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HouseDetailsViewModelImpl @Inject constructor(private val houseUseCases: HouseUseCases) :
-    ViewModel(),
-    HouseDetailsViewModel {
+    ViewModel(), HouseDetailsViewModel {
     private var _house = MutableLiveData<House>()
     override val house: LiveData<House> = _house
 

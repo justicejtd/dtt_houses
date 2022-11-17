@@ -5,10 +5,7 @@ import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MotionEvent
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.example.dtthouses.R
 
@@ -86,7 +83,6 @@ fun EditText.makeClearableEditText(
 }
 
 private const val COMPOUND_DRAWABLE_RIGHT_INDEX = 2
-private const val HIDE_SOFT_INPUT_FROM_WINDOW_FLAGS = 0
 
 /**
  *

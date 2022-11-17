@@ -17,7 +17,7 @@ class HttpHouseRepoImpl @Inject constructor(private val service: HouseService) :
         val response: Response<List<House>>
 
         try {
-             response = service.getHouses()
+            response = service.getHouses()
         } catch (ex: Exception) {
             throw GenericException()
         }

@@ -58,7 +58,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         /**
          * Determine how long should the zoom animation take.
          */
-        private const val MAPS_ZOOM_DURATION = 2000
+        private const val MAPS_ZOOM_DURATION = 1
 
         /**
          * Return location value equals to zero.
@@ -79,18 +79,13 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         houseDetailsTopLayer = binding.includeViewHouseDetailsTopLayer
         houseDetails = binding.includeViewHouseDetailsTopLayer.includeViewHouseDetails
         setContentView(binding.root)
-
-        // Setup viewModel
         setupViewModel()
-
-        // Initialize house details
         setHouseDetails()
-
-        // Set toolbar and status bar to transparent
         setToolbarAndStatusBar()
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment: SupportMapFragment = houseDetailsTopLayer.mapFragmentContainer.getFragment()
+        val mapFragment: SupportMapFragment =
+            houseDetailsTopLayer.mapFragmentContainer.getFragment()
         mapFragment.getMapAsync(this)
 
     }
@@ -105,25 +100,22 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         houseDetailsViewModel.house.observe(this as LifecycleOwner) { house ->
             val latLng = LatLng(house.latitude, house.longitude)
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-            )
 
-            // Zoom map to the marker
-            moveToCurrentLocation(latLng, googleMap)
+            googleMap.uiSettings.setAllGesturesEnabled(false) // Disabled all gestures
+            googleMap.addMarker(MarkerOptions().position(latLng))
+            moveToCurrentLocation(latLng, googleMap) // Zoom map to the marker
 
             // Show google maps and show direction
-            googleMap.setOnMapClickListener {
-                // Show google maps from device
-                showGoogleMap(latLng)
-            }
+            googleMap.setOnMapClickListener { showGoogleMap(latLng) }
 
             googleMap.setOnMarkerClickListener {
-                // Show google maps from device
-                showGoogleMap(latLng)
+                showGoogleMap(latLng) // Show google maps from device
                 true
             }
+
+            googleMap.uiSettings.isZoomGesturesEnabled = false
+            googleMap.uiSettings.isZoomControlsEnabled = false
+            googleMap.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = false
         }
     }
 
@@ -154,7 +146,10 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
 
             // Get and set house image
-            ImageHandler.handleImage(imageUrl, this,  binding.ivHouseDetail, HouseAdapter.DEFAULT_IMAGE)
+            ImageHandler.handleImage(imageUrl,
+                this,
+                binding.ivHouseDetail,
+                HouseAdapter.DEFAULT_IMAGE)
         }
     }
 

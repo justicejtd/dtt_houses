@@ -38,16 +38,6 @@ class HouseAdapter(
          * Default house image. Can be used when house image is not found during network call.
          */
         const val DEFAULT_IMAGE = R.drawable.house_placeholder
-
-        /**
-         * Name of user location provider.
-         */
-        const val USER_LOCATION_PROVIDER = "UserLocation"
-
-        /**
-         * Name of house location provider.
-         */
-        const val HOUSE_LOCATION_PROVIDER = "HouseLocation"
     }
 
     /**

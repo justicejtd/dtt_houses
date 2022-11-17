@@ -5,7 +5,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.Priority
 
 /**
- *
+ *  Handles location request and check if location provider is enabled.
  */
 object LocationProvider {
     /**

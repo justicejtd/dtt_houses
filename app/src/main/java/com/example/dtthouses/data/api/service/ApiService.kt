@@ -27,12 +27,17 @@ object ApiService {
      */
     private const val API_KEY = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx"
 
+    /**
+     * Access key header name for passing the API key.
+     */
+    private const val HEADER_ACCESS_KEY = "Access-Key"
+
     // Add parameters for okhttp client and logging
     private fun getRetrofit(): Retrofit {
         val client: OkHttpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 chain.proceed(chain.request().newBuilder().also {
-                    it.addHeader("Access-Key", API_KEY)
+                    it.addHeader(HEADER_ACCESS_KEY, API_KEY)
                 }.build())
             }.also { client ->
                 if (BuildConfig.DEBUG) {
@@ -51,6 +56,9 @@ object ApiService {
             .build()
     }
 
+    /**
+     * Creates an instance of HouseService class
+     */
     fun getHouseService(): HouseService {
         return getRetrofit().create(HouseService::class.java)
     }

@@ -15,9 +15,10 @@ import com.example.dtthouses.ui.splash.SplashActivity.SplashActivityConstants.SP
  */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-    object SplashActivityConstants {
-        const val SPLASH_DURATION: Long = 1
-        const val SPLASH_ALPHA = 1f
+
+    companion object SplashActivityConstants {
+        private const val SPLASH_DURATION: Long = 1
+        private const val SPLASH_ALPHA = 1f
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

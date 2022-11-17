@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
  * Controls keyboard.
  */
 object KeyboardHelper {
+    private const val HIDE_SOFT_INPUT_FROM_WINDOW_FLAGS = 0
 
     /**
      * Extension function to hide soft keyboard programmatically.
@@ -16,6 +17,6 @@ object KeyboardHelper {
     fun hideSoftKeyboard(root: View?) {
         val imm =
             root?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
-        imm?.hideSoftInputFromWindow(root.windowToken, 0)
+        imm?.hideSoftInputFromWindow(root.windowToken, HIDE_SOFT_INPUT_FROM_WINDOW_FLAGS)
     }
 }

@@ -1,13 +1,9 @@
 package com.example.dtthouses.ui.house
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager.PERMISSION_DENIED
-import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -17,7 +13,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
@@ -30,6 +25,7 @@ import com.example.dtthouses.databinding.FragmentHouseBinding
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.ui.house.viewModel.HouseViewModel
 import com.example.dtthouses.ui.house.viewModel.HouseViewModelImpl
+import com.example.dtthouses.utils.PermissionHelper
 import com.example.dtthouses.utils.Status
 import com.example.dtthouses.utils.makeClearableEditText
 import com.google.android.gms.location.*
@@ -238,8 +234,8 @@ class HouseFragment : Fragment() {
             activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Check if gps or network provider is on, if true then get last location
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
-            locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER)
         ) {
             // When location service is enabled, get last location
             fusedLocationProviderClient.lastLocation.addOnCompleteListener {
@@ -254,28 +250,17 @@ class HouseFragment : Fragment() {
                     houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
                 } else {
                     // Request location updates
-                    fusedLocationProviderClient.requestLocationUpdates(
-                        locationRequest,
+                    fusedLocationProviderClient.requestLocationUpdates(locationRequest,
                         locationCallback,
-                        Looper.myLooper()!!
-                    )
+                        Looper.myLooper()!!)
                 }
             }
         } else {
             // When location service is not enabled and permission is not denied
             // then open location settings
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    ACCESS_COARSE_LOCATION
-                ) != PERMISSION_DENIED && ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    ACCESS_FINE_LOCATION
-                ) != PERMISSION_DENIED
-            ) {
-                startActivity(
-                    Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                )
+            if (PermissionHelper.checkLocationPermission(requireContext())) {
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             }
         }
     }
@@ -289,25 +274,12 @@ class HouseFragment : Fragment() {
     }
 
     private fun checkForLocationPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                ACCESS_COARSE_LOCATION
-            ) == PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                ACCESS_FINE_LOCATION
-            ) == PERMISSION_GRANTED
-        ) {
-            // If permission is granted started getting user location
+        if (PermissionHelper.checkLocationPermission(requireContext())) {
+            // If permission is granted start getting user location
             getCurrentLocation()
         } else {
             // If permission is not granted ask for location permission
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(
-                    ACCESS_FINE_LOCATION,
-                    ACCESS_COARSE_LOCATION
-                ), requestCode
-            )
+            PermissionHelper.requestLocationPermission(requireActivity(), requestCode)
         }
     }
 
@@ -338,7 +310,6 @@ class HouseFragment : Fragment() {
             LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, INTERVAL_DURATION)
                 .setWaitForAccurateLocation(WAIT_FOR_ACCURATE_LOCATION)
                 .setMinUpdateIntervalMillis(FASTEST_INTERVAL_DURATION)
-                .setMaxUpdateDelayMillis(MAX_WAIT_TIME)
-                .build()
+                .setMaxUpdateDelayMillis(MAX_WAIT_TIME).build()
     }
 }

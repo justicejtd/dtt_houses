@@ -77,19 +77,16 @@ class HouseViewModelImpl @Inject constructor(
         }
     }
 
-    override fun onHousesLocationDistanceUpdate(
-        startPoint: Location,
-        endPoint: Location,
-    ) {
+    override fun onUserLocationUpdate(userLocation: Location, houseLocation: Location) {
         viewModelScope.launch(Dispatchers.Default) {
             // Update all the houses locations distances
             houses.forEach {
                 // Set house location
-                endPoint.latitude = it.latitude
-                endPoint.longitude = it.longitude
+                houseLocation.latitude = it.latitude
+                houseLocation.longitude = it.longitude
 
                 it.locationDistance =
-                    locationUseCases.calculateLocationDistance(startPoint, endPoint)
+                    locationUseCases.calculateLocationDistance(userLocation, houseLocation)
             }
             withContext(Dispatchers.IO) {
                 // Update houses in the database

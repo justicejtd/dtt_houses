@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
 import androidx.core.view.isGone
 import com.example.dtthouses.databinding.ActivityHomeBinding
 import com.example.dtthouses.ui.house.HomeActivity.HouseActivityConstants.DTT_URL
+import com.example.dtthouses.utils.LocationProvider.LOCATION_REQUEST_CODE
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -22,7 +23,6 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
-    private val requestCode = 100
     private lateinit var binding: ActivityHomeBinding
     private lateinit var hostFragment: NavHostFragment
     private lateinit var bottomNav: BottomNavigationView
@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity(), AboutFragmentCallback {
         grantResults: IntArray
     ) {
         // Check if its the location request
-        if (requestCode == this.requestCode) {
+        if (requestCode == LOCATION_REQUEST_CODE) {
 
             val houseFragment = hostFragment.childFragmentManager.primaryNavigationFragment
             if (houseFragment is HouseFragment) {

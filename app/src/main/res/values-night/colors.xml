@@ -9,7 +9,6 @@
     <color name="search_icon_color">#66000000</color>
     <color name="background_color">#212121</color>
     <color name="primary_color">@color/strong</color>
-    <color name="input_background_color">@color/dark_gray</color>
     <color name="surface_color">@color/onyx</color>
     <color name="bottom_nav_background_color">@color/background_color</color>
     <color name="bottom_nav_inactive_color">@color/onyx</color>

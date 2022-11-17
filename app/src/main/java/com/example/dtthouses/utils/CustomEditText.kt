@@ -77,7 +77,7 @@ fun EditText.makeClearableEditText(
         updateRightDrawable()
     }
     this.onRightDrawableClicked {
-        hideSoftKeyboard(this)
+        KeyboardHelper.hideSoftKeyboard(this)
         this.text.clear()
         this.clearFocus()
         this.setCompoundDrawables(null, null, icon, null)
@@ -123,15 +123,4 @@ fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
         }
         hasConsumed
     }
-}
-
-private fun hideSoftKeyboard(view: View) {
-    // extension function to hide soft keyboard programmatically
-    val imm = view.let {
-        ContextCompat.getSystemService(
-            it.context,
-            InputMethodManager::class.java
-        )
-    }
-    imm?.hideSoftInputFromWindow(view.windowToken, HIDE_SOFT_INPUT_FROM_WINDOW_FLAGS)
 }

@@ -10,11 +10,9 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -25,9 +23,9 @@ import com.example.dtthouses.databinding.FragmentHouseBinding
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
 import com.example.dtthouses.ui.house.viewModel.HouseViewModel
 import com.example.dtthouses.ui.house.viewModel.HouseViewModelImpl
-import com.example.dtthouses.utils.PermissionHelper
-import com.example.dtthouses.utils.Status
-import com.example.dtthouses.utils.makeClearableEditText
+import com.example.dtthouses.utils.*
+import com.example.dtthouses.utils.LocationProvider.HOUSE_LOCATION_PROVIDER
+import com.example.dtthouses.utils.LocationProvider.LOCATION_REQUEST_CODE
 import com.google.android.gms.location.*
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -38,87 +36,24 @@ import java.util.*
 @AndroidEntryPoint
 class HouseFragment : Fragment() {
     private lateinit var houseAdapter: HouseAdapter
-    private val requestCode = 100
     private lateinit var houseViewModel: HouseViewModel
-    private var _binding: FragmentHouseBinding? = null
-    private val binding get() = _binding!!
-    private val startPoint = Location(HouseAdapter.USER_LOCATION_PROVIDER)
-    private val endPoint = Location(HouseAdapter.HOUSE_LOCATION_PROVIDER)
+    private lateinit var binding: FragmentHouseBinding
 
-    // FusedLocationProviderClient - Main class for receiving location updates.
+    // Main class for receiving location updates.
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
-    // LocationRequest - Requirements for the location updates, i.e.,
-    // how often you should receive updates, the priority, etc.
-    private lateinit var locationRequest: LocationRequest
-
-    // LocationCallback - Called when FusedLocationProviderClient
-    // when there is a new Location
-    private lateinit var locationCallback: LocationCallback
-
-    // This will store current location info
-    private var currentLocation: Location? = null
-
-    /**
-     * Constants values of House fragment.
-     */
-    companion object {
-        /**
-         * Location active update interval duration in seconds.
-         */
-        private const val INTERVAL_DURATION: Long = 1000
-
-        /**
-         * Location fastest active update interval duration in seconds.
-         */
-        private const val FASTEST_INTERVAL_DURATION: Long = 500
-
-        /**
-         * Maximum time when batched location updates are delivered. (In seconds).
-         */
-        private const val MAX_WAIT_TIME: Long = 1000
-
-        /**
-         * Sets if the location request should wait for accurate location.
-         */
-        private const val WAIT_FOR_ACCURATE_LOCATION: Boolean = false
-    }
 
     @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        _binding = FragmentHouseBinding.inflate(inflater, container, false)
-
-        // Initialize views
+        binding = FragmentHouseBinding.inflate(inflater, container, false)
         setupUI()
-
-        // Setup view model
         setupViewModel()
-
-        // Initialize fused location provider
         setupFusedLocationProvider()
-
-        // Set location request
-        setLocationRequest()
-
-        // Setup observers
         setObservers()
-
-        // If permission is granted
-        // check for gps permission and request location updates
         checkForLocationPermission()
-
-        // Set location call back
-        setLocationCallBack()
-
         return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun setupViewModel() {
@@ -138,27 +73,15 @@ class HouseFragment : Fragment() {
                 Status.SUCCESS -> {
                     it.data?.let { houses ->
                         if (houses.isNotEmpty()) {
-                            // Hide/gone progress bar
                             pbLoading.visibility = View.GONE
-
-                            // Get houses, this sorting is called here because it seems
-                            // on refresh the houses are coming from cache and not from view model
                             houseAdapter.addHouses(houses)
                         }
                     }
                 }
-
-                // Show progress bar
                 Status.LOADING -> pbLoading.visibility = View.VISIBLE
-
                 Status.ERROR -> {
-                    // Hide/gone progress bar
                     pbLoading.visibility = View.GONE
-
-                    // Hide house overview list
                     binding.rvHouses.visibility = View.GONE
-
-                    // Show SearchNot found
                     binding.viewSearchNotFound.root.visibility = View.VISIBLE
                 }
             }
@@ -201,7 +124,7 @@ class HouseFragment : Fragment() {
         // Hide keyboard and clear search focus after search has been performed
         etSearch.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                hideSoftKeyboard()
+                KeyboardHelper.hideSoftKeyboard(view)
                 etSearch.isFocusable = false
                 etSearch.isFocusableInTouchMode = true
                 true
@@ -217,50 +140,34 @@ class HouseFragment : Fragment() {
         editText.setCompoundDrawables(null, null, cancel, null)
     }
 
-    private fun hideSoftKeyboard() {
-        // extension function to hide soft keyboard programmatically
-        val imm = view?.let { getSystemService(it.context, InputMethodManager::class.java) }
-        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
-
     /**
-     * Start getting user current location.
+     * Starts getting user current location.
      * If GPS sensor is turned off, then GPS location will be automatically opened.
      */
-    @SuppressLint("MissingPermission")
     fun getCurrentLocation() {
-        // Initialize location manager
         val locationManager =
             activity?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        // Check if gps or network provider is on, if true then get last location
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER)
-        ) {
-            // When location service is enabled, get last location
-            fusedLocationProviderClient.lastLocation.addOnCompleteListener {
-                val location = it.result
-                // Check if location is null
-                if (location != null) {
-                    // Set user location
-                    startPoint.latitude = location.latitude
-                    startPoint.longitude = location.longitude
-
-                    // Update house location distance
-                    houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
-                } else {
-                    // Request location updates
-                    fusedLocationProviderClient.requestLocationUpdates(locationRequest,
-                        locationCallback,
-                        Looper.myLooper()!!)
-                }
-            }
-        } else {
-            // When location service is not enabled and permission is not denied
-            // then open location settings
+        // Check if gps or network provider is on, if true then set last location
+        if (LocationProvider.isLocationProviderEnabled(locationManager)) setLastLocation()
+        else {
+            // Open location settings when location permission is granted and GPS off.
             if (PermissionHelper.checkLocationPermission(requireContext())) {
-                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun setLastLocation() {
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener {
+            if (it.result != null) {
+                onUserLocationUpdate(it.result)
+            } else {
+                // Request location updates
+                fusedLocationProviderClient.requestLocationUpdates(LocationProvider.getLocationRequest(),
+                    getLocationCallBack(),
+                    Looper.myLooper()!!)
             }
         }
     }
@@ -279,37 +186,23 @@ class HouseFragment : Fragment() {
             getCurrentLocation()
         } else {
             // If permission is not granted ask for location permission
-            PermissionHelper.requestLocationPermission(requireActivity(), requestCode)
+            PermissionHelper.requestLocationPermission(requireActivity(), LOCATION_REQUEST_CODE)
         }
     }
 
-    private fun setLocationCallBack() {
-        // Create location call back
-        locationCallback = object : LocationCallback() {
+    private fun getLocationCallBack(): LocationCallback {
+        return object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.let { super.onLocationResult(it) }
-                locationResult.lastLocation.let {
-                    currentLocation = it
-                    val latitude = it?.latitude
-                    val longitude = it?.longitude
-
-                    // Update house location distance
-                    if (latitude != null && longitude != null) {
-                        startPoint.latitude = latitude
-                        startPoint.longitude = longitude
-                        houseViewModel.onHousesLocationDistanceUpdate(startPoint, endPoint)
-                    }
-                }
+                onUserLocationUpdate(locationResult.lastLocation)
             }
         }
     }
 
-    private fun setLocationRequest() {
-        // Create location request
-        locationRequest =
-            LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, INTERVAL_DURATION)
-                .setWaitForAccurateLocation(WAIT_FOR_ACCURATE_LOCATION)
-                .setMinUpdateIntervalMillis(FASTEST_INTERVAL_DURATION)
-                .setMaxUpdateDelayMillis(MAX_WAIT_TIME).build()
+    private fun onUserLocationUpdate(userLocation: Location?) {
+        val houseLocation = Location(HOUSE_LOCATION_PROVIDER)
+        userLocation?.let {
+            houseViewModel.onUserLocationUpdate(userLocation, houseLocation)
+        }
     }
 }

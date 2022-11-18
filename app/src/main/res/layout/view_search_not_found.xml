@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_huge"
+        android:layout_marginBottom="@dimen/size_huge"
         android:maxLines="2"
         android:text="@string/no_search_found"
         android:textAlignment="center"

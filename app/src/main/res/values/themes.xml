@@ -22,4 +22,7 @@
         <item name="android:background">@color/red</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <!--  AppBar theme  -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 </resources>

@@ -8,9 +8,6 @@
     <dimen name="size_extra_large">24dp</dimen>
     <dimen name="size_huge">32dp</dimen>
 
-    <!-- Toolbar -->
-    <dimen name="elevation_toolbar_house_details">100dp</dimen>
-
     <!-- EditTexts -->
     <dimen name="height_et_search_home">48dp</dimen>
 
@@ -25,4 +22,16 @@
 
     <!-- Map -->
     <dimen name="width_map_fragment_container">300dp</dimen>
+
+    <!--  Include  -->
+    <dimen name="include_view_house_details_margin_start">48dp</dimen>
+
+    <!--  Appbar  -->
+    <dimen name="app_bar_height">250dp</dimen>
+
+    <!--  ImageViews  -->
+    <dimen name="iv_house_details_height">250dp</dimen>
+
+    <!--  ScrollViews  -->
+    <dimen name="nsv_house_details_overlap_top">50dp</dimen>
 </resources>

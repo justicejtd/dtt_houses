@@ -11,7 +11,7 @@
         android:layout_width="@dimen/size_zero"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_extra_small"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:contentDescription="@string/bed_icon"
         app:srcCompat="@drawable/ic_bed" />
 
@@ -29,7 +29,7 @@
         android:layout_width="@dimen/size_zero"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_extra_small"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:contentDescription="@string/bath_icon"
         app:srcCompat="@drawable/ic_bath" />
 
@@ -47,7 +47,7 @@
         android:layout_width="@dimen/size_zero"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_extra_small"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:contentDescription="@string/layers_icon"
         app:srcCompat="@drawable/ic_layers" />
 
@@ -66,7 +66,7 @@
         android:layout_width="@dimen/size_zero"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/size_extra_small"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:contentDescription="@string/location_icon"
         app:srcCompat="@drawable/ic_location" />
 
@@ -74,7 +74,6 @@
         android:id="@+id/tvLocationDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:lines="1"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />

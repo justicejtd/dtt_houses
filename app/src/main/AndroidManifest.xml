@@ -21,15 +21,10 @@
             android:exported="false"
             android:parentActivityName=".ui.house.HomeActivity" />
         <activity
-            android:name=".ui.splash.SplashActivity"
-            android:exported="true"
-            android:theme="@style/AppTheme.Starting" />
-        <activity
             android:name=".ui.house.HomeActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.Starting"
-            >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

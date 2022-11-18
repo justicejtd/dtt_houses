@@ -17,23 +17,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:parentActivityName=".ui.house.HomeActivity"
             android:name=".ui.houseDetails.HouseDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ui.house.HomeActivity" />
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/AppTheme.Starting" />
+        <activity
+            android:name=".ui.house.HomeActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.Starting"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.house.HomeActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
 
         <!-- The API key for Google Maps-based APIs. -->
         <meta-data

@@ -1,29 +1,34 @@
 package com.example.dtthouses.ui.houseDetails
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.example.dtthouses.R
-import com.example.dtthouses.data.model.House
-import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
-import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.CameraUpdateFactory
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import com.example.dtthouses.R
+import com.example.dtthouses.R.color.background_color
 import com.example.dtthouses.data.api.service.ApiService
+import com.example.dtthouses.data.model.House
 import com.example.dtthouses.databinding.ActivityHouseDetailsBinding
 import com.example.dtthouses.databinding.ViewHouseDetailsBinding
 import com.example.dtthouses.databinding.ViewHouseDetailsTopLayerBinding
-import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.ui.house.adapter.HouseAdapter
+import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants.DETAILS_INTENT_KEY
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModel
+import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.utils.ImageHandler
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
+
 
 /**
  * Activity for show all details of a house.
@@ -81,7 +86,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         setupViewModel()
         setHouseDetails()
-        setToolbarAndStatusBar()
+        setToolbarAndAppbar()
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         val mapFragment: SupportMapFragment =
@@ -119,15 +124,33 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setToolbarAndStatusBar() {
+    private fun setToolbarAndAppbar() {
         val toolbar = binding.toolbarHouseDetails
 
-        // Set toolbar color to transparent
-        toolbar.setBackgroundColor(Color.TRANSPARENT)
-
         setSupportActionBar(toolbar)
-        supportActionBar!!.title = ""
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = ""
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val mAppBarLayout = binding.appBarHouseDetails
+        mAppBarLayout.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+            var isShow = false
+            var scrollRange = -1
+            override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.totalScrollRange
+                }
+                if (scrollRange + verticalOffset == 0) {
+                    isShow = true
+                    // Set nsvHouseDetails background to background color when Appbar is not collapsed
+                    binding.nsvHouseDetails.background =
+                        ContextCompat.getDrawable(applicationContext, background_color)
+                } else if (isShow) {
+                    isShow = false
+                    // Remove nsvHouseDetails background when Appbar is collapsed
+                    binding.nsvHouseDetails.background = null
+                }
+            }
+        })
     }
 
     private fun setHouseDetails() {

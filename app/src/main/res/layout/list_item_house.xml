@@ -7,6 +7,7 @@
     android:layout_marginStart="@dimen/size_extra_large"
     android:layout_marginEnd="@dimen/size_extra_large"
     android:layout_marginBottom="@dimen/size_extra_large"
+    android:theme="@style/Theme.MaterialComponents.Light"
     app:cardCornerRadius="@dimen/size_medium">
 
     <androidx.constraintlayout.widget.ConstraintLayout

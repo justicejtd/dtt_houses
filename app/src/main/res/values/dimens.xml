@@ -27,5 +27,5 @@
     <dimen name="width_map_fragment_container">300dp</dimen>
 
     <!--  Include  -->
-    <dimen name="include_view_house_details">40dp</dimen>
+    <dimen name="include_view_house_details">48dp</dimen>
 </resources>

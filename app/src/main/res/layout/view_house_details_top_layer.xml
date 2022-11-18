@@ -6,49 +6,44 @@
     android:layout_height="match_parent"
     android:background="@drawable/shape_house_details_overlay">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutHouseDetailsOuter"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/size_zero"
+
+    <TextView
+        android:id="@+id/tvPriceDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:text="@string/price"
+        android:layout_weight="1"
         android:layout_marginStart="@dimen/size_extra_large"
         android:layout_marginTop="@dimen/size_extra_large"
-        android:layout_marginEnd="@dimen/size_extra_large"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:theme="@style/GothamBookTitle01"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvPriceDetail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:text="@string/price"
-            android:layout_weight="1"
-            android:theme="@style/GothamBookTitle01" />
-
-        <include
-            android:id="@+id/includeViewHouseDetails"
-            layout="@layout/view_house_details"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/size_medium" />
-
-    </LinearLayout>
+    <include
+        android:id="@+id/includeViewHouseDetails"
+        layout="@layout/view_house_details"
+        android:layout_width="@dimen/size_zero"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/include_view_house_details"
+        android:layout_marginEnd="@dimen/size_extra_large"
+        app:layout_constraintStart_toEndOf="@id/tvPriceDetail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvPriceDetail" />
 
     <TextView
         android:id="@+id/tvTitleDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_extra_large"
-        android:layout_marginTop="@dimen/size_extra_large"
+        android:layout_marginTop="@dimen/size_huge"
         android:layout_marginEnd="@dimen/size_extra_large"
         android:text="@string/description"
         android:theme="@style/GothamBookTitle01"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutHouseDetailsOuter" />
+        app:layout_constraintTop_toBottomOf="@+id/tvPriceDetail" />
 
     <TextView
         android:id="@+id/tvDescriptionDetail"

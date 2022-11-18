@@ -19,8 +19,7 @@
         android:id="@+id/tvNrOfBedrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_small"
-        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/size_large"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />
 
@@ -37,8 +36,7 @@
         android:id="@+id/tvNrOfBathrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_small"
-        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/size_large"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />
 
@@ -55,8 +53,7 @@
         android:id="@+id/tvNrOfSize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/size_small"
-        android:layout_weight="1"
+        android:layout_marginEnd="@dimen/size_large"
         android:maxLines="1"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />
@@ -74,7 +71,6 @@
         android:id="@+id/tvLocationDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:lines="1"
         android:text="@string/_nr_placeholder"
         android:theme="@style/GothamBookDetail" />

@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.graphics.Color
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
 import androidx.core.view.isGone
@@ -24,6 +25,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Handle the splash screen transition.
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         // Setup view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)

@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/ivSearchNotFound"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/size_zero"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:contentDescription="@string/search_not_found_image"
         android:src="@drawable/search_state_empty" />
@@ -20,9 +20,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_huge"
         android:layout_marginBottom="@dimen/size_huge"
+        android:fontFamily="@font/gotham_ssm_light"
         android:maxLines="2"
         android:text="@string/no_search_found"
         android:textAlignment="center"
+        android:textAllCaps="false"
         android:theme="@style/GothamBookHint" />
 
 </LinearLayout>

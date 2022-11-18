@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/size_extra_large"
         android:layout_marginEnd="@dimen/size_extra_large"
         android:autofillHints="@null"
-        android:background="@drawable/bg_rounded"
+        android:background="@drawable/input_bg_rounded"
         android:drawableEnd="@drawable/ic_search"
         android:hint="@string/search_for_a_home"
         android:imeOptions="actionSearch"

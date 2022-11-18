@@ -48,7 +48,7 @@
         android:inputType="text"
         android:maxLines="1"
         android:textAllCaps="false"
-        android:textColorHint="@color/light"
+        android:textColorHint="@color/input_hint_text_color"
         android:textSize="14sp"
         android:theme="@style/GothamBookHint"
         app:endIconDrawable="@drawable/ic_close"

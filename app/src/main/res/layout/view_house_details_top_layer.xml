@@ -13,7 +13,6 @@
         android:layout_marginStart="@dimen/size_extra_large"
         android:layout_marginTop="@dimen/size_extra_large"
         android:layout_marginEnd="@dimen/size_extra_large"
-        android:gravity="center_vertical|end"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,26 +20,19 @@
 
         <TextView
             android:id="@+id/tvPriceDetail"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="@string/price"
+            android:layout_weight="1"
             android:theme="@style/GothamBookTitle01" />
 
-        <LinearLayout
-            android:id="@+id/linearLayoutHouseDetailsInner"
-            android:layout_width="match_parent"
+        <include
+            android:id="@+id/includeViewHouseDetails"
+            layout="@layout/view_house_details"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/size_medium"
-            android:gravity="center_horizontal|end"
-            android:orientation="horizontal">
-
-            <include
-                android:id="@+id/includeViewHouseDetails"
-                layout="@layout/view_house_details"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-        </LinearLayout>
+            android:layout_marginStart="@dimen/size_medium" />
 
     </LinearLayout>
 

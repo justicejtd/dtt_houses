@@ -125,6 +125,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setToolbarAndAppbar() {
+        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarColor)
         val toolbar = binding.toolbarHouseDetails
 
         setSupportActionBar(toolbar)

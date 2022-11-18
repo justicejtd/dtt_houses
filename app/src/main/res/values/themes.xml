@@ -8,7 +8,6 @@
         <item name="textInputStyle">@style/GothamLightInput</item>
         <item name="hintTextAppearance">@style/GothamBookHint</item>
         <item name="subtitleTextStyle">@style/GothamLightInput</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
 
     <!-- Toolbar theme with white back arrow -->

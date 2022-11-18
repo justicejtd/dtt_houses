@@ -6,8 +6,9 @@
     <color name="light">#D6D6D6</color>
 
     <!-- Theme based colors -->
-    <color name="search_icon_color">#66000000</color>
+    <color name="search_icon_color">@color/dark_mode_medium</color>
     <color name="background_color">#212121</color>
+    <color name="input_hint_text_color">@color/dark_mode_light</color>
     <color name="primary_color">@color/strong</color>
     <color name="surface_color">@color/onyx</color>
     <color name="bottom_nav_background_color">@color/background_color</color>

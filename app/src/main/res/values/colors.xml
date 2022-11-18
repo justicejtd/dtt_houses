@@ -12,12 +12,15 @@
     <!-- Text colors -->
     <color name="strong">#CC000000</color>
     <color name="medium">#66000000</color>
+    <color name="dark_mode_medium">#66000000</color>
     <color name="light">#33000000</color>
+    <color name="dark_mode_light">#33000000</color>
 
     <!-- Theme based colors -->
     <color name="search_icon_color">@color/medium</color>
     <color name="background_color">@color/light_gray</color>
     <color name="input_background_color">@color/dark_gray</color>
+    <color name="input_hint_text_color">@color/light</color>
     <color name="primary_color">@color/black</color>
     <color name="surface_color">@color/white</color>
     <color name="bottom_nav_background_color">@color/white</color>

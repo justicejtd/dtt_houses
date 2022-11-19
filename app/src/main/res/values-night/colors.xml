@@ -13,5 +13,4 @@
     <color name="surface_color">@color/onyx</color>
     <color name="bottom_nav_background_color">@color/background_color</color>
     <color name="bottom_nav_inactive_color">@color/onyx</color>
-    <color name="statusBarColor">@color/background_color</color>
 </resources>

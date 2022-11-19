@@ -14,6 +14,7 @@ class GenericException : Exception(GENERIC_ERROR_MESSAGE) {
         /**
          * Generic error message when something goes wrong.
          */
-        private const val GENERIC_ERROR_MESSAGE = "$EXCEPTION_ERROR_PREFIX An unexpected error has occurred, please contact DTT support"
+        private const val GENERIC_ERROR_MESSAGE =
+            "$EXCEPTION_ERROR_PREFIX An unexpected error has occurred, please contact DTT support"
     }
 }

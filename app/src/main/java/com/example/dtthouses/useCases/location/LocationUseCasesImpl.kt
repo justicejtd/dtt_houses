@@ -7,7 +7,7 @@ import javax.inject.Inject
  * Implementation of [LocationUseCases] to handle certain location calculation.
  * @see [LocationUseCases].
  */
-class LocationUseCasesImpl @Inject constructor(): LocationUseCases {
+class LocationUseCasesImpl @Inject constructor() : LocationUseCases {
 
     /**
      * [LocationUseCases] constants values.
@@ -19,7 +19,7 @@ class LocationUseCasesImpl @Inject constructor(): LocationUseCases {
         const val DISTANCE_TO_KM = 1000
     }
 
-     override suspend fun calculateLocationDistance(startPoint: Location, endPoint: Location): Int {
+    override suspend fun calculateLocationDistance(startPoint: Location, endPoint: Location): Int {
         // Calculate distance in km
         return (startPoint.distanceTo(endPoint) / DISTANCE_TO_KM).toInt()
     }

@@ -26,5 +26,4 @@
     <color name="surface_color">@color/white</color>
     <color name="bottom_nav_background_color">@color/white</color>
     <color name="bottom_nav_inactive_color">@color/light</color>
-    <color name="statusBarColor">@color/gray</color>
 </resources>

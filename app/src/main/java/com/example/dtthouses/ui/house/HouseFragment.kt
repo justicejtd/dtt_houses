@@ -165,9 +165,11 @@ class HouseFragment : Fragment() {
                 onUserLocationUpdate(it.result)
             } else {
                 // Request location updates
-                fusedLocationProviderClient.requestLocationUpdates(LocationProvider.getLocationRequest(),
+                fusedLocationProviderClient.requestLocationUpdates(
+                    LocationProvider.getLocationRequest(),
                     getLocationCallBack(),
-                    Looper.myLooper()!!)
+                    Looper.myLooper()!!
+                )
             }
         }
     }

@@ -10,11 +10,11 @@
         android:id="@+id/tvPriceDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:text="@string/price"
-        android:layout_weight="1"
         android:layout_marginStart="@dimen/size_extra_large"
         android:layout_marginTop="@dimen/size_huge"
+        android:layout_weight="1"
+        android:maxLines="1"
+        android:text="@string/price"
         android:theme="@style/GothamBookTitle01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/include_view_house_details_margin_start"
         android:layout_marginEnd="@dimen/size_extra_large"
-        app:layout_constraintStart_toEndOf="@id/tvPriceDetail"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvPriceDetail"
         app:layout_constraintTop_toTopOf="@id/tvPriceDetail" />
 
     <TextView

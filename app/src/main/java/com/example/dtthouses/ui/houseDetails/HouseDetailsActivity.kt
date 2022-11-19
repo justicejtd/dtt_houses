@@ -1,6 +1,7 @@
 package com.example.dtthouses.ui.houseDetails
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -20,6 +21,7 @@ import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModel
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.utils.ImageHandler
+import com.example.dtthouses.utils.WindowHelper
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -125,7 +127,7 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setToolbarAndAppbar() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarColor)
+        WindowHelper.enableFullscreen(window)
         val toolbar = binding.toolbarHouseDetails
 
         setSupportActionBar(toolbar)

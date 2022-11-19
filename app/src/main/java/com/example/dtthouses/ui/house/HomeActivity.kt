@@ -2,17 +2,17 @@ package com.example.dtthouses.ui.house
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.dtthouses.R
 import com.example.dtthouses.databinding.ActivityHomeBinding
 import com.example.dtthouses.utils.LocationProvider.LOCATION_REQUEST_CODE
+import com.example.dtthouses.utils.WindowHelper
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,7 +51,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setStatusBarColor() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarColor)
+        WindowHelper.enableFullscreen(window)
     }
 
     override fun onRequestPermissionsResult(

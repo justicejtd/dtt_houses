@@ -23,7 +23,7 @@ object WindowHandler {
      * @param view [View.javaClass]
      */
     fun hideWindowSystemBars(window: Window, view: View) {
-        if (Build.VERSION.SDK_INT > VERSION_CODES.Q){
+        if (Build.VERSION.SDK_INT > VERSION_CODES.Q) {
             WindowCompat.setDecorFitsSystemWindows(window, false)
         }
         WindowInsetsControllerCompat(window, view).let { controller ->

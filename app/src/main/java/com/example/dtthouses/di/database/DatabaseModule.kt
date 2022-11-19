@@ -21,7 +21,8 @@ object DatabaseModule {
      */
     @Provides
     @Singleton
-    fun providesDatabase(application: Application): AppDatabase = AppDatabase.getInstance(application)
+    fun providesDatabase(application: Application): AppDatabase =
+        AppDatabase.getInstance(application)
 
 
     /**

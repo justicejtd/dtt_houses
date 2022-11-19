@@ -16,9 +16,11 @@ object PermissionHelper {
      * @param context Application/Activity context.
      */
     fun checkLocationPermission(context: Context): Boolean {
-        return ActivityCompat.checkSelfPermission(context,
+        return ActivityCompat.checkSelfPermission(
+            context,
             Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context,
+        ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            context,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
     }
@@ -29,9 +31,12 @@ object PermissionHelper {
      * @param requestCode Request code
      */
     fun requestLocationPermission(activity: Activity, requestCode: Int) {
-        ActivityCompat.requestPermissions(activity,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION), requestCode
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ), requestCode
         )
     }
 }

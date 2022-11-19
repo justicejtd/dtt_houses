@@ -4,14 +4,11 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowInsetsCompat.Type.ime
-import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
-import androidx.core.view.isGone
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.dtthouses.databinding.ActivityHomeBinding
 import com.example.dtthouses.utils.LocationProvider.LOCATION_REQUEST_CODE
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.dtthouses.utils.WindowHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,26 +19,15 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var hostFragment: NavHostFragment
-    private lateinit var bottomNav: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Handle the splash screen transition.
         installSplashScreen()
         super.onCreate(savedInstanceState)
-
-        // Setup view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()
-
-        // Hide bottom navigation when keyboard is shown
-        hideBottomNavigation()
-    }
-
-    private fun setupViews() {
-        hostFragment = binding.fcvHost.getFragment()
-        bottomNav = binding.bottomNavigationView
-        bottomNav.setupWithNavController(hostFragment.navController)
+        setupWindow() // Setup statusBar and bottom Navigation bar.
     }
 
     override fun onRequestPermissionsResult(
@@ -69,11 +55,13 @@ class HomeActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun hideBottomNavigation() {
-        window.decorView.setOnApplyWindowInsetsListener { view, insets ->
-            val insetsCompat = toWindowInsetsCompat(insets, view)
-            bottomNav.isGone = insetsCompat.isVisible(ime())
-            view.onApplyWindowInsets(insets)
-        }
+    private fun setupViews() {
+        hostFragment = binding.fcvHost.getFragment()
+        binding.bottomNavigationView.setupWithNavController(hostFragment.navController)
+    }
+
+    private fun setupWindow() {
+        WindowHandler.hideWindowSystemBars(window, binding.root)
+        WindowHandler.hideBottomNavigationWhenKeyboardIsShown(window, binding.bottomNavigationView)
     }
 }

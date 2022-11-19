@@ -20,6 +20,7 @@ import com.example.dtthouses.ui.house.adapter.HouseAdapter.HouseAdapterConstants
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModel
 import com.example.dtthouses.ui.houseDetails.viewModel.HouseDetailsViewModelImpl
 import com.example.dtthouses.utils.ImageHandler
+import com.example.dtthouses.utils.WindowHandler
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -86,19 +87,8 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         setupViewModel()
         setHouseDetails()
         setToolbarAndAppbar()
-
-        // Get the SupportMapFragment and request notification when the map is ready to be used.
-        val mapFragment: SupportMapFragment =
-            houseDetailsTopLayer.mapFragmentContainer.getFragment()
-        mapFragment.getMapAsync(this)
-
-    }
-
-    private fun setupViewModel() {
-        houseDetailsViewModel = ViewModelProvider(this)[HouseDetailsViewModelImpl::class.java]
-
-        // Load detail house from database based on house id
-        houseDetailsViewModel.onLoadHouse(getHouseId())
+        setupMapFragment()
+        WindowHandler.hideWindowSystemBars(window, binding.root) // Hide status bar.
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -121,6 +111,18 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             googleMap.uiSettings.isZoomControlsEnabled = false
             googleMap.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = false
         }
+    }
+
+    private fun setupViewModel() {
+        houseDetailsViewModel = ViewModelProvider(this)[HouseDetailsViewModelImpl::class.java]
+
+        // Load detail house from database based on house id
+        houseDetailsViewModel.onLoadHouse(getHouseId())
+    }
+
+    private fun setupMapFragment() {
+        val map: SupportMapFragment = houseDetailsTopLayer.mapFragmentContainer.getFragment()
+        map.getMapAsync(this)
     }
 
     private fun setToolbarAndAppbar() {
@@ -168,10 +170,12 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
             val imageUrl = ApiService.DTT_BASE_URL.plus(house.image)
 
             // Get and set house image
-            ImageHandler.handleImage(imageUrl,
+            ImageHandler.handleImage(
+                imageUrl,
                 this,
                 binding.ivHouseDetail,
-                HouseAdapter.DEFAULT_IMAGE)
+                HouseAdapter.DEFAULT_IMAGE
+            )
         }
     }
 

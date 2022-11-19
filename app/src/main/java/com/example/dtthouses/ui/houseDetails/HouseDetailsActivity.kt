@@ -29,7 +29,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 
-
 /**
  * Activity for show all details of a house.
  */
@@ -125,7 +124,6 @@ class HouseDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setToolbarAndAppbar() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarColor)
         val toolbar = binding.toolbarHouseDetails
 
         setSupportActionBar(toolbar)

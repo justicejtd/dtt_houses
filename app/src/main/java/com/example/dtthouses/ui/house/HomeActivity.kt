@@ -3,14 +3,12 @@ package com.example.dtthouses.ui.house
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat.Type.ime
 import androidx.core.view.WindowInsetsCompat.toWindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.dtthouses.R
 import com.example.dtthouses.databinding.ActivityHomeBinding
 import com.example.dtthouses.utils.LocationProvider.LOCATION_REQUEST_CODE
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,15 +28,11 @@ class HomeActivity : AppCompatActivity() {
         // Handle the splash screen transition.
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
         // Setup view binding
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Initialize views
         setupViews()
-
-        // Set status bar color to gray
-        setStatusBarColor()
 
         // Hide bottom navigation when keyboard is shown
         hideBottomNavigation()
@@ -48,10 +42,6 @@ class HomeActivity : AppCompatActivity() {
         hostFragment = binding.fcvHost.getFragment()
         bottomNav = binding.bottomNavigationView
         bottomNav.setupWithNavController(hostFragment.navController)
-    }
-
-    private fun setStatusBarColor() {
-        window.statusBarColor = ContextCompat.getColor(this, R.color.statusBarColor)
     }
 
     override fun onRequestPermissionsResult(

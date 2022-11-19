@@ -32,6 +32,7 @@
                 android:id="@+id/toolbarHouseDetails"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/size_huge"
                 app:layout_collapseMode="pin"
                 app:theme="@style/ToolbarTheme" />
 

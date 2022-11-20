@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinatorLayoutHouseDetails"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarHouseDetails"
@@ -39,11 +40,10 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsvHouseDetails"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="none"
         app:behavior_overlapTop="@dimen/nsv_house_details_overlap_top"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -52,8 +52,9 @@
             android:id="@+id/includeViewHouseDetailsTopLayer"
             layout="@layout/view_house_details_top_layer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal" />
+
     </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

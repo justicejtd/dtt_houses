@@ -26,9 +26,6 @@
     <!--  Include  -->
     <dimen name="include_view_house_details_margin_start">48dp</dimen>
 
-    <!--  Appbar  -->
-    <dimen name="app_bar_height">250dp</dimen>
-
     <!--  ImageViews  -->
     <dimen name="iv_house_details_height">250dp</dimen>
 
